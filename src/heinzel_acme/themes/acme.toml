@@ -1,0 +1,45 @@
+# Acme's look for the Heinzelmännchen web app (heinzel ADR 0044): deep teal on warm off-white, slate at night.
+# Every value becomes a CSS custom property; Heinzelmännchen checks each one when this plugin is imported.
+# Fonts are the machine's own (the web app loads no remote font), so each stack ends in a generic family.
+name = "acme"
+title = "Acme"
+font_sans = '"Avenir Next", Avenir, "Helvetica Neue", "Segoe UI", system-ui, sans-serif'
+font_mono = '"JetBrains Mono", "SF Mono", Menlo, Consolas, monospace'
+radius = "0.75rem"
+border_width = "1px"
+
+[light]
+background = "#faf7f2"
+foreground = "#1c2b2a"
+muted = "#f0ebe3"
+muted_foreground = "#5b6b69"
+card = "#ffffff"
+border = "#e2dbd0"
+primary = "#0f766e"
+primary_foreground = "#f8fffe"
+accent = "#e0f2ef"
+ok = "#15803d"
+warn = "#a16207"
+bad = "#b91c1c"
+ring = "#0f766e"
+sidebar = "#f3eee6"
+input = "#ddd5c8"
+popover = "#ffffff"
+
+[dark]
+background = "#0f172a"
+foreground = "#e2e8f0"
+muted = "#1e293b"
+muted_foreground = "#94a3b8"
+card = "#131c31"
+border = "#334155"
+primary = "#2dd4bf"
+primary_foreground = "#042f2e"
+accent = "#134e4a"
+ok = "#4ade80"
+warn = "#facc15"
+bad = "#f87171"
+ring = "#2dd4bf"
+sidebar = "#111a2e"
+input = "#334155"
+popover = "#131c31"

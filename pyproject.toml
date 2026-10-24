@@ -30,7 +30,7 @@ Issues = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/issues"
 [dependency-groups]
 # What the unit, integration and e2e tests need, and no more: CI installs only this group for the test matrix.
 test = [
-    "heinzel @ git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@a53ad19fc8f6675b2394afc9738fd7ff6bdecbaa",
+    "heinzel @ git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@d17c56819ec97b513596cd246a3b9aa1d8849016",
     "coverage>=7.12",
     "httpx>=0.28",
     "hypothesis>=6.140",

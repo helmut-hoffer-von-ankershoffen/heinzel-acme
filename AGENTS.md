@@ -33,6 +33,7 @@ src/heinzel_acme/
   _models.py    pydantic models the operations return
   _service.py   the logic; operations stay thin
   hello/        a submodule: any package below that declares `module` is discovered
+  themes/       Acme's look for the web app, data offered with `module.theme(...)` (`hz system theme use acme`)
 tests/          unit/, integration/ (Heinzelmännchen's CLI head with the real entry point), e2e/ (uv tool install)
 docs/           CODING_STANDARDS.md (from Heinzelmännchen), adr/
 .claude/        reviewer agents, skills and hooks (from Heinzelmännchen)

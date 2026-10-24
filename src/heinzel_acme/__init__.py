@@ -1,8 +1,11 @@
 """Acme, a made-up company: the root layer of the reference company.
 
 A Heinzelmännchen plugin, discovered through the `heinzel.modules` entry point in pyproject.toml. Every package
-below it that declares `module = Module(...)` becomes a submodule (see `hello/`).
+below it that declares `module = Module(...)` becomes a submodule (see `hello/`). Acme's look for the web app is
+data in `themes/` (`hz system theme use acme`).
 """
+
+from pathlib import Path
 
 from heinzel import ConfigEditor, Module, Prompter
 
@@ -12,6 +15,7 @@ from heinzel_acme._service import AcmeService
 module = Module("acme", "Acme, a made-up company: the root layer of the reference company.")
 module.settings(AcmeSettings)
 module.service(AcmeService)
+module.theme(Path(__file__).parent / "themes")  # read and checked now; `hz system theme list` shows it
 
 
 @module.operation
