@@ -36,7 +36,12 @@ hz acme info                 # this plugin, its version and the Heinzelmännchen
 hz acme hello --name Ada     # a submodule collapsed into a command
 hz acme info --json          # every command speaks JSON, for scripts and agents
 hz system info                  # includes a section contributed by this plugin
+hz system theme use acme        # Acme's look for the web app
 ```
+
+The `acme` theme ([`src/heinzel_acme/themes/acme.toml`](src/heinzel_acme/themes/acme.toml)) is deep teal on warm
+off-white, slate at night, with Acme's logo in [`themes/logo/`](src/heinzel_acme/themes/logo/): a peak shaped like an
+"A" standing on an anvil's base, hand-written SVG, teal `#0f766e` in light mode and `#2dd4bf` in dark mode.
 
 ## Develop
 
