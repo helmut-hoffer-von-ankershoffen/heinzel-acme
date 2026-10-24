@@ -1,4 +1,4 @@
-"""Install Heinzelmännchen with `uv tool install`, add this plugin from the checkout, use it. Needs network.
+"""Install Heinzelmännchen with `uv tool install`, develop this plugin from the checkout, use it. Needs network.
 
 Set HZ_SPEC to test against another Heinzelmännchen, e.g. `HZ_SPEC=git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@main`.
 """
@@ -15,7 +15,7 @@ pytestmark = [pytest.mark.e2e, pytest.mark.timeout(300)]
 
 REPO = Path(__file__).resolve().parents[2]
 HZ_SPEC = os.environ.get(
-    "HZ_SPEC", "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@b56430164ff8a24102e0e77e8f51597cfc2ab9ba"
+    "HZ_SPEC", "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@c189a051fc758bf5073283a24dae37c900fa826c"
 )
 
 
@@ -35,7 +35,7 @@ def hz(tmp_path_factory):
         assert result.returncode == 0, f"hz {' '.join(args)} failed:\n{result.stdout}\n{result.stderr}"
         return result.stdout
 
-    run("system", "plugin", "add", str(REPO))
+    run("system", "plugin", "develop", str(REPO))
     return run
 
 
