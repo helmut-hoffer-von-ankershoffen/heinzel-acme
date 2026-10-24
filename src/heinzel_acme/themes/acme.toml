@@ -1,11 +1,13 @@
 # Acme's look for the Heinzelmännchen web app (heinzel ADR 0044): deep teal on warm off-white, slate at night.
 # Every value becomes a CSS custom property; Heinzelmännchen checks each one when this plugin is imported.
+# Square corners on cards, dialogs and controls alike: Acme draws boxes, not pills.
 # Fonts are the machine's own (the web app loads no remote font), so each stack ends in a generic family.
 name = "acme"
 title = "Acme"
 font_sans = '"Avenir Next", Avenir, "Helvetica Neue", "Segoe UI", system-ui, sans-serif'
 font_mono = '"JetBrains Mono", "SF Mono", Menlo, Consolas, monospace'
-radius = "0.75rem"
+radius = "0"
+radius_control = "0"
 border_width = "1px"
 
 # Acme's logo: a peak shaped like an "A" on an anvil's base, and the name; teal on light, bright teal on dark.
