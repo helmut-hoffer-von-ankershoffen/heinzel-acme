@@ -22,7 +22,7 @@ Instructions for coding agents and humans working on heinzel-acme, a plugin for
 | Everything CI checks offline | `make check` |
 | Fix what tools can fix | `make fix` |
 | Tests by level | `make test-unit`, `make test-integration`, `make test-e2e` |
-| Try it with Heinzelmännchen | `hz system plugin add .` then `hz acme --help` |
+| Try it with Heinzelmännchen | `hz system plugin develop .` then `hz acme --help` |
 | Update to the latest Heinzelmännchen template | `make update-template` |
 
 ## Map

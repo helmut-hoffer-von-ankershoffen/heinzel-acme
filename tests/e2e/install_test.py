@@ -1,4 +1,4 @@
-"""Install Heinzelmännchen with `uv tool install`, add this plugin from the checkout, use it. Needs network.
+"""Install Heinzelmännchen with `uv tool install`, develop this plugin from the checkout, use it. Needs network.
 
 Set HZ_SPEC to test against another Heinzelmännchen, e.g. `HZ_SPEC=git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@main`.
 """
@@ -35,7 +35,7 @@ def hz(tmp_path_factory):
         assert result.returncode == 0, f"hz {' '.join(args)} failed:\n{result.stdout}\n{result.stderr}"
         return result.stdout
 
-    run("system", "plugin", "add", str(REPO))
+    run("system", "plugin", "develop", str(REPO))
     return run
 
 
