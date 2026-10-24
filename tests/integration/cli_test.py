@@ -68,3 +68,13 @@ def test_setup_asks_for_the_greeting_and_saves_it(boot):
     assert "How should `hello` greet? [Hello]: Moin" in prompter.transcript
     saved = tomllib.loads((user_config_dir() / "config.toml").read_text(encoding="utf-8"))
     assert saved == {"acme": {"greeting": "Moin"}}
+
+
+def test_the_acme_theme_is_listed_and_can_be_used(boot):
+    listed = json.loads(invoke(boot(), "system", "theme", "list", "--json"))
+    (acme,) = [theme for theme in listed["themes"] if theme["name"] == "acme"]
+    assert (acme["plugin"], acme["module"], acme["light"]["primary"]) == ("heinzel-acme", "acme", "#0f766e")
+    used = json.loads(invoke(boot(), "system", "theme", "use", "acme", "--json"))
+    assert used["selected"] == "acme"
+    config = tomllib.loads((user_config_dir() / "config.toml").read_text(encoding="utf-8"))
+    assert config["system"]["theme"]["name"] == "acme"
