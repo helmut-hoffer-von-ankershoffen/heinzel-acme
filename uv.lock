@@ -747,7 +747,7 @@ wheels = [
 [[package]]
 name = "heinzel"
 version = "0.3.0"
-source = { git = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel?rev=d17c56819ec97b513596cd246a3b9aa1d8849016#d17c56819ec97b513596cd246a3b9aa1d8849016" }
+source = { git = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel?rev=b56430164ff8a24102e0e77e8f51597cfc2ab9ba#b56430164ff8a24102e0e77e8f51597cfc2ab9ba" }
 dependencies = [
     { name = "croniter" },
     { name = "fastapi" },
@@ -819,7 +819,7 @@ dev = [
     { name = "commitizen", specifier = ">=4.10.0,<5" },
     { name = "coverage", specifier = ">=7.12" },
     { name = "git-cliff", specifier = ">=2.14.0,<3" },
-    { name = "heinzel", git = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel?rev=d17c56819ec97b513596cd246a3b9aa1d8849016" },
+    { name = "heinzel", git = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel?rev=b56430164ff8a24102e0e77e8f51597cfc2ab9ba" },
     { name = "httpx", specifier = ">=0.28" },
     { name = "hypothesis", specifier = ">=6.140" },
     { name = "jsonschema", specifier = ">=4.26" },
@@ -838,7 +838,7 @@ dev = [
 ]
 test = [
     { name = "coverage", specifier = ">=7.12" },
-    { name = "heinzel", git = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel?rev=d17c56819ec97b513596cd246a3b9aa1d8849016" },
+    { name = "heinzel", git = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel?rev=b56430164ff8a24102e0e77e8f51597cfc2ab9ba" },
     { name = "httpx", specifier = ">=0.28" },
     { name = "hypothesis", specifier = ">=6.140" },
     { name = "jsonschema", specifier = ">=4.26" },
