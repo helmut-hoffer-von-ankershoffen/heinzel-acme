@@ -8,6 +8,15 @@ font_mono = '"JetBrains Mono", "SF Mono", Menlo, Consolas, monospace'
 radius = "0.75rem"
 border_width = "1px"
 
+# Acme's logo: a peak shaped like an "A" on an anvil's base, and the name; teal on light, bright teal on dark.
+# The square mark serves both modes, so it takes a middle teal that holds 3:1 on both sidebars.
+[logo]
+light = "logo/wordmark-light.svg"
+dark = "logo/wordmark-dark.svg"
+mark = "logo/mark.svg"
+alt = "Acme"
+height = "24px"
+
 [light]
 background = "#faf7f2"
 foreground = "#1c2b2a"

@@ -52,4 +52,17 @@ def test_logo_files_are_small_clean_svgs_inside_the_theme_directory(file):
 def test_the_logo_is_acme_teal_light_and_dark():
     assert 'fill="#0f766e"' in (THEME.parent / "logo" / "wordmark-light.svg").read_text(encoding="utf-8")
     assert 'fill="#2dd4bf"' in (THEME.parent / "logo" / "wordmark-dark.svg").read_text(encoding="utf-8")
-    assert 'fill="#0f766e"' in (THEME.parent / "logo" / "mark.svg").read_text(encoding="utf-8")
+    assert 'fill="#0d9488"' in (THEME.parent / "logo" / "mark.svg").read_text(encoding="utf-8")
+
+
+def test_the_theme_declares_the_logo_and_heinzel_serves_it():
+    theme = Theme.model_validate(tomllib.loads(THEME.read_text(encoding="utf-8")))
+    assert theme.logo is not None
+    assert (theme.logo.light, theme.logo.dark, theme.logo.mark) == LOGO_FILES[1:] + LOGO_FILES[:1]
+    assert (theme.logo.alt, theme.logo.height) == ("Acme", "24px")
+    (let,) = [let for let in heinzel_acme.module.lets if isinstance(let, ThemeLet)]
+    logos = let.logos()
+    assert logos is not None
+    for name, file in zip(("light", "dark", "mark"), LOGO_FILES[1:] + LOGO_FILES[:1], strict=True):
+        assert logos.content(name) == (THEME.parent / file).read_bytes()
+        assert logos.url(name).startswith(f"/theme-assets/acme/{name}.svg?v=")
