@@ -1,0 +1,52 @@
+# AGENTS.md
+
+Instructions for coding agents and humans working on heinzel-acme, a plugin for
+[Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel). Read [INTENT.md](INTENT.md) first.
+
+## Ground rules
+
+1. **Intent before code.** Changes serve [INTENT.md](INTENT.md) and respect the ADRs in [docs/adr/](docs/adr/).
+2. **Follow [docs/CODING_STANDARDS.md](docs/CODING_STANDARDS.md)** (shared with Heinzelmännchen, updated by
+   `make update-template`). Plugins import only Heinzelmännchen's public API: `hz` and `heinzel.kernel`.
+3. **Every change is tested** as `unit`, `integration` or `e2e`; the suite refuses anything else.
+4. **Conventional commits**, always. Versions and the changelog are derived from them.
+5. **Review before you finish** with the `review` skill and resolve every Critical and Required finding.
+
+## Commands
+
+| Task | Command |
+| --- | --- |
+| Set up everything the build needs (deps, pinned tools in .tools/bin, git hooks) | `make setup` |
+| What is missing, and the command that fixes it | `make doctor` |
+| Edit loop, seconds | `make check-fast` |
+| Everything CI checks offline | `make check` |
+| Fix what tools can fix | `make fix` |
+| Tests by level | `make test-unit`, `make test-integration`, `make test-e2e` |
+| Try it with Heinzelmännchen | `hz system plugin add .` then `hz acme --help` |
+| Update to the latest Heinzelmännchen template | `make update-template` |
+
+## Map
+
+```
+src/heinzel_acme/
+  __init__.py   module = Module("acme", ...), its services and operations
+  _models.py    pydantic models the operations return
+  _service.py   the logic; operations stay thin
+  hello/        a submodule: any package below that declares `module` is discovered
+tests/          unit/, integration/ (Heinzelmännchen's CLI head with the real entry point), e2e/ (uv tool install)
+docs/           CODING_STANDARDS.md (from Heinzelmännchen), adr/
+.claude/        reviewer agents, skills and hooks (from Heinzelmännchen)
+```
+
+## How Heinzelmännchen sees this plugin
+
+The entry point `[project.entry-points."heinzel.modules"]` names the root package. Heinzelmännchen walks it: every package that
+declares `module = Module(name, summary)` is a module, nested ones are submodules, and their `@module.operation`
+functions become commands (and later MCP tools and REST endpoints). Services are injected by type. See Heinzelmännchen's
+[ARCHITECTURE.md](https://github.com/helmut-hoffer-von-ankershoffen/heinzel/blob/main/docs/ARCHITECTURE.md).
+
+## Don'ts
+
+- Don't import `heinzel.kernel._*`, `heinzel.modules.*` or `heinzel.heads.*` in `src/`; use the public API.
+- Don't print; return models and let Heinzelmännchen's heads present them.
+- Don't edit files that come from the template by hand if the change belongs in Heinzelmännchen — improve the template there.

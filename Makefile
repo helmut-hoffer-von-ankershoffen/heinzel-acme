@@ -1,0 +1,139 @@
+.DEFAULT_GOAL := help
+.PHONY: help install setup doctor tools-verify check check-fast preflight fix lint format typecheck test test-parallel commits test-all-pythons test-unit test-integration test-e2e audit licenses secrets build changelog ci-logs pr sync release clean update-template
+
+# Quiet by default: one line per passing step, the tail of a failing one. VERBOSE=1 streams everything.
+# A step starting with & runs concurrently with the one before it; the first failure cancels the rest.
+STEPS := @uv run --quiet --script scripts/steps.py
+# Programs the build needs that aren't Python packages (gitleaks, gh, ...): pinned in scripts/tools.toml, installed
+# into .tools/bin by `make install`, and found there first by every target.
+TOOLS := uv run --quiet --script scripts/tools.py
+export PATH := $(CURDIR)/.tools/bin:$(PATH)
+# The repository pull requests go to: `upstream` in a fork's clone, otherwise `origin`.
+REMOTE := $(shell git remote 2>/dev/null | grep -qx upstream && echo upstream || echo origin)
+BASE ?= $(REMOTE)/main
+
+# Cheapest checks first, so a typo fails in a second; the rest runs in parallel.
+GATE := "lock=uv lock --check" "&format=uv run ruff format --check ." "&ruff=uv run ruff check --no-fix ."
+LINT := \
+		"&zizmor=uv run zizmor --offline --quiet .github/workflows" \
+		"&actionlint=uv run actionlint" \
+		"&typos=uv run typos" \
+		"&confidential=uv run --script scripts/check_confidentiality.py"
+TYPES := "&mypy=uv run mypy" "&pyright=uv run pyright"
+# Unit, then integration (the suite orders them), on 4 workers, stopping at the first failure; coverage is in make test.
+TESTS := "&tests=uv run pytest -m 'unit or integration' -n 4 -x -q --session-timeout=120"
+# The same suite measured, on the same 4 workers: each xdist worker is a Python subprocess, which coverage measures
+# ([tool.coverage.run] patch = ["subprocess"]) into its own data file; `coverage combine` merges them afterwards.
+COVERED := uv run coverage erase && uv run coverage run -m pytest -m 'unit or integration' -n 4 -q --session-timeout=300
+
+help: ## Show this help
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
+
+install: ## Install what the build needs: Python with every dependency group (.venv) and the pinned tools (.tools)
+	@uv sync --all-groups --quiet && echo "✓ .venv: Python and every dependency group, as locked in uv.lock"
+	@$(TOOLS) install
+
+setup: install ## Install what the build needs, and the git hooks (prek: lint on commit, conventional commits)
+	@uv run --quiet prek install --hook-type pre-commit --hook-type commit-msg --hook-type pre-push >/dev/null
+	@echo "✓ git hooks: pre-commit, commit-msg, pre-push"
+
+doctor: ## What the build needs, what is missing, and the command that fixes it
+	@$(TOOLS) doctor
+
+tools-verify: ## Download every pinned tool for every platform and check its checksum and binary (needs network)
+	@$(TOOLS) verify
+
+check: ## Everything CI checks that runs offline, in parallel: lint, types, tests
+	$(STEPS) $(GATE) $(LINT) $(TYPES) $(TESTS)
+
+check-fast: ## Seconds-fast feedback for the edit loop: format, lint, unit tests
+	$(STEPS) \
+		"format=uv run ruff format --check ." \
+		"&ruff=uv run ruff check --no-fix ." \
+		"unit=uv run pytest -m unit -n auto -x -q --session-timeout=60"
+
+preflight: ## What CI checks, before you push: check with coverage, build, commits (PREFLIGHT=full adds e2e, audit)
+	$(STEPS) $(GATE) $(LINT) $(TYPES) \
+		"&tests=$(COVERED) -x && uv run coverage combine --quiet && uv run coverage report --format=total --fail-under=90" \
+		"&build=uv build --quiet --out-dir .preflight-dist && rm -rf .preflight-dist" \
+		"&commits=$(MAKE) --no-print-directory commits"
+	@if [ "$(PREFLIGHT)" = full ]; then $(MAKE) --no-print-directory audit test-e2e; fi
+
+fix: ## Fix what tools can fix: lockfile, formatting, lint autofixes, generated files; then list changed files
+	$(STEPS) \
+		"lock=uv lock --quiet" \
+		"format=uv run ruff format --quiet ." \
+		"ruff=uv run ruff check --fix --quiet --exit-zero ."
+	@git status --short
+
+lint: ## Check formatting, lint and workflows
+	$(STEPS) $(GATE) $(LINT)
+
+format: ## Format and autofix
+	uv run ruff format .
+	uv run ruff check --fix .
+
+typecheck: ## Type-check with mypy and pyright (both strict)
+	$(STEPS) "mypy=uv run mypy" "&pyright=uv run pyright"
+
+test: ## Run unit and integration tests with coverage on 4 workers (offline; what the CI Coverage job runs)
+	$(STEPS) \
+		"tests=$(COVERED) --junitxml=reports/junit.xml && uv run coverage combine --quiet" \
+		"coverage=uv run coverage report --skip-covered --skip-empty" \
+		"coverage-xml=uv run coverage xml -q"
+	@uv run --quiet coverage report --format=total | xargs printf '  coverage %s%%\n'
+
+test-parallel: ## Unit and integration tests on 4 workers, stopping at the first failure; no coverage (the CI test matrix)
+	$(STEPS) "tests=uv run pytest -m 'unit or integration' -n 4 -x -q --session-timeout=300"
+
+commits: ## Commit messages since BASE, and $$TITLE and $$BRANCH when set: conventional, no confidential terms
+	$(STEPS) \
+		'conventional=[ -z "$$(git rev-list $(BASE)..HEAD)" ] || uv run cz check --rev-range $(BASE)..HEAD' \
+		"&confidential=uv run --script scripts/check_confidentiality.py --messages $(BASE)..HEAD" \
+		'&title=[ -z "$$TITLE" ] || { uv run cz check --message "$$TITLE" && uv run --script scripts/check_confidentiality.py --text "$$TITLE"; }' \
+		'&branch=[ -z "$$BRANCH" ] || uv run --script scripts/check_confidentiality.py --text "$$BRANCH"'
+
+test-all-pythons: ## Run unit and integration tests on every supported Python, in isolated environments
+	$(STEPS) $(foreach python,3.12 3.13 3.14 3.15,"python-$(python)=uv run --isolated --python $(python) pytest -m 'unit or integration' -q -p no:cacheprovider")
+
+test-unit: ## Run unit tests
+	uv run pytest -m unit
+
+test-integration: ## Run integration tests
+	uv run pytest -m integration
+
+test-e2e: ## Run end-to-end tests (needs network), on 3 workers
+	$(STEPS) "e2e=uv run pytest -m e2e -n 3 -q --session-timeout=600"
+
+audit: ## Audit runtime dependencies: known vulnerabilities (pip-audit) and licenses (.license-allowlist)
+	$(STEPS) "licenses=$(MAKE) --no-print-directory licenses" "&vulnerabilities=uv export --quiet --no-dev --no-emit-project --no-emit-package heinzel --format requirements-txt --output-file .audit-requirements.txt && uv run pip-audit --strict --disable-pip -r .audit-requirements.txt; status=\$$?; rm -f .audit-requirements.txt; exit \$$status"
+
+secrets: ## Scan the whole git history for credentials with gitleaks (the pre-commit hook scans each commit)
+	@$(TOOLS) run gitleaks git --redact --verbose --exit-code 1 .
+
+licenses: ## Check that runtime dependencies' licenses are on .license-allowlist, so releases stay MIT-compatible
+	bash scripts/check_licenses.sh
+
+build: ## Build wheels and sdists into dist/ (the core and every first-party plugin)
+	uv build
+
+changelog: ## Preview the changelog for unreleased commits
+	uv run git-cliff --unreleased
+
+ci-logs: ## The failing steps of the latest CI run of this branch (waits for a running one); JSON=1 for machines
+	@uv run --quiet --script scripts/ci_logs.py $(if $(JSON),--json)
+
+pr: ## Push this branch and open a squash-merged, auto-merging pull request to main: make pr TITLE="feat: ..." (DRAFT=1: draft, no auto-merge; BODY=... or BODY_FILE=path: a new PR's description)
+	@bash scripts/pr.sh "$(TITLE)"
+
+sync: ## Rebase this branch onto the latest main (upstream's, in a fork)
+	@git fetch --quiet $(REMOTE) && git rebase --quiet $(REMOTE)/main && git log --oneline $(REMOTE)/main..HEAD
+
+release: ## Open a release pull request from main: BUMP=auto|patch|minor|major (default auto), INTRO="prose"
+	bash scripts/release.sh $(or $(BUMP),auto) --open-pr
+
+clean: ## Remove build and test artifacts
+	rm -rf dist build .coverage* coverage.xml htmlcov reports .pytest_cache .mypy_cache .ruff_cache
+
+update-template: ## Update this plugin to the latest Heinzelmännchen template (needs a clean working tree)
+	uvx copier update --defaults

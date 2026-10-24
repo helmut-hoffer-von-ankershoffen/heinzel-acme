@@ -1,0 +1,36 @@
+---
+name: add-module
+description: Add a module or submodule to this Heinzelmännchen plugin the idiomatic way, with service, operations, tests and docs. Use when asked for a new command group or a new area of functionality in the plugin.
+---
+
+# Add a module
+
+A module is a package whose `__init__.py` declares `module = Module(name, summary)`. Heinzelmännchen discovers every such
+package below `src/heinzel_acme/` through the plugin's entry point; nested ones are submodules. Nothing to
+register by hand.
+
+## Process
+
+1. Create `src/heinzel_acme/<name>/__init__.py` with `module = Module("<name>", "<one sentence>")`.
+2. Put logic in a service (`module.service(MyService)`, constructor parameters injected by type), results in pydantic
+   models, and thin `@module.operation` functions that call the service (skill: `add-operation`).
+3. Tests (skill: `write-tests`): unit tests for the service; integration tests through Heinzelmännchen's CLI head with the
+   `boot` fixture (`build(boot())`), asserting `--json` output.
+4. Check: `make check`, then `hz system plugin add .` and `hz acme <name> --help`.
+5. Document the new commands in README.md.
+
+## Setup step (optional)
+
+If people must or may configure the module before using it, declare one setup step: `@module.setup` (or
+`required=True`) on a function that asks through an injected `Prompter` (`text`, `choice`, `choices`, `confirm`,
+`number`, `secret`) and writes through `ConfigEditor.write("<module>.<key>", value)` and `Credentials.set(...)`. It
+runs as `hz setup <module>` and as part of `hz setup`, never as a command of the module, so declaring it never
+changes the module's command path ([ADR 0032](https://github.com/helmut-hoffer-von-ankershoffen/heinzel/blob/main/docs/adr/0032-modules-declare-interactive-setup-steps.md)).
+Modules without a declared step get none. Test it with scripted answers: `ScriptedPrompter([...])` bound with
+`kernel.bind(Prompter, ...)`, or the `hz_prompter` fixture.
+
+## Verification
+
+- [ ] `make check` passes
+- [ ] `hz system modules` lists the module
+- [ ] `hz acme <name> ... --json` returns valid JSON

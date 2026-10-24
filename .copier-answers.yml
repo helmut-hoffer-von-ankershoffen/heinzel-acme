@@ -1,0 +1,10 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v0.2.0-41-ga53ad19
+_src_path: gh:helmut-hoffer-von-ankershoffen/heinzel
+author_email: helmuthva@gmail.com
+author_name: Helmut Hoffer von Ankershoffen
+github_owner: helmut-hoffer-von-ankershoffen
+package_name: heinzel_acme
+plugin_name: acme
+plugin_summary: 'Acme, a made-up company: the root layer of the reference company.'
+project_name: heinzel-acme

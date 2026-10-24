@@ -1,0 +1,16 @@
+---
+name: release
+description: Cut a release of this Heinzelmännchen plugin - semantic version from conventional commits, changelog, tag, GitHub release with provenance. Use when asked to release, publish or tag a version.
+disable-model-invocation: true
+---
+
+# Release
+
+1. Make sure `main` is green in CI.
+2. Preview: `make changelog`; next version: `uv run git-cliff --bumped-version`.
+3. Actions → **Release** → Run workflow (bump `auto`, or force `patch`/`minor`/`major`), or `make release`.
+   The optional **intro** input (`make release INTRO="..."`) becomes the introduction under the release's heading
+   in CHANGELOG.md; earlier introductions are kept. It opens a pull request `chore(release): vX.Y.Z`; CI runs on it.
+4. Merge it. **Release tag** tags it and **Publish** builds, attests and creates the GitHub release (`gh run watch`).
+5. Verify: `hz system plugin add git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme@vX.Y.Z` and
+   `hz acme info`.
