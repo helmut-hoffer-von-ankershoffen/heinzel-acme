@@ -35,9 +35,9 @@ test = [
     "heinzel-acme-lisbon>=0.0.0",
     "heinzel-acme-payments>=0.0.0",
     "heinzel-acme-payments-checkout>=0.0.0",
-    # PINNED TO A COMMIT ON THE CORE'S MAIN until a release has the playbook API (and later the layer API); then pin
-    # the release tag here, in tests/e2e/install_test.py and in README.md ("Pins").
-    "heinzel @ git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@a53ad19fc8f6675b2394afc9738fd7ff6bdecbaa",
+    # PINNED TO THE HEAD OF THE CORE'S PULL REQUEST "plugins are layers" (#61) until a release has the layer and
+    # playbook APIs; then pin the release tag here, in tests/e2e/install_test.py and in README.md ("Pins").
+    "heinzel @ git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@d7db2d2e943e9b6d07e297ca92ce5211010ad360",
     "coverage>=7.12",
     "httpx>=0.28",
     "hypothesis>=6.140",

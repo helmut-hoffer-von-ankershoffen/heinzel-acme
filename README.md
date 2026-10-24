@@ -50,7 +50,9 @@ hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/hein
 One plugin, the team's: its org, site and company come with it, as its dependencies. Then:
 
 ```bash
-hz acme layers              # the tree and each layer's stack (hz system layer list once the core has layers)
+hz system layer list        # the tree, from the core (a core with the layer API)
+hz system layer show        # your stack: acme → acme-payments + acme-lisbon → acme-payments-checkout
+hz acme layers              # the same tree as Acme declares it, on any core
 hz acme info                # the bindings Acme recommends and how they stand on this machine
 hz system doctor            # which adapter plugins and logins are missing
 hz workflow playbooks       # what each layer's playbook offers
@@ -87,8 +89,8 @@ Acme builds against Heinzelmännchen's `main` until a release has what it uses:
 
 | What | Where | Today | Switch to |
 | --- | --- | --- | --- |
-| Heinzelmännchen for tests and e2e | `pyproject.toml` (`test` group), `tests/e2e/install_test.py` | a commit on `main` (playbooks, gh and acli adapters) | the first release that has them |
-| The layer API (`Module.layer`) | [`src/heinzel_acme/layers.py`](src/heinzel_acme/layers.py), the one bridge | recorded by Acme, shown by `hz acme layers` | the release with "plugins are layers"; then `module.layer(...)` |
+| Heinzelmännchen for tests and e2e | `pyproject.toml` (`test` group), `tests/e2e/install_test.py` | the head of the core's pull request #61, "plugins are layers" (on top of `main`: playbooks, gh and acli adapters) | the first release that has the layer API |
+| The layer API (`Module.layer`) | [`src/heinzel_acme/layers.py`](src/heinzel_acme/layers.py), the one bridge | forwarded to the core when it has `Module.layer` (`hz system layer list`), recorded by Acme otherwise (`hz acme layers`) | once released and pinned: `module.layer(...)` in each plugin, and drop the bridge |
 | The Google adapter | not a dependency | the core's open pull request | `hz system plugin add google` once released |
 
 ## Develop

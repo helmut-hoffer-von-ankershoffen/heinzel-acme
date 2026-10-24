@@ -37,15 +37,15 @@ Chosen option: **one workspace, one bridge**.
 - Discovery hints name Acme's own (made-up) document ids: the core's capabilities can confirm a known document but not
   search for one (its ADR 0037, "Bad"); assets without a confirming read (the tracker project, the repository) have no
   hint, and `hz acme seed` prints the `--asset` values for a rehearsal world.
-- Heinzelmännchen is pinned to a commit on its `main` for tests until a release has the playbook API; the runtime
-  dependency stays `heinzel>=0.2.0,<1` so the installed Heinzelmännchen is used.
+- Heinzelmännchen is pinned to a commit for tests (the head of the core's layer pull request, on top of `main`) until
+  a release has the layer and playbook APIs; the runtime dependency stays `heinzel>=0.2.0,<1` so the installed
+  Heinzelmännchen is used.
 
 ### Consequences
 
 - Good: the layout is the one a company copies; one pull request changes the whole stack; CI tests installing a team.
 - Good: switching to the core's layer API is one file and a grep (`layers.declare`).
-- Bad: until the core has `Module.layer`, the kernel doesn't stack Acme's layers: playbooks are listed per module, and
-  org-and-site precedence (ADR 0040, open) can't be exercised here.
+- Bad: on a core without `Module.layer` the kernel doesn't stack Acme's layers; `hz acme layers` still shows them.
 - Bad: a pin to a commit, not a release, until the core releases; README "Pins" tracks it.
 
 ### Confirmation

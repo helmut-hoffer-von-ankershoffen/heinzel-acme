@@ -23,16 +23,17 @@ Never run any of this against a company account: `hz acme seed` creates reposito
 
 ### 1. Install Heinzelmännchen and the plugins
 
-Use the Heinzelmännchen this repository pins (README, "Pins"); until a release has playbooks, that is `main`:
+Use the Heinzelmännchen this repository pins (README, "Pins"); until a release has layers and playbooks, that is the
+commit in `pyproject.toml`'s `test` group (or `main`, once the layer pull request merged):
 
 ```bash
-uv tool install "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@main"
+uv tool install "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@<the pinned commit>"
 hz system plugin add github
 hz system plugin add atlassian
 hz system plugin add google      # until the core releases it: its pull request's branch, as a git URL with #subdirectory=plugins/heinzel-google
 hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme#subdirectory=plugins/heinzel-acme-payments-checkout"
 hz acme layers                   # four layers; the team's stack is acme, acme-payments, acme-lisbon, acme-payments-checkout
-hz system layer list             # the same, from the core, once it has the layer API
+hz system layer show             # the same stack, from the core (a core with the layer API)
 ```
 
 ### 2. Log in, as yourself
@@ -127,7 +128,7 @@ uvx heinzel join https://github.com/<manager login>/hz-team-checkout
 Until that exists, the same in today's commands:
 
 ```bash
-uv tool install "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@main"
+uv tool install "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@<the pinned commit>"
 gh auth login                                           # as the engineer's account
 hz team join https://github.com/<manager login>/hz-team-checkout.git --yes
 hz team show                                            # names the team plugin from hz.yaml

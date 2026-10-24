@@ -74,4 +74,9 @@ def test_a_core_with_the_layer_api_gets_the_declaration_too():
 
 
 def test_without_the_layer_api_the_declaration_is_kept_here():
-    assert not layers.declare(Module("acme", "The company.")).native
+    class OlderModule(Module):
+        layer = None  # a core before Module.layer
+
+    layer = layers.declare(OlderModule("acme", "The company."))
+    assert not layer.native
+    assert layers.declared() == [layer]

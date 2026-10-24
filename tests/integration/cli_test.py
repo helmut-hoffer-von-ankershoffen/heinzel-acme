@@ -101,3 +101,15 @@ def test_the_lisbon_calendar_shows_the_report_deadline(hz):
     view = hz("acme-lisbon", "calendar", "--days", "7").json
     assert view["calendar"]["time_zone"] == "Europe/Lisbon"
     assert "Weekly report draft ready" in {o["name"] for o in view["upcoming"]}
+
+
+def test_the_core_stacks_the_layers_as_acme_declares_them(hz):
+    shown = hz("system", "layer", "show").json
+    assert shown["layer"] == "acme-payments-checkout"
+    assert [layer["name"] for layer in shown["layers"]] == hz("acme-payments-checkout", "info").json["layer"]["stack"]
+    assert {layer["name"]: layer["label"] for layer in hz("system", "layer", "list").json["layers"]} == {
+        "acme": "company",
+        "acme-payments": "org",
+        "acme-lisbon": "site",
+        "acme-payments-checkout": "team",
+    }

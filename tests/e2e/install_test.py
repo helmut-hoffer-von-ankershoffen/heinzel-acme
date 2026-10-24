@@ -15,7 +15,7 @@ pytestmark = [pytest.mark.e2e, pytest.mark.timeout(300)]
 
 REPO = Path(__file__).resolve().parents[2]
 HZ_SPEC = os.environ.get(
-    "HZ_SPEC", "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@a53ad19fc8f6675b2394afc9738fd7ff6bdecbaa"
+    "HZ_SPEC", "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@d7db2d2e943e9b6d07e297ca92ce5211010ad360"
 )
 
 
