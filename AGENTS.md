@@ -1,7 +1,8 @@
 # AGENTS.md
 
-Instructions for coding agents and humans working on heinzel-acme, a plugin for
-[Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel). Read [INTENT.md](INTENT.md) first.
+Instructions for coding agents and humans working on heinzel-acme, Heinzelmännchen's reference company: four plugins
+for [Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel), one per layer of a made-up company.
+Read [INTENT.md](INTENT.md) first.
 
 ## Ground rules
 
@@ -11,6 +12,12 @@ Instructions for coding agents and humans working on heinzel-acme, a plugin for
 3. **Every change is tested** as `unit`, `integration` or `e2e`; the suite refuses anything else.
 4. **Conventional commits**, always. Versions and the changelog are derived from them.
 5. **Review before you finish** with the `review` skill and resolve every Critical and Required finding.
+6. **Public and fictional.** Only made-up names: Acme (acme.example), org Payments, team Checkout, site Lisbon, the
+   people in `src/heinzel_acme/_world.py`. Never a real company, team, product or person, in files, commit messages
+   or pull request titles; `scripts/check_confidentiality.py` checks a private term list.
+7. **Layers follow the core's ADR 0040.** A plugin per layer, named after its path, depending on its parent and site;
+   declared only through `heinzel_acme.layers.declare` until the pinned core has `Module.layer`
+   (`tests/unit/repository_test.py` keeps these rules).
 
 ## Commands
 
@@ -22,20 +29,25 @@ Instructions for coding agents and humans working on heinzel-acme, a plugin for
 | Everything CI checks offline | `make check` |
 | Fix what tools can fix | `make fix` |
 | Tests by level | `make test-unit`, `make test-integration`, `make test-e2e` |
-| Try it with Heinzelmännchen | `hz system plugin add .` then `hz acme --help` |
+| Try it with Heinzelmännchen | `uv run hz acme layers`, `uv run hz workflow playbooks` |
 | Update to the latest Heinzelmännchen template | `make update-template` |
 
 ## Map
 
 ```
-src/heinzel_acme/
-  __init__.py   module = Module("acme", ...), its services and operations
-  _models.py    pydantic models the operations return
-  _service.py   the logic; operations stay thin
-  hello/        a submodule: any package below that declares `module` is discovered
-tests/          unit/, integration/ (Heinzelmännchen's CLI head with the real entry point), e2e/ (uv tool install)
-docs/           CODING_STANDARDS.md (from Heinzelmännchen), adr/
-.claude/        reviewer agents, skills and hooks (from Heinzelmännchen)
+src/heinzel_acme/                 the company layer `acme`
+  __init__.py                     module, its layer, the playbook recommending the bindings, info, layers, doctor
+  layers.py                       THE bridge to the core's layer API (`declare`); every layer declares through it
+  _bindings.py                    capability -> adapter, plugin, transport, login: what `hz setup acme` offers
+  _world.py                       the made-up Acme world (people, items, pull requests, documents)
+  seed/                           `hz acme seed`, rehearsal only: plan (pure), runner (vendor CLIs), service
+plugins/heinzel-acme-payments/    the org layer: the okr asset type
+plugins/heinzel-acme-lisbon/      the site layer: the site calendar as data
+plugins/heinzel-acme-payments-checkout/  the team layer: the weekly report playbook and templates/weekly-report.prose.md
+tests/                            unit/, integration/ (the CLI head, all four plugins), e2e/ (uv tool install)
+plugins/*/tests/                  each layer's own tests
+docs/                             REHEARSAL.md, PORT_TO_YOUR_COMPANY.md, CODING_STANDARDS.md (from the core), adr/
+.claude/                          reviewer agents, skills and hooks (from Heinzelmännchen)
 ```
 
 ## How Heinzelmännchen sees this plugin

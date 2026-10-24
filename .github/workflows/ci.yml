@@ -65,6 +65,13 @@ jobs:
           enable-cache: true
           cache-dependency-glob: uv.lock
           save-cache: ${{ github.ref == 'refs/heads/main' }} # pull requests reuse main's cache
+      - name: Require the confidential terms
+        # The repository is public: without the secret the confidentiality check would silently pass. Pull requests
+        # from forks have no secrets.
+        if: github.event_name != 'pull_request' || !github.event.pull_request.head.repo.fork
+        env:
+          CONFIDENTIAL_TERMS: ${{ secrets.CONFIDENTIAL_TERMS }}
+        run: uv run --script scripts/check_confidentiality.py --require --text ""
       - run: make lint
         env:
           CONFIDENTIAL_TERMS: ${{ secrets.CONFIDENTIAL_TERMS }}
@@ -211,8 +218,12 @@ jobs:
           persist-credentials: false
       - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
       - run: make build
-      - name: Check the wheel ships the package
-        run: unzip -l dist/*.whl | grep -q 'heinzel_acme/__init__.py'
+      - name: Check each layer's wheel ships its package, and the team's its template contract
+        run: |
+          unzip -l dist/heinzel_acme-[0-9]*.whl | grep -q 'heinzel_acme/__init__.py'
+          unzip -l dist/heinzel_acme_payments-[0-9]*.whl | grep -q 'heinzel_acme_payments/__init__.py'
+          unzip -l dist/heinzel_acme_lisbon-[0-9]*.whl | grep -q 'heinzel_acme_lisbon/__init__.py'
+          unzip -l dist/heinzel_acme_payments_checkout-[0-9]*.whl | grep -q 'templates/weekly-report.prose.md'
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dist

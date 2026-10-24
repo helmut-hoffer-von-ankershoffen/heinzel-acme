@@ -55,7 +55,7 @@ check-fast: ## Seconds-fast feedback for the edit loop: format, lint, unit tests
 preflight: ## What CI checks, before you push: check with coverage, build, commits (PREFLIGHT=full adds e2e, audit)
 	$(STEPS) $(GATE) $(LINT) $(TYPES) \
 		"&tests=$(COVERED) -x && uv run coverage combine --quiet && uv run coverage report --format=total --fail-under=90" \
-		"&build=uv build --quiet --out-dir .preflight-dist && rm -rf .preflight-dist" \
+		"&build=uv build --all-packages --quiet --out-dir .preflight-dist && rm -rf .preflight-dist" \
 		"&commits=$(MAKE) --no-print-directory commits"
 	@if [ "$(PREFLIGHT)" = full ]; then $(MAKE) --no-print-directory audit test-e2e; fi
 
@@ -106,7 +106,7 @@ test-e2e: ## Run end-to-end tests (needs network), on 3 workers
 	$(STEPS) "e2e=uv run pytest -m e2e -n 3 -q --session-timeout=600"
 
 audit: ## Audit runtime dependencies: known vulnerabilities (pip-audit) and licenses (.license-allowlist)
-	$(STEPS) "licenses=$(MAKE) --no-print-directory licenses" "&vulnerabilities=uv export --quiet --no-dev --no-emit-project --no-emit-package heinzel --format requirements-txt --output-file .audit-requirements.txt && uv run pip-audit --strict --disable-pip -r .audit-requirements.txt; status=\$$?; rm -f .audit-requirements.txt; exit \$$status"
+	$(STEPS) "licenses=$(MAKE) --no-print-directory licenses" "&vulnerabilities=uv export --quiet --no-dev --no-emit-workspace --no-emit-package heinzel --format requirements-txt --output-file .audit-requirements.txt && uv run pip-audit --strict --disable-pip -r .audit-requirements.txt; status=\$$?; rm -f .audit-requirements.txt; exit \$$status"
 
 secrets: ## Scan the whole git history for credentials with gitleaks (the pre-commit hook scans each commit)
 	@$(TOOLS) run gitleaks git --redact --verbose --exit-code 1 .
@@ -114,8 +114,8 @@ secrets: ## Scan the whole git history for credentials with gitleaks (the pre-co
 licenses: ## Check that runtime dependencies' licenses are on .license-allowlist, so releases stay MIT-compatible
 	bash scripts/check_licenses.sh
 
-build: ## Build wheels and sdists into dist/ (the core and every first-party plugin)
-	uv build
+build: ## Build wheels and sdists into dist/ (every Acme layer: company, org, site, team)
+	uv build --all-packages
 
 changelog: ## Preview the changelog for unreleased commits
 	uv run git-cliff --unreleased

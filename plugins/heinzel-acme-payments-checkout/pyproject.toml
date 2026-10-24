@@ -1,0 +1,31 @@
+[project]
+name = "heinzel-acme-payments-checkout"
+version = "0.0.0"
+description = "Acme Payments Checkout, a made-up team of the reference company: its weekly report playbook."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+keywords = ["heinzel", "heinzel-plugin", "heinzelmaennchen"]
+# Its parent and site layers, so installing this plugin installs its stack (core ADR 0040); released together, the
+# release process bumps the bounds.
+dependencies = ["heinzel>=0.2.0,<1", "heinzel-acme>=0.0.0", "heinzel-acme-payments>=0.0.0", "heinzel-acme-lisbon>=0.0.0"]
+
+[project.urls]
+Source = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/tree/main/plugins/heinzel-acme-payments-checkout"
+Changelog = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/blob/main/CHANGELOG.md"
+Issues = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/issues"
+
+[project.entry-points."heinzel.modules"]
+acme-payments-checkout = "heinzel_acme_payments_checkout"
+
+[tool.uv.sources]
+heinzel-acme = { workspace = true }
+heinzel-acme-payments = { workspace = true }
+heinzel-acme-lisbon = { workspace = true }
+
+[build-system]
+requires = ["hatchling>=1.29.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/heinzel_acme_payments_checkout"]

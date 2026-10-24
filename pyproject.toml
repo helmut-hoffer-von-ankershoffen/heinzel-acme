@@ -17,6 +17,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 # Heinzelmännchen resolves to the installed Heinzelmännchen when the plugin is added with `hz system plugin add`.
+# The playbook API it uses is newer than 0.2.0: the bound moves to the first release that has it (see README, "Pins").
 dependencies = ["heinzel>=0.2.0,<1"]
 
 [project.entry-points."heinzel.modules"]
@@ -30,6 +31,12 @@ Issues = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/issues"
 [dependency-groups]
 # What the unit, integration and e2e tests need, and no more: CI installs only this group for the test matrix.
 test = [
+    # Acme's other layers (workspace members, released with this one), so their tests run in this suite.
+    "heinzel-acme-lisbon>=0.0.0",
+    "heinzel-acme-payments>=0.0.0",
+    "heinzel-acme-payments-checkout>=0.0.0",
+    # PINNED TO A COMMIT ON THE CORE'S MAIN until a release has the playbook API (and later the layer API); then pin
+    # the release tag here, in tests/e2e/install_test.py and in README.md ("Pins").
     "heinzel @ git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@a53ad19fc8f6675b2394afc9738fd7ff6bdecbaa",
     "coverage>=7.12",
     "httpx>=0.28",
@@ -65,6 +72,17 @@ packages = ["src/heinzel_acme"]
 
 [tool.uv]
 required-version = ">=0.13.0"
+
+# Acme's org, site and team layers: separate plugins in plugins/, developed and released with the company layer, the
+# way a company's private plugin repository holds all of its layers (core ADR 0040).
+[tool.uv.workspace]
+members = ["plugins/*"]
+
+[tool.uv.sources]
+heinzel-acme = { workspace = true }
+heinzel-acme-lisbon = { workspace = true }
+heinzel-acme-payments = { workspace = true }
+heinzel-acme-payments-checkout = { workspace = true }
 
 [tool.ruff]
 line-length = 120
@@ -130,7 +148,8 @@ strict = true
 warn_unreachable = true
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 plugins = ["pydantic.mypy"]
-files = ["src"]
+mypy_path = ["src", "plugins/heinzel-acme-lisbon/src", "plugins/heinzel-acme-payments/src", "plugins/heinzel-acme-payments-checkout/src"]
+files = ["src", "plugins/*/src"]
 
 [tool.pydantic-mypy]
 init_forbid_extra = true
@@ -140,7 +159,7 @@ warn_required_dynamic_aliases = true
 [tool.pytest]
 minversion = "9.0"
 strict = true
-testpaths = ["tests"]
+testpaths = ["tests", "plugins"]
 norecursedirs = ["tests/fixtures", ".hypothesis"]
 addopts = ["-ra", "--import-mode=importlib"]
 filterwarnings = ["error"]
@@ -157,7 +176,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["heinzel_acme"]
+source = ["heinzel_acme", "heinzel_acme_lisbon", "heinzel_acme_payments", "heinzel_acme_payments_checkout"]
 branch = true
 relative_files = true
 # make test runs the suite on xdist workers: subprocesses, measured through coverage's .pth hook into a data file each
@@ -197,6 +216,61 @@ tag = false
 filename = "pyproject.toml"
 search = "name = \"heinzel-acme\"\nversion = \"{current_version}\""
 replace = "name = \"heinzel-acme\"\nversion = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "plugins/heinzel-acme-payments/pyproject.toml"
+search = "name = \"heinzel-acme-payments\"\nversion = \"{current_version}\""
+replace = "name = \"heinzel-acme-payments\"\nversion = \"{new_version}\""
+
+[[tool.bumpversion.files]] # Acme's layers need the layers above them they are released with
+filename = "plugins/heinzel-acme-payments/pyproject.toml"
+search = "\"heinzel-acme>={current_version}\""
+replace = "\"heinzel-acme>={new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = "\"heinzel-acme-payments>={current_version}\""
+replace = "\"heinzel-acme-payments>={new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "plugins/heinzel-acme-lisbon/pyproject.toml"
+search = "name = \"heinzel-acme-lisbon\"\nversion = \"{current_version}\""
+replace = "name = \"heinzel-acme-lisbon\"\nversion = \"{new_version}\""
+
+[[tool.bumpversion.files]] # Acme's layers need the layers above them they are released with
+filename = "plugins/heinzel-acme-lisbon/pyproject.toml"
+search = "\"heinzel-acme>={current_version}\""
+replace = "\"heinzel-acme>={new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = "\"heinzel-acme-lisbon>={current_version}\""
+replace = "\"heinzel-acme-lisbon>={new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "plugins/heinzel-acme-payments-checkout/pyproject.toml"
+search = "name = \"heinzel-acme-payments-checkout\"\nversion = \"{current_version}\""
+replace = "name = \"heinzel-acme-payments-checkout\"\nversion = \"{new_version}\""
+
+[[tool.bumpversion.files]] # Acme's layers need the layers above them they are released with
+filename = "plugins/heinzel-acme-payments-checkout/pyproject.toml"
+search = "\"heinzel-acme>={current_version}\""
+replace = "\"heinzel-acme>={new_version}\""
+
+[[tool.bumpversion.files]] # Acme's layers need the layers above them they are released with
+filename = "plugins/heinzel-acme-payments-checkout/pyproject.toml"
+search = "\"heinzel-acme-payments>={current_version}\""
+replace = "\"heinzel-acme-payments>={new_version}\""
+
+[[tool.bumpversion.files]] # Acme's layers need the layers above them they are released with
+filename = "plugins/heinzel-acme-payments-checkout/pyproject.toml"
+search = "\"heinzel-acme-lisbon>={current_version}\""
+replace = "\"heinzel-acme-lisbon>={new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = "\"heinzel-acme-payments-checkout>={current_version}\""
+replace = "\"heinzel-acme-payments-checkout>={new_version}\""
 
 [tool.git-cliff.remote.github]
 owner = "helmut-hoffer-von-ankershoffen"
@@ -257,7 +331,7 @@ protect_breaking_commits = true
 tag_pattern = "v[0-9].*"
 
 [tool.pyright]
-include = ["src"]
+include = ["src", "plugins/*/src"]
 typeCheckingMode = "strict"
 pythonVersion = "3.12"
 venvPath = "."

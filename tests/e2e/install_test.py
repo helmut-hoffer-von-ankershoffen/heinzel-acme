@@ -1,4 +1,4 @@
-"""Install Heinzelmännchen with `uv tool install`, add this plugin from the checkout, use it. Needs network.
+"""Install Heinzelmännchen with `uv tool install`, add the team plugin from the checkout, use its stack. Needs network.
 
 Set HZ_SPEC to test against another Heinzelmännchen, e.g. `HZ_SPEC=git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@main`.
 """
@@ -35,19 +35,24 @@ def hz(tmp_path_factory):
         assert result.returncode == 0, f"hz {' '.join(args)} failed:\n{result.stdout}\n{result.stderr}"
         return result.stdout
 
-    run("system", "plugin", "add", str(REPO))
+    # One plugin, the team's: its stack (org, site, company) comes with it as dependencies (core ADR 0040).
+    run("system", "plugin", "add", str(REPO / "plugins" / "heinzel-acme-payments-checkout"))
     return run
 
 
-def test_info(hz):
-    about = json.loads(hz("acme", "info", "--json"))
-    assert about["plugin"] == "heinzel-acme"
+def test_adding_the_team_plugin_installs_its_stack(hz):
+    plugins = {p["distribution"] for p in json.loads(hz("system", "plugin", "list", "--json"))}
+    assert {"heinzel-acme", "heinzel-acme-payments", "heinzel-acme-lisbon", "heinzel-acme-payments-checkout"} <= plugins
 
 
-def test_hello(hz):
-    assert json.loads(hz("acme", "hello", "--name", "Ada", "--json")) == {"text": "Hello, Ada!"}
+def test_layers(hz):
+    tree = json.loads(hz("acme", "layers", "--json"))
+    assert tree["missing"] == []
+    team = next(layer for layer in tree["layers"] if layer["name"] == "acme-payments-checkout")
+    assert team["stack"] == ["acme", "acme-payments", "acme-lisbon", "acme-payments-checkout"]
 
 
-def test_listed_as_plugin(hz):
-    plugins = json.loads(hz("system", "plugin", "list", "--json"))
-    assert [p["distribution"] for p in plugins] == ["heinzel-acme"]
+def test_the_weekly_report_template_is_offered(hz):
+    playbooks = json.loads(hz("workflow", "playbooks", "--json"))["playbooks"]
+    templates = [t["template"] for p in playbooks for t in p["templates"]]
+    assert "acme-payments-checkout:weekly-report" in templates

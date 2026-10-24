@@ -1,70 +1,103 @@
-"""Heinzelmännchen's CLI head with this plugin discovered through its real entry point. Offline."""
+"""Heinzelmännchen's CLI head with Acme's four layers discovered through their real entry points. Offline."""
 
-import json
 import tomllib
 
 import pytest
-from heinzel import Prompter
-from heinzel.heads.cli import build
-from heinzel.kernel import ScriptedPrompter, user_config_dir
-from typer.testing import CliRunner
+from heinzel.kernel import user_config_dir
+
+from heinzel_acme.seed._runner import Subprocesses
 
 pytestmark = pytest.mark.integration
 
-runner = CliRunner()
+LAYERS = ["acme", "acme-payments", "acme-lisbon", "acme-payments-checkout"]
 
 
-def invoke(kernel, *args: str):
-    result = runner.invoke(build(kernel), list(args))
+class NeverRun(Subprocesses):
+    def run(self, tool, args):
+        msg = f"{tool} ran in a test"
+        raise AssertionError(msg)
+
+
+def test_all_four_layers_are_discovered(hz_kernel):
+    qualnames = {record.qualname for record in hz_kernel.modules}
+    assert {*LAYERS, "acme.seed"} <= qualnames
+
+
+def test_layers_shows_the_tree_and_each_stack(hz):
+    tree = hz("acme", "layers").json
+    assert tree["missing"] == []
+    by_name = {layer["name"]: layer for layer in tree["layers"]}
+    assert set(by_name) == set(LAYERS)
+    assert by_name["acme-payments-checkout"]["stack"] == [*LAYERS[:2], "acme-lisbon", "acme-payments-checkout"]
+    assert {name: layer["label"] for name, layer in by_name.items()} == {
+        "acme": "company",
+        "acme-payments": "org",
+        "acme-lisbon": "site",
+        "acme-payments-checkout": "team",
+    }
+
+
+def test_every_layer_has_info(hz):
+    for name in LAYERS:
+        about = hz(name, "info").json
+        assert about["layer"]["name"] == name
+        assert about["plugin"] == f"heinzel-{name}"
+
+
+def test_doctor_says_which_adapter_plugins_acme_needs(hz):
+    checks = {c["name"]: c for c in hz("system", "doctor").json["checks"]["acme"]}
+    assert checks["acme binding code-host"]["fix"].startswith("hz system plugin add github")
+
+
+def test_playbooks_of_every_layer_are_listed(hz):
+    listed = {p["module"]: p for p in hz("workflow", "playbooks").json["playbooks"]}
+    assert set(LAYERS) <= set(listed)
+    team = listed["acme-payments-checkout"]
+    assert [t["template"] for t in team["templates"]] == ["acme-payments-checkout:weekly-report"]
+    assert {a["name"] for a in team["assets"]} == {
+        "weekly-report",
+        "engineering-tracker",
+        "tracker-project",
+        "code-repo",
+    }
+    assert [a["name"] for a in listed["acme-payments"]["assets"]] == ["okr"]
+
+
+def test_the_weekly_report_template_becomes_a_valid_contract(hz):
+    made = hz(
+        "workflow", "new", "weekly-report", "--template", "acme-payments-checkout:weekly-report",
+        "--asset", "weekly-report=1AbCdEfGhIjKlMnOpQrStUv", "--asset", "engineering-tracker=1ZyXwVuTsRqPoNmLkJiH",
+        "--asset", "tracker-project=CHK", "--asset", "code-repo=ada-example/acme-checkout",
+    )  # fmt: skip
+    assert made.exit_code == 0, made.output
+    checked = hz("workflow", "check")
+    assert checked.exit_code == 0, checked.output
+    assert checked.json["diagnostics"] == []
+
+
+def test_a_template_without_its_assets_is_not_ready(hz):
+    hz("workflow", "new", "weekly-report", "--template", "acme-payments-checkout:weekly-report")
+    codes = {problem["code"] for problem in hz("workflow", "check").json["diagnostics"]}
+    assert "HZC025" in codes
+
+
+def test_setup_writes_only_the_bindings_accepted(hz, hz_prompter):
+    hz_prompter.answers += ["y", "n", "n", "n", "n", "n"]
+    result = hz("setup", "acme", json=False)
     assert result.exit_code == 0, result.output
-    return result.output
-
-
-def test_plugin_modules_are_discovered(boot):
-    qualnames = [record.qualname for record in boot().modules]
-    assert "acme" in qualnames
-    assert "acme.hello" in qualnames
-
-
-def test_info(boot):
-    about = json.loads(invoke(boot(), "acme", "info", "--json"))
-    assert about["plugin"] == "heinzel-acme"
-    assert about["modules"] == ["acme", "acme.hello"]
-
-
-def test_hello_submodule_collapses_into_a_command(boot):
-    assert json.loads(invoke(boot(), "acme", "hello", "--name", "Ada", "--json")) == {"text": "Hello, Ada!"}
-
-
-def test_contributes_to_system_info(boot):
-    sections = json.loads(invoke(boot(), "system", "info", "--json"))["sections"]
-    assert sections["acme"]["plugin"] == "heinzel-acme"
-
-
-def test_plugin_can_be_disabled(boot):
-    kernel = boot(disabled_modules=frozenset({"acme"}))
-    assert not [r for r in kernel.modules if r.qualname.startswith("acme")]
-
-
-def test_greeting_is_configurable_through_the_environment(boot, monkeypatch):
-    monkeypatch.setenv("HZ_ACME__GREETING", "Hi")
-    assert json.loads(invoke(boot(), "acme", "hello", "--name", "Ada", "--json")) == {"text": "Hi, Ada!"}
-
-
-def test_greeting_is_configurable_through_a_config_file(monkeypatch, tmp_path):
-    from heinzel import Config, Kernel
-    from heinzel.kernel import discover
-
-    (tmp_path / "hz.toml").write_text('[acme]\ngreeting = "Moin"\n', encoding="utf-8")
-    kernel = Kernel(records=discover()[0], config=Config.load(tmp_path))
-    assert json.loads(invoke(kernel, "acme", "hello", "--name", "Ada", "--json")) == {"text": "Moin, Ada!"}
-
-
-def test_setup_asks_for_the_greeting_and_saves_it(boot):
-    kernel = boot()
-    prompter = ScriptedPrompter(["Moin"])
-    kernel.bind(Prompter, prompter)
-    invoke(kernel, "setup", "acme")
-    assert "How should `hello` greet? [Hello]: Moin" in prompter.transcript
     saved = tomllib.loads((user_config_dir() / "config.toml").read_text(encoding="utf-8"))
-    assert saved == {"acme": {"greeting": "Moin"}}
+    assert saved == {"capabilities": {"code_host": "github"}}
+
+
+def test_seed_is_a_dry_run_unless_told_otherwise(hz, hz_kernel):
+    hz_kernel.bind(Subprocesses, NeverRun())
+    plan = hz("acme", "seed", "--github-owner", "ada-example", "--email", "ada@example.com").json
+    assert plan["dry_run"]
+    assert "Rehearsal only" in plan["notice"]
+    assert plan["steps"][0]["command"].startswith("gh repo create ada-example/acme-checkout --private")
+
+
+def test_the_lisbon_calendar_shows_the_report_deadline(hz):
+    view = hz("acme-lisbon", "calendar", "--days", "7").json
+    assert view["calendar"]["time_zone"] == "Europe/Lisbon"
+    assert "Weekly report draft ready" in {o["name"] for o in view["upcoming"]}
