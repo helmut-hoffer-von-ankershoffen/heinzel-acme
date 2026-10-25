@@ -7,6 +7,14 @@ resolution-markers = [
     "python_full_version < '3.14'",
 ]
 
+[manifest]
+members = [
+    "heinzel-acme",
+    "heinzel-acme-lisbon",
+    "heinzel-acme-payments",
+    "heinzel-acme-payments-checkout",
+]
+
 [[package]]
 name = "actionlint-py"
 version = "1.7.12.25"
@@ -805,6 +813,9 @@ dev = [
     { name = "coverage" },
     { name = "git-cliff" },
     { name = "heinzel" },
+    { name = "heinzel-acme-lisbon" },
+    { name = "heinzel-acme-payments" },
+    { name = "heinzel-acme-payments-checkout" },
     { name = "httpx" },
     { name = "hypothesis" },
     { name = "jsonschema" },
@@ -824,6 +835,9 @@ dev = [
 test = [
     { name = "coverage" },
     { name = "heinzel" },
+    { name = "heinzel-acme-lisbon" },
+    { name = "heinzel-acme-payments" },
+    { name = "heinzel-acme-payments-checkout" },
     { name = "httpx" },
     { name = "hypothesis" },
     { name = "jsonschema" },
@@ -844,6 +858,9 @@ dev = [
     { name = "coverage", specifier = ">=7.12" },
     { name = "git-cliff", specifier = ">=2.14.0,<3" },
     { name = "heinzel", git = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel?rev=v0.7.2" },
+    { name = "heinzel-acme-lisbon", editable = "plugins/heinzel-acme-lisbon" },
+    { name = "heinzel-acme-payments", editable = "plugins/heinzel-acme-payments" },
+    { name = "heinzel-acme-payments-checkout", editable = "plugins/heinzel-acme-payments-checkout" },
     { name = "httpx", specifier = ">=0.28" },
     { name = "hypothesis", specifier = ">=6.140" },
     { name = "jsonschema", specifier = ">=4.26" },
@@ -863,6 +880,9 @@ dev = [
 test = [
     { name = "coverage", specifier = ">=7.12" },
     { name = "heinzel", git = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel?rev=v0.7.2" },
+    { name = "heinzel-acme-lisbon", editable = "plugins/heinzel-acme-lisbon" },
+    { name = "heinzel-acme-payments", editable = "plugins/heinzel-acme-payments" },
+    { name = "heinzel-acme-payments-checkout", editable = "plugins/heinzel-acme-payments-checkout" },
     { name = "httpx", specifier = ">=0.28" },
     { name = "hypothesis", specifier = ">=6.140" },
     { name = "jsonschema", specifier = ">=4.26" },
@@ -870,6 +890,55 @@ test = [
     { name = "pytest", specifier = ">=9.0.3,<10" },
     { name = "pytest-timeout", specifier = ">=2.4.0,<3" },
     { name = "pytest-xdist", specifier = ">=3.8" },
+]
+
+[[package]]
+name = "heinzel-acme-lisbon"
+version = "0.1.0"
+source = { editable = "plugins/heinzel-acme-lisbon" }
+dependencies = [
+    { name = "heinzel" },
+    { name = "heinzel-acme" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "heinzel", specifier = ">=0.7.2,<1" },
+    { name = "heinzel-acme", editable = "." },
+]
+
+[[package]]
+name = "heinzel-acme-payments"
+version = "0.1.0"
+source = { editable = "plugins/heinzel-acme-payments" }
+dependencies = [
+    { name = "heinzel" },
+    { name = "heinzel-acme" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "heinzel", specifier = ">=0.7.2,<1" },
+    { name = "heinzel-acme", editable = "." },
+]
+
+[[package]]
+name = "heinzel-acme-payments-checkout"
+version = "0.1.0"
+source = { editable = "plugins/heinzel-acme-payments-checkout" }
+dependencies = [
+    { name = "heinzel" },
+    { name = "heinzel-acme" },
+    { name = "heinzel-acme-lisbon" },
+    { name = "heinzel-acme-payments" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "heinzel", specifier = ">=0.7.2,<1" },
+    { name = "heinzel-acme", editable = "." },
+    { name = "heinzel-acme-lisbon", editable = "plugins/heinzel-acme-lisbon" },
+    { name = "heinzel-acme-payments", editable = "plugins/heinzel-acme-payments" },
 ]
 
 [[package]]

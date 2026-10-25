@@ -1,0 +1,29 @@
+[project]
+name = "heinzel-acme-lisbon"
+version = "0.1.0"
+description = "Acme Lisbon, a made-up site of the reference company: time zone, working hours, meeting rhythm."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+keywords = ["heinzel", "heinzel-plugin", "heinzelmaennchen"]
+# Its parent and site layers, so installing this plugin installs its stack (core ADR 0040); released together, the
+# release process bumps the bounds.
+dependencies = ["heinzel>=0.7.2,<1", "heinzel-acme>=0.1.0"]
+
+[project.urls]
+Source = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/tree/main/plugins/heinzel-acme-lisbon"
+Changelog = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/blob/main/CHANGELOG.md"
+Issues = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/issues"
+
+[project.entry-points."heinzel.modules"]
+acme-lisbon = "heinzel_acme_lisbon"
+
+[tool.uv.sources]
+heinzel-acme = { workspace = true }
+
+[build-system]
+requires = ["hatchling>=1.29.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/heinzel_acme_lisbon"]

@@ -1,28 +1,42 @@
-"""Acme, a made-up company: the root layer of the reference company.
+"""Acme, a made-up company: the root layer of Heinzelmännchen's reference company (ADR 0040 of the core).
 
-A Heinzelmännchen plugin, discovered through the `heinzel.modules` entry point in pyproject.toml. Every package
-below it that declares `module = Module(...)` becomes a submodule (see `hello/`). Acme's look for the web app is
-data in `themes/` (`hz system theme use acme`).
+The company layer brings what every Acme team shares: how Acme reaches its tools (capability bindings to the
+first-party adapters, all through vendor CLIs as an ordinary employee), the roles Acme adds to the core's vocabulary,
+and a doctor check for both. Its org, site and team are their own plugins in this repository: `acme-payments`,
+`acme-lisbon` and `acme-payments-checkout`. `hz acme seed` (rehearsal only) writes the made-up world into your own
+trial accounts.
 """
 
 from pathlib import Path
 
-from heinzel import ConfigEditor, Module, Prompter
+from heinzel import Check, Module
 
-from heinzel_acme._models import AcmeAbout, AcmeSettings
-from heinzel_acme._service import AcmeService
+from heinzel_acme import layers
+from heinzel_acme._bindings import BINDINGS, recommended
+from heinzel_acme._models import AcmeAbout, LayerAbout, LayerList, LayerView
+from heinzel_acme._service import AcmeService, about_layer
 
-module = Module("acme", "Acme, a made-up company: the root layer of the reference company.")
-module.settings(AcmeSettings)
+module = Module("acme", "Acme, a made-up company: its tool bindings, roles and layer tree.")
+layers.declare(module, roles=["tech-lead", "report-owner"])
 module.service(AcmeService)
-module.theme(Path(__file__).parent / "themes")  # read and checked now; `hz system theme list` shows it
+module.theme(Path(__file__).parent / "themes")
 module.soundscape(Path(__file__).parent / "soundscapes")
+module.playbook(
+    "How Acme reaches its tools: GitHub through gh, Jira through acli, Google Workspace through gws, Zoom summaries.",
+    defaults=recommended(),
+)
 
 
 @module.operation
 def info(service: AcmeService) -> AcmeAbout:
-    """Show this plugin's version, the Heinzelmännchen it runs on and the modules it brings."""
+    """Show this plugin, its place in Acme's tree, and the bindings it recommends and how they stand."""
     return service.about()
+
+
+@module.operation(name="layers")
+def layer_tree(service: AcmeService) -> LayerList:
+    """Show Acme's installed layers, root first, with each one's stack, and what is missing."""
+    return service.layers()
 
 
 @module.info
@@ -31,12 +45,10 @@ def system_info(service: AcmeService) -> AcmeAbout:
     return service.about()
 
 
-@module.setup(required=False)  # optional: `hz setup` offers to skip it; `hz setup acme` runs it alone
-def setup(settings: AcmeSettings, prompter: Prompter, editor: ConfigEditor) -> None:
-    """Choose how `hello` greets."""
-    greeting = prompter.text("How should `hello` greet?", default=settings.greeting)
-    path = editor.write("acme.greeting", greeting)  # validated like `hz system config set`, user scope
-    prompter.say(f"Saved to {path}.")
+@module.health
+def health(service: AcmeService) -> list[Check]:
+    """Missing Acme layers, and whether each binding Acme recommends is installed and bound."""
+    return service.checks()
 
 
-__all__ = ["AcmeAbout", "AcmeService", "AcmeSettings", "module"]
+__all__ = ["BINDINGS", "AcmeAbout", "AcmeService", "LayerAbout", "LayerList", "LayerView", "about_layer", "module"]
