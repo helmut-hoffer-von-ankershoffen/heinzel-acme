@@ -1,6 +1,6 @@
 [project]
 name = "heinzel-acme"
-version = "0.1.0"
+version = "0.1.1"
 description = "Acme, a made-up company: the root layer of the reference company."
 readme = "README.md"
 authors = [{ name = "Helmut Hoffer von Ankershoffen", email = "helmuthva@gmail.com" }]
@@ -31,9 +31,9 @@ Issues = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/issues"
 # What the unit, integration and e2e tests need, and no more: CI installs only this group for the test matrix.
 test = [
     # Acme's other layers are workspace members, tested together.
-    "heinzel-acme-lisbon>=0.1.0",
-    "heinzel-acme-payments>=0.1.0",
-    "heinzel-acme-payments-checkout>=0.1.0",
+    "heinzel-acme-lisbon>=0.1.1",
+    "heinzel-acme-payments>=0.1.1",
+    "heinzel-acme-payments-checkout>=0.1.1",
     # Keep the released core pin from main, including its layer and soundscape APIs.
     "heinzel @ git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@v0.7.2",
     "coverage>=7.12",
@@ -204,7 +204,7 @@ example = "fix(cli): exit with code 1 when an operation fails"
 info = "Conventional commits with the types and scopes in docs/CODING_STANDARDS.md."
 
 [tool.bumpversion]
-current_version = "0.1.0"
+current_version = "0.1.1"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 commit = false
