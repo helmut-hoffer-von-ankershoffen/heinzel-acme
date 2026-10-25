@@ -22,7 +22,7 @@ class AcmeService:
         try:
             installed = version(DISTRIBUTION)
         except PackageNotFoundError:  # pragma: no cover - only when running from an uninstalled source tree
-            installed = "0.0.0"
+            installed = "unknown"
         return AcmeAbout(
             plugin=DISTRIBUTION,
             version=installed,

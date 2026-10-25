@@ -1,0 +1,9 @@
+# Optional Acme theme stream in the core's privacy-enhanced player; the person still presses Play.
+name = "acme"
+title = "Acme"
+kind = "stream"
+pairs_with = ["acme"]
+
+[stream]
+provider = "youtube"
+video = "t9PF00M2yDY"

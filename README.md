@@ -43,6 +43,30 @@ The `acme` theme ([`src/heinzel_acme/themes/acme.toml`](src/heinzel_acme/themes/
 off-white, slate at night, with Acme's logo in [`themes/logo/`](src/heinzel_acme/themes/logo/): a peak shaped like an
 "A" standing on an anvil's base, hand-written SVG, teal `#0f766e` in light mode and `#2dd4bf` in dark mode.
 
+## Sound
+
+The plugin offers the [requested YouTube video](https://www.youtube.com/watch?v=t9PF00M2yDY) as the `acme`
+soundscape. It pairs only with the Acme theme. It uses the core's privacy-enhanced player, with no downloaded or
+bundled media; installation leaves sound off, and the person still presses **Play** in the web player.
+
+```sh
+hz system sound list
+hz system theme use acme
+hz system config set system.sound.follow_theme true
+hz system sound list       # effective: acme
+```
+
+For a direct choice, or to turn sound off:
+
+```sh
+hz system config set system.sound.follow_theme false
+hz system sound use acme
+hz system sound use off
+```
+
+This plugin has independent version 0.1.0 and declares `heinzel>=0.7.2,<1`; tests pin the released core v0.7.2.
+An explicit plugin tag or commit remains pinned when hz updates. Release tracking is separate from that deliberate pin.
+
 ## Develop
 
 ```bash

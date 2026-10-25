@@ -1,6 +1,6 @@
 [project]
 name = "heinzel-acme"
-version = "0.0.0"
+version = "0.1.0"
 description = "Acme, a made-up company: the root layer of the reference company."
 readme = "README.md"
 authors = [{ name = "Helmut Hoffer von Ankershoffen", email = "helmuthva@gmail.com" }]
@@ -17,7 +17,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 # Heinzelmännchen resolves to the installed Heinzelmännchen when the plugin is added with `hz system plugin add`.
-dependencies = ["heinzel>=0.2.0,<1"]
+dependencies = ["heinzel>=0.7.2,<1"]
 
 [project.entry-points."heinzel.modules"]
 acme = "heinzel_acme"
@@ -30,8 +30,8 @@ Issues = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/issues"
 [dependency-groups]
 # What the unit, integration and e2e tests need, and no more: CI installs only this group for the test matrix.
 test = [
-    # Pinned to the head of the core's theme logos PR (heinzel #82) until it merges and a release has `[logo]`.
-    "heinzel @ git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@c189a051fc758bf5073283a24dae37c900fa826c",
+    # Test against the released core that supplies the soundscape API.
+    "heinzel @ git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@v0.7.2",
     "coverage>=7.12",
     "httpx>=0.28",
     "hypothesis>=6.140",
@@ -188,7 +188,7 @@ example = "fix(cli): exit with code 1 when an operation fails"
 info = "Conventional commits with the types and scopes in docs/CODING_STANDARDS.md."
 
 [tool.bumpversion]
-current_version = "0.0.0"
+current_version = "0.1.0"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 commit = false

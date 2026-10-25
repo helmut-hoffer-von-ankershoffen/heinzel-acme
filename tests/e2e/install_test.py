@@ -14,9 +14,7 @@ import pytest
 pytestmark = [pytest.mark.e2e, pytest.mark.timeout(300)]
 
 REPO = Path(__file__).resolve().parents[2]
-HZ_SPEC = os.environ.get(
-    "HZ_SPEC", "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@c189a051fc758bf5073283a24dae37c900fa826c"
-)
+HZ_SPEC = os.environ.get("HZ_SPEC", "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@v0.7.2")
 
 
 @pytest.fixture(scope="module")

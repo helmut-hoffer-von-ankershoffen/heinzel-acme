@@ -16,6 +16,7 @@ module = Module("acme", "Acme, a made-up company: the root layer of the referenc
 module.settings(AcmeSettings)
 module.service(AcmeService)
 module.theme(Path(__file__).parent / "themes")  # read and checked now; `hz system theme list` shows it
+module.soundscape(Path(__file__).parent / "soundscapes")
 
 
 @module.operation
