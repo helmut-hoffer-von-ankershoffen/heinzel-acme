@@ -15,6 +15,6 @@ It brings the weekly report playbook:
 - the draft tags for approving in place (core ADR 0038), shown by `hz acme-payments-checkout info`.
 
 ```bash
-hz workflow new weekly-report --template acme-payments-checkout:weekly-report --asset weekly-report=<id> ...
-hz workflow run weekly-report --dry-run
+hz heinzel new weekly-report --template acme-payments-checkout:weekly-report --asset weekly-report=<id> ...
+hz heinzel run weekly-report --dry-run
 ```

@@ -33,9 +33,9 @@ def _next(refs: dict[str, str]) -> list[str]:
         for asset in ("weekly-report", "engineering-tracker", "tracker-project", "code-repo")
     )
     return [
-        f"hz workflow new weekly-report --template {TEMPLATE} {assets}",
-        "hz workflow run weekly-report --dry-run",
-        "hz workflow run weekly-report",
+        f"hz heinzel new weekly-report --template {TEMPLATE} {assets}",
+        "hz heinzel run weekly-report --dry-run",
+        "hz heinzel run weekly-report",
     ]
 
 

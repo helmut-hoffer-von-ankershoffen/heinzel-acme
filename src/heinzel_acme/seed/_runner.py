@@ -17,7 +17,22 @@ TIMEOUT = 120
 STDERR_TAIL = 2000
 """Characters of a failing command's error output kept for its message."""
 _PASS = ("PATH", "HOME", "LANG", "TMPDIR", "USER", "LOGNAME", "SSH_AUTH_SOCK", "TERM")
-_PASS_PREFIXES = ("LC_", "XDG_", "GH_", "GIT_", "GOOGLE_WORKSPACE_CLI_")
+_PASS_PREFIXES = ("LC_", "XDG_", "GH_", "GITHUB_", "GIT_", "GOOGLE_WORKSPACE_CLI_")
+_GIT_CONTEXT = frozenset(
+    {
+        "GIT_DIR",
+        "GIT_WORK_TREE",
+        "GIT_COMMON_DIR",
+        "GIT_INDEX_FILE",
+        "GIT_OBJECT_DIRECTORY",
+        "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+        "GIT_NAMESPACE",
+        "GIT_CONFIG_PARAMETERS",
+        "GIT_CONFIG_COUNT",
+    }
+)
+"""Inherited repository state and environment-injected config must never override the plan's Git directory."""
+_GIT_CONFIG_PREFIXES = ("GIT_CONFIG_KEY_", "GIT_CONFIG_VALUE_")
 
 
 class Commands(Protocol):
@@ -34,7 +49,13 @@ class Commands(Protocol):
 
 def environment() -> dict[str, str]:
     """The variables a vendor CLI needs: where it lives, its configuration and the locale; nothing else."""
-    return {k: v for k, v in os.environ.items() if k in _PASS or k.startswith(_PASS_PREFIXES)}
+    return {
+        key: value
+        for key, value in os.environ.items()
+        if (key in _PASS or key.startswith(_PASS_PREFIXES))
+        and key not in _GIT_CONTEXT
+        and not key.startswith(_GIT_CONFIG_PREFIXES)
+    }
 
 
 class Subprocesses:

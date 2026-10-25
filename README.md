@@ -55,7 +55,7 @@ hz system layer show        # your stack: acme → acme-payments + acme-lisbon �
 hz acme layers              # the same tree as Acme declares it, on any core
 hz acme info                # the bindings Acme recommends and how they stand on this machine
 hz system doctor            # which adapter plugins and logins are missing
-hz workflow playbooks       # what each layer's playbook offers
+hz heinzel playbooks       # what each layer's playbook offers
 hz setup acme               # accept the bindings you want, one by one
 hz acme-lisbon calendar     # the site's week, at the site and on this machine
 ```
@@ -67,11 +67,11 @@ that fixes it.
 ## The weekly report
 
 ```bash
-hz workflow new weekly-report --template acme-payments-checkout:weekly-report \
+hz heinzel new weekly-report --template acme-payments-checkout:weekly-report \
   --asset weekly-report=<doc id> --asset engineering-tracker=<sheet id> \
   --asset tracker-project=CHK --asset code-repo=<owner>/acme-checkout
-hz workflow run weekly-report --dry-run     # the inputs, fetched through gh, acli and gws; no agent, no cost
-hz workflow run weekly-report               # the draft, saved locally for you to edit and send
+hz heinzel run weekly-report --dry-run     # the inputs, fetched through gh, acli and gws; no agent, no cost
+hz heinzel run weekly-report               # the draft, saved locally for you to edit and send
 ```
 
 To try it against a real (trial) world, [docs/REHEARSAL.md](docs/REHEARSAL.md) walks a manager and an engineer through
@@ -85,13 +85,43 @@ through a private layer, and what to verify first. This repository plus that run
 
 ## Pins
 
-Acme builds against Heinzelmännchen's `main` until a release has what it uses:
+The workspace keeps main's released Heinzelmännchen v0.7.2 test pin and requires `heinzel>=0.7.2,<1`,
+which supplies the layer, playbook, theme and soundscape APIs. The shared `layers.declare` bridge delegates to that
+core API and retains Acme's own tree view; no unreleased core commit is required.
 
-| What | Where | Today | Switch to |
-| --- | --- | --- | --- |
-| Heinzelmännchen for tests and e2e | `pyproject.toml` (`test` group), `tests/e2e/install_test.py` | the head of the core's pull request #61, "plugins are layers" (on top of `main`: playbooks, gh and acli adapters) | the first release that has the layer API |
-| The layer API (`Module.layer`) | [`src/heinzel_acme/layers.py`](src/heinzel_acme/layers.py), the one bridge | forwarded to the core when it has `Module.layer` (`hz system layer list`), recorded by Acme otherwise (`hz acme layers`) | once released and pinned: `module.layer(...)` in each plugin, and drop the bridge |
-| The Google adapter | not a dependency | the core's open pull request | `hz system plugin add google` once released |
+## Theme
+
+```sh
+hz system theme use acme
+```
+
+The `acme` theme ([`src/heinzel_acme/themes/acme.toml`](src/heinzel_acme/themes/acme.toml)) is deep teal on warm
+off-white, slate at night, with Acme's logo in [`themes/logo/`](src/heinzel_acme/themes/logo/): a peak shaped like an
+"A" standing on an anvil's base, hand-written SVG, teal `#0f766e` in light mode and `#2dd4bf` in dark mode.
+
+## Sound
+
+The plugin offers the [requested YouTube video](https://www.youtube.com/watch?v=t9PF00M2yDY) as the `acme`
+soundscape. It pairs only with the Acme theme. It uses the core's privacy-enhanced player, with no downloaded or
+bundled media; installation leaves sound off, and the person still presses **Play** in the web player.
+
+```sh
+hz system sound list
+hz system theme use acme
+hz system config set system.sound.follow_theme true
+hz system sound list       # effective: acme
+```
+
+For a direct choice, or to turn sound off:
+
+```sh
+hz system config set system.sound.follow_theme false
+hz system sound use acme
+hz system sound use off
+```
+
+This plugin has independent version 0.1.0 and declares `heinzel>=0.7.2,<1`; tests pin the released core v0.7.2.
+An explicit plugin tag or commit remains pinned when hz updates. Release tracking is separate from that deliberate pin.
 
 ## Develop
 

@@ -1,4 +1,4 @@
-"""Install Heinzelmännchen with `uv tool install`, add the team plugin from the checkout, use its stack. Needs network.
+"""Install Heinzelmännchen with `uv tool install`, develop the team plugin, use its stack. Needs network.
 
 Set HZ_SPEC to test against another Heinzelmännchen, e.g. `HZ_SPEC=git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@main`.
 """
@@ -14,9 +14,7 @@ import pytest
 pytestmark = [pytest.mark.e2e, pytest.mark.timeout(300)]
 
 REPO = Path(__file__).resolve().parents[2]
-HZ_SPEC = os.environ.get(
-    "HZ_SPEC", "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@d7db2d2e943e9b6d07e297ca92ce5211010ad360"
-)
+HZ_SPEC = os.environ.get("HZ_SPEC", "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@v0.7.2")
 
 
 @pytest.fixture(scope="module")
@@ -36,7 +34,7 @@ def hz(tmp_path_factory):
         return result.stdout
 
     # One plugin, the team's: its stack (org, site, company) comes with it as dependencies (core ADR 0040).
-    run("system", "plugin", "add", str(REPO / "plugins" / "heinzel-acme-payments-checkout"))
+    run("system", "plugin", "develop", str(REPO / "plugins" / "heinzel-acme-payments-checkout"))
     return run
 
 
@@ -53,6 +51,6 @@ def test_layers(hz):
 
 
 def test_the_weekly_report_template_is_offered(hz):
-    playbooks = json.loads(hz("workflow", "playbooks", "--json"))["playbooks"]
+    playbooks = json.loads(hz("heinzel", "playbooks", "--json"))["playbooks"]
     templates = [t["template"] for p in playbooks for t in p["templates"]]
     assert "acme-payments-checkout:weekly-report" in templates

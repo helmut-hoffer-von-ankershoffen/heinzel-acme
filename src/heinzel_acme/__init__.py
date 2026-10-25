@@ -7,6 +7,8 @@ and a doctor check for both. Its org, site and team are their own plugins in thi
 trial accounts.
 """
 
+from pathlib import Path
+
 from heinzel import Check, Module
 
 from heinzel_acme import layers
@@ -17,6 +19,8 @@ from heinzel_acme._service import AcmeService, about_layer
 module = Module("acme", "Acme, a made-up company: its tool bindings, roles and layer tree.")
 layers.declare(module, roles=["tech-lead", "report-owner"])
 module.service(AcmeService)
+module.theme(Path(__file__).parent / "themes")
+module.soundscape(Path(__file__).parent / "soundscapes")
 module.playbook(
     "How Acme reaches its tools: GitHub through gh, Jira through acli, Google Workspace through gws, Zoom summaries.",
     defaults=recommended(),

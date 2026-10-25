@@ -23,14 +23,13 @@ Never run any of this against a company account: `hz acme seed` creates reposito
 
 ### 1. Install Heinzelmännchen and the plugins
 
-Use the Heinzelmännchen this repository pins (README, "Pins"); until a release has layers and playbooks, that is the
-commit in `pyproject.toml`'s `test` group (or `main`, once the layer pull request merged):
+Use the released Heinzelmännchen v0.7.2 pinned by this repository (README, "Pins"):
 
 ```bash
-uv tool install "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@<the pinned commit>"
+uv tool install "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@v0.7.2"
 hz system plugin add github
 hz system plugin add atlassian
-hz system plugin add google      # until the core releases it: its pull request's branch, as a git URL with #subdirectory=plugins/heinzel-google
+hz system plugin add google
 hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme#subdirectory=plugins/heinzel-acme-payments-checkout"
 hz acme layers                   # four layers; the team's stack is acme, acme-payments, acme-lisbon, acme-payments-checkout
 hz system layer show             # the same stack, from the core (a core with the layer API)
@@ -67,7 +66,7 @@ It creates the private repository `<your login>/acme-checkout` with four pull re
 project `CHK` with seven items in To Do, In Progress and Done, and three Google files: the rolling **Checkout weekly
 report** (weeks 41 and 42), **Acme Payments OKRs Q4** and the **Checkout engineering tracker** sheet. It stops at
 the first failure; seed the parts that didn't finish again with `--only github`, `--only jira` or `--only google`.
-The last lines are the `hz workflow new` command with every `--asset` filled in.
+The last lines are the `hz heinzel new` command with every `--asset` filled in.
 
 The project template key the seed uses is not verified on every Jira plan. If "Create the Jira project" fails,
 create a Kanban project with key `CHK` in the browser, then run the item and transition commands that
@@ -100,21 +99,21 @@ hz team add <engineer handle> --login <engineer login> --role engineer --yes
 ### 6. Run the weekly report
 
 ```bash
-hz workflow new weekly-report --template acme-payments-checkout:weekly-report --asset ...   # the seed's last lines
-hz workflow show weekly-report              # every requirement bound, nothing unmet
-hz workflow run weekly-report --dry-run     # the packet: merged pull requests, CHK items, the report, the tracker
-hz workflow run weekly-report               # the draft
-hz workflow drafts --name weekly-report --latest
+hz heinzel new weekly-report --template acme-payments-checkout:weekly-report --asset ...   # the seed's last lines
+hz heinzel show weekly-report              # every requirement bound, nothing unmet
+hz heinzel run weekly-report --dry-run     # the packet: merged pull requests, CHK items, the report, the tracker
+hz heinzel run weekly-report               # the draft
+hz heinzel drafts --name weekly-report --latest
 ```
 
 Edit the draft as Nadia would, "send" it (paste it into the weekly report document under a new week), then record it:
 
 ```bash
-hz workflow sent weekly-report --file <the text you sent> --edit-minutes <your estimate>
-hz workflow show weekly-report              # the success test: drafting time, cost, share changed
+hz heinzel sent weekly-report --file <the text you sent> --edit-minutes <your estimate>
+hz heinzel show weekly-report              # the success test: drafting time, cost, share changed
 ```
 
-`hz workflow discover` runs the playbooks' hints: in a trial account they find nothing, because the hints name Acme's
+`hz heinzel discover` runs the playbooks' hints: in a trial account they find nothing, because the hints name Acme's
 own (made-up) document ids. That is expected; note it under "What to measure".
 
 ## MacBook Air: the engineer
@@ -128,7 +127,7 @@ uvx heinzel join https://github.com/<manager login>/hz-team-checkout
 Until that exists, the same in today's commands:
 
 ```bash
-uv tool install "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@<the pinned commit>"
+uv tool install "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@v0.7.2"
 gh auth login                                           # as the engineer's account
 hz team join https://github.com/<manager login>/hz-team-checkout.git --yes
 hz team show                                            # names the team plugin from hz.yaml
@@ -147,13 +146,13 @@ Write each number down as you go; the point is to find what breaks before a real
 
 | Measure | How |
 | --- | --- |
-| Time to the first draft, manager | wall clock from `uv tool install` to `hz workflow drafts --latest`, per step |
+| Time to the first draft, manager | wall clock from `uv tool install` to `hz heinzel drafts --latest`, per step |
 | Time to join, engineer | wall clock from the invite URL to `hz acme layers` showing the stack |
 | Steps and questions | every command typed and every prompt answered; each one the target flow should remove |
 | Where it stopped | each failure: the step, the message, whether its fix was in the message |
 | Logins and scopes | which vendor login or scope was missing when first needed |
-| Discovery | what `hz workflow discover` found (expected: nothing in a trial) and what you had to name by hand |
-| Draft quality | `hz workflow show weekly-report`: share of words changed, drafting time, cost; your edit minutes |
+| Discovery | what `hz heinzel discover` found (expected: nothing in a trial) and what you had to name by hand |
+| Draft quality | `hz heinzel show weekly-report`: share of words changed, drafting time, cost; your edit minutes |
 | Faithfulness | every statement in the draft traceable to a pull request, a CHK item or a document line |
 | Doctor | `hz system doctor` after setup: every check up, or why not |
 

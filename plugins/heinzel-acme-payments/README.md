@@ -6,5 +6,5 @@ document, and a hint that confirms the org's own document. Every team below it r
 
 ```bash
 hz acme-payments info
-hz workflow playbooks
+hz heinzel playbooks
 ```

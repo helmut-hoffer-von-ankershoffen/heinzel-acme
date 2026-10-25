@@ -3,7 +3,7 @@
 A dry run by default: it lists every command it would run, and changes nothing. With `--yes` it creates, through the
 vendor CLIs logged in as the person, a private demo repository with a few pull requests (`gh`), the Jira project
 `CHK` with its items (`acli`), and the weekly report, OKR and engineering tracker documents (`gws`), then prints the
-`hz workflow new` command that names them. Never point it at a company account; never run it in tests (it refuses).
+`hz heinzel new` command that names them. Never point it at a company account; never run it in tests (it refuses).
 """
 
 from typing import Annotated

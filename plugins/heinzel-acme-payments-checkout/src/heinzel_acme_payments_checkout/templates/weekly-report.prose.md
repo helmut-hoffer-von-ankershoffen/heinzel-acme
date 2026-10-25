@@ -1,6 +1,6 @@
 ---
 # The Checkout team's weekly report, a template contract of the acme-payments-checkout playbook.
-# `hz workflow new weekly-report --template acme-payments-checkout:weekly-report --asset <type>=<ref> ...`
+# `hz heinzel new weekly-report --template acme-payments-checkout:weekly-report --asset <type>=<ref> ...`
 # fills each {{asset:...}}; `hz acme seed` prints that command for a rehearsal world.
 name: weekly-report
 kind: responsibility
@@ -14,7 +14,7 @@ hz:
   title: Checkout weekly report
   # Friday 17:00, the deadline in the Lisbon site calendar (`hz acme-lisbon calendar`). Five cron
   # fields in this machine's local time: on a machine outside Lisbon, convert it. Uncomment once a
-  # manual run (`hz workflow run weekly-report`) reads right; until then it runs only by hand.
+  # manual run (`hz heinzel run weekly-report`) reads right; until then it runs only by hand.
   # schedule: "0 17 * * FRI"
   # Capabilities, never vendors: the company layer recommends the bindings (`hz setup acme`):
   # code-host = github (gh), tracker = atlassian (acli), documents = google (gws).
@@ -52,9 +52,9 @@ hz:
 # Checkout weekly report
 
 <!-- Notes for authors; the agent never sees them. The draft is saved locally
-     (`hz workflow drafts --name weekly-report --latest`); the report owner edits and sends it.
-     Afterwards `hz workflow sent weekly-report --file <what you sent>` records how much was
-     changed, and `hz workflow show weekly-report` shows it next to how long drafting took. -->
+     (`hz heinzel drafts --name weekly-report --latest`); the report owner edits and sends it.
+     Afterwards `hz heinzel sent weekly-report --file <what you sent>` records how much was
+     changed, and `hz heinzel show weekly-report` shows it next to how long drafting took. -->
 
 ### Goal
 

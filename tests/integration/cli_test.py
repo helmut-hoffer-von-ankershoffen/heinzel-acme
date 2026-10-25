@@ -50,7 +50,7 @@ def test_doctor_says_which_adapter_plugins_acme_needs(hz):
 
 
 def test_playbooks_of_every_layer_are_listed(hz):
-    listed = {p["module"]: p for p in hz("workflow", "playbooks").json["playbooks"]}
+    listed = {p["module"]: p for p in hz("heinzel", "playbooks").json["playbooks"]}
     assert set(LAYERS) <= set(listed)
     team = listed["acme-payments-checkout"]
     assert [t["template"] for t in team["templates"]] == ["acme-payments-checkout:weekly-report"]
@@ -65,19 +65,19 @@ def test_playbooks_of_every_layer_are_listed(hz):
 
 def test_the_weekly_report_template_becomes_a_valid_contract(hz):
     made = hz(
-        "workflow", "new", "weekly-report", "--template", "acme-payments-checkout:weekly-report",
+        "heinzel", "new", "weekly-report", "--template", "acme-payments-checkout:weekly-report",
         "--asset", "weekly-report=1AbCdEfGhIjKlMnOpQrStUv", "--asset", "engineering-tracker=1ZyXwVuTsRqPoNmLkJiH",
         "--asset", "tracker-project=CHK", "--asset", "code-repo=ada-example/acme-checkout",
     )  # fmt: skip
     assert made.exit_code == 0, made.output
-    checked = hz("workflow", "check")
+    checked = hz("heinzel", "check")
     assert checked.exit_code == 0, checked.output
     assert checked.json["diagnostics"] == []
 
 
 def test_a_template_without_its_assets_is_not_ready(hz):
-    hz("workflow", "new", "weekly-report", "--template", "acme-payments-checkout:weekly-report")
-    codes = {problem["code"] for problem in hz("workflow", "check").json["diagnostics"]}
+    hz("heinzel", "new", "weekly-report", "--template", "acme-payments-checkout:weekly-report")
+    codes = {problem["code"] for problem in hz("heinzel", "check").json["diagnostics"]}
     assert "HZC025" in codes
 
 
@@ -113,3 +113,10 @@ def test_the_core_stacks_the_layers_as_acme_declares_them(hz):
         "acme-lisbon": "site",
         "acme-payments-checkout": "team",
     }
+
+
+def test_the_released_acme_theme_is_preserved(hz):
+    listed = hz("system", "theme", "list").json
+    [acme] = [theme for theme in listed["themes"] if theme["name"] == "acme"]
+    assert (acme["plugin"], acme["module"], acme["light"]["primary"]) == ("heinzel-acme", "acme", "#0f766e")
+    assert hz("system", "theme", "use", "acme").json["selected"] == "acme"

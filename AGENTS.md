@@ -16,7 +16,7 @@ Read [INTENT.md](INTENT.md) first.
    people in `src/heinzel_acme/_world.py`. Never a real company, team, product or person, in files, commit messages
    or pull request titles; `scripts/check_confidentiality.py` checks a private term list.
 7. **Layers follow the core's ADR 0040.** A plugin per layer, named after its path, depending on its parent and site;
-   declared only through `heinzel_acme.layers.declare` until the pinned core has `Module.layer`
+   declared only through `heinzel_acme.layers.declare` to retain the Acme tree view alongside the released core's `Module.layer`
    (`tests/unit/repository_test.py` keeps these rules).
 
 ## Commands
@@ -29,7 +29,7 @@ Read [INTENT.md](INTENT.md) first.
 | Everything CI checks offline | `make check` |
 | Fix what tools can fix | `make fix` |
 | Tests by level | `make test-unit`, `make test-integration`, `make test-e2e` |
-| Try it with Heinzelmännchen | `uv run hz acme layers`, `uv run hz workflow playbooks` |
+| Try it with Heinzelmännchen | `uv run hz acme layers`, `uv run hz heinzel playbooks` |
 | Update to the latest Heinzelmännchen template | `make update-template` |
 
 ## Map
@@ -39,6 +39,7 @@ src/heinzel_acme/                 the company layer `acme`
   __init__.py                     module, its layer, the playbook recommending the bindings, info, layers, doctor
   layers.py                       THE bridge to the core's layer API (`declare`); every layer declares through it
   _bindings.py                    capability -> adapter, plugin, transport, login: what `hz setup acme` offers
+  themes/, soundscapes/           Acme's released theme, logo and opt-in soundscape
   _world.py                       the made-up Acme world (people, items, pull requests, documents)
   seed/                           `hz acme seed`, rehearsal only: plan (pure), runner (vendor CLIs), service
 plugins/heinzel-acme-payments/    the org layer: the okr asset type

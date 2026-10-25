@@ -106,21 +106,21 @@ every `<company> binding` check up on your machine.
   and the inputs it really needs (one per repository, a mail or meetings input if the report uses them). Keep the
   invariants.
 
-**Check:** `make check` green; `hz workflow playbooks` lists all four; `hz workflow new weekly-report --template
-<company>-<org>-<team>:weekly-report --asset ...` followed by `hz workflow check` has no diagnostics; `hz workflow run
+**Check:** `make check` green; `hz heinzel playbooks` lists all four; `hz heinzel new weekly-report --template
+<company>-<org>-<team>:weekly-report --asset ...` followed by `hz heinzel check` has no diagnostics; `hz heinzel run
 weekly-report --dry-run` fetches every input with your own logins.
 
 ## 4. Release and install
 
 Push through pull requests (`make pr TITLE="feat: ..."`), apply the same repository settings as this repository's
 (see its README and the core's CONTRIBUTING.md, "Repository settings"), then release (Actions → Release). People
-install the team's plugin from the private repository with their own git access:
+install the team's plugin from the private repository over HTTPS, using their own `gh auth login` session:
 
 ```bash
-hz system plugin add "git+ssh://git@github.com/<owner>/heinzel-<company>@v0.1.0#subdirectory=plugins/heinzel-<company>-<org>-<team>"
+hz system plugin add "git+https://github.com/<owner>/heinzel-<company>@v0.1.0#subdirectory=plugins/heinzel-<company>-<org>-<team>"
 ```
 
-and the team repository's `hz.yaml` names it (`plugin: {name: ..., source: ...}`), so `hz team join` shows it to
+The team repository's `hz.yaml` names it (`plugin: {name: ..., source: ...}`), so `hz team join` shows it to
 everyone who joins. **Check:** on a second machine, `hz team join` then the plugin line above then
 `hz <company> layers` shows the stack.
 

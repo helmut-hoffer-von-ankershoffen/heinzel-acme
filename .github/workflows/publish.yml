@@ -31,9 +31,14 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ inputs.tag || github.ref_name }}
+          ref: refs/tags/${{ inputs.tag || github.ref_name }}
           fetch-depth: 0
           persist-credentials: false
+      - name: Verify the checked-out release tag
+        run: |
+          tagged="$(git rev-parse --verify "refs/tags/$TAG^{commit}")"
+          test "$(git rev-parse HEAD)" = "$tagged"
+          git merge-base --is-ancestor "$tagged" origin/main
       - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
       - name: Check that the tag matches the project version
         run: test "v$(uv version --short)" = "$TAG"

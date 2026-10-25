@@ -3,7 +3,7 @@
 The team layer brings the team's own work: the weekly report playbook. Its asset types are the documents and places
 the report is made from and kept in (the weekly report document, the engineering tracker, the tracker project and the
 code repository), each with how to find it; its template contract drafts the report by Friday 17:00 from the code
-host, the tracker and the documents (`hz workflow new weekly-report --template acme-payments-checkout:weekly-report`).
+host, the tracker and the documents (`hz heinzel new weekly-report --template acme-payments-checkout:weekly-report`).
 The team sits under the org `acme-payments` and at the site `acme-lisbon`; its stack is acme, acme-payments,
 acme-lisbon, acme-payments-checkout.
 """
