@@ -1,6 +1,6 @@
 [project]
 name = "heinzel-acme-payments-checkout"
-version = "0.1.0"
+version = "0.1.1"
 description = "Acme Payments Checkout, a made-up team of the reference company: its weekly report playbook."
 readme = "README.md"
 license = "MIT"
@@ -8,7 +8,7 @@ requires-python = ">=3.12"
 keywords = ["heinzel", "heinzel-plugin", "heinzelmaennchen"]
 # Its parent and site layers, so installing this plugin installs its stack (core ADR 0040); released together, the
 # release process bumps the bounds.
-dependencies = ["heinzel>=0.7.2,<1", "heinzel-acme>=0.1.0", "heinzel-acme-payments>=0.1.0", "heinzel-acme-lisbon>=0.1.0"]
+dependencies = ["heinzel>=0.7.2,<1", "heinzel-acme>=0.1.1", "heinzel-acme-payments>=0.1.1", "heinzel-acme-lisbon>=0.1.1"]
 
 [project.urls]
 Source = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/tree/main/plugins/heinzel-acme-payments-checkout"
