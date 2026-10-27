@@ -3,7 +3,7 @@
 # Square corners on cards, dialogs and controls alike: Acme draws boxes, not pills.
 # Fonts are the machine's own (the web app loads no remote font), so each stack ends in a generic family.
 name = "acme"
-title = "Acme"
+title = "ACME"
 font_sans = '"Avenir Next", Avenir, "Helvetica Neue", "Segoe UI", system-ui, sans-serif'
 font_mono = '"JetBrains Mono", "SF Mono", Menlo, Consolas, monospace'
 radius = "0"
