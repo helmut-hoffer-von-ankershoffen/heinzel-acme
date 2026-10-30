@@ -17,20 +17,25 @@ Never run any of this against a company account: `hz acme seed` creates reposito
 | A Google account | the three documents, `gws` | a personal account works; `gws` needs a Desktop OAuth client you create yourself in a Google Cloud project (`gws auth setup`), no administrator involved |
 | Claude Code, logged in, on both machines | the agent runner that drafts | `hz system doctor` checks it |
 | Zoom with AI Companion summaries | optional: meetings | needs a paid Zoom plan; the weekly report doesn't read meetings, so skip it |
-| `uv`, `git`, `gh`, `acli`, `gws` (Node.js for it) | everything | `brew install uv gh` · Atlassian's `acli` installer · `npm install -g @googleworkspace/cli` |
+| `uv`, `git`, `gh`, `acli`, `gws` (Node.js for it) | everything | The [standard app installer](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/install/) can install uv; the optional integrations need their vendor CLIs. |
 
 ## Mac mini: the manager
 
 ### 1. Install Heinzelmännchen and the plugins
 
-Use the released Heinzelmännchen v0.7.2 pinned by this repository (README, "Pins"):
+Start the standard app, including its default plugins:
+
+```sh
+uvx heinzel@latest
+```
+
+Leave the workspace running and use another terminal for the optional integrations:
 
 ```bash
-uv tool install "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@v0.7.2"
-hz system plugin add github
-hz system plugin add atlassian
-hz system plugin add google
-hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme#subdirectory=plugins/heinzel-acme-payments-checkout"
+hz system plugin add github --confirm
+hz system plugin add atlassian --confirm
+hz system plugin add google --confirm
+hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme#subdirectory=plugins/heinzel-acme-payments-checkout" --confirm
 hz acme layers                   # four layers; the team's stack is acme, acme-payments, acme-lisbon, acme-payments-checkout
 hz system layer show             # the same stack, from the core (a core with the layer API)
 ```
@@ -118,25 +123,15 @@ own (made-up) document ids. That is expected; note it under "What to measure".
 
 ## MacBook Air: the engineer
 
-The target is one line, the invite (the core's onboarding record, not built yet):
+Use the standard app's versionless invite line:
 
 ```bash
-uvx heinzel join https://github.com/<manager login>/hz-team-checkout
+uvx heinzel@latest join https://github.com/<manager login>/hz-team-checkout
 ```
 
-Until that exists, the same in today's commands:
-
-```bash
-uv tool install "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@v0.7.2"
-gh auth login                                           # as the engineer's account
-hz team join https://github.com/<manager login>/hz-team-checkout.git --yes
-hz team show                                            # names the team plugin from hz.yaml
-hz system plugin add "<its source, as hz team show prints it>"
-hz org sync                                             # the team's recommendations beside what you have
-hz org sync --accept all
-hz setup acme
-hz acme layers
-```
+The launcher installs the standard app and default plugins when needed. Follow the current
+[join-your-team guide](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/joining/) for authentication,
+setup, plugin confirmation and the information kept locally.
 
 Then run the weekly report the way the manager did (step 6), against the same seeded world.
 
@@ -146,7 +141,7 @@ Write each number down as you go; the point is to find what breaks before a real
 
 | Measure | How |
 | --- | --- |
-| Time to the first draft, manager | wall clock from `uv tool install` to `hz heinzel drafts --latest`, per step |
+| Time to the first draft, manager | wall clock from the standard app launcher to the first draft, per step |
 | Time to join, engineer | wall clock from the invite URL to `hz acme layers` showing the stack |
 | Steps and questions | every command typed and every prompt answered; each one the target flow should remove |
 | Where it stopped | each failure: the step, the message, whether its fix was in the message |
