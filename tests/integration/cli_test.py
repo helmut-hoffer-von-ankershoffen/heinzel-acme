@@ -23,6 +23,12 @@ def test_all_four_layers_are_discovered(hz_kernel):
     assert {*LAYERS, "acme.seed"} <= qualnames
 
 
+def test_theme_preferences_keep_the_acme_title_in_capitals(hz):
+    listed = hz("system", "theme", "list").json
+    theme = next(theme for theme in listed["themes"] if theme["name"] == "acme")
+    assert theme["title"] == "ACME"
+
+
 def test_layers_shows_the_tree_and_each_stack(hz):
     tree = hz("acme", "layers").json
     assert tree["missing"] == []

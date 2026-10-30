@@ -16,7 +16,7 @@ THEME = Path(heinzel_acme.__file__).parent / "themes" / "acme.toml"
 
 def test_the_acme_theme_is_valid_with_a_teal_primary_and_square_corners():
     theme = Theme.model_validate(tomllib.loads(THEME.read_text(encoding="utf-8")))
-    assert (theme.name, theme.title, theme.radius, theme.radius_control) == ("acme", "Acme", "0", "0")
+    assert (theme.name, theme.title, theme.radius, theme.radius_control) == ("acme", "ACME", "0", "0")
     assert (theme.light.primary, theme.dark.background) == ("#0f766e", "#0f172a")
     assert theme.font_sans.endswith("sans-serif")
     assert theme.font_mono.endswith("monospace")
