@@ -41,10 +41,14 @@ and nothing any layer brings becomes your configuration until you accept it (`hz
 
 ## Install and look
 
-With Heinzelmännchen installed (see [Pins](#pins) for the version):
+For macOS and Linux, start with the [standard app installation guide](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/install/).
+Use `uvx heinzel@latest` if uv is available, or its guided curl/wget installer to install prerequisites automatically.
+Windows may work, but is not supported.
+
+Once Heinzelmännchen is installed:
 
 ```bash
-hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme#subdirectory=plugins/heinzel-acme-payments-checkout"
+hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme#subdirectory=plugins/heinzel-acme-payments-checkout" --confirm
 ```
 
 One plugin, the team's: its org, site and company come with it, as its dependencies. Then:
@@ -60,8 +64,8 @@ hz setup acme               # accept the bindings you want, one by one
 hz acme-lisbon calendar     # the site's week, at the site and on this machine
 ```
 
-The first-party adapter plugins the bindings name are separate: `hz system plugin add github`, `atlassian`, `zoom`
-and `google`, each with its vendor CLI logged in as you; `hz system doctor` lists what is missing with the command
+The first-party adapter plugins the bindings name are separate: use `hz system plugin add github --confirm` (or
+`atlassian`, `zoom`, `google` in place of `github`), each with its vendor CLI logged in as you; `hz system doctor` lists what is missing with the command
 that fixes it.
 
 ## The weekly report
@@ -83,11 +87,10 @@ it on two machines, with `hz acme seed` creating the Acme world in your own tria
 private `heinzel-<company>` repository with the same shape: what to rename, how to bind your company's own providers
 through a private layer, and what to verify first. This repository plus that runbook is the hand-off.
 
-## Pins
+## Compatibility
 
-The workspace keeps main's released Heinzelmännchen v0.7.2 test pin and requires `heinzel>=0.7.2,<1`,
-which supplies the layer, playbook, theme and soundscape APIs. The shared `layers.declare` bridge delegates to that
-core API and retains Acme's own tree view; no unreleased core commit is required.
+Each plugin declares its supported SDK range in its project metadata. The development lock records the SDK used by
+tests; users install the standard app without selecting an SDK version. No unreleased Core checkout is required.
 
 ## Theme
 
@@ -120,8 +123,7 @@ hz system sound use acme
 hz system sound use off
 ```
 
-This plugin has independent version 0.1.0 and declares `heinzel>=0.7.2,<1`; tests pin the released core v0.7.2.
-An explicit plugin tag or commit remains pinned when hz updates. Release tracking is separate from that deliberate pin.
+Plugin releases are independent of Core. An explicitly selected plugin tag or commit stays pinned when hz updates.
 
 ## Develop
 
