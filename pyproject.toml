@@ -34,8 +34,8 @@ test = [
     "heinzel-acme-lisbon>=0.1.2",
     "heinzel-acme-payments>=0.1.2",
     "heinzel-acme-payments-checkout>=0.1.2",
-    # Keep the released core pin from main, including its layer and soundscape APIs.
-    "heinzel @ git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@v0.7.2",
+    # Keep the released SDK version; its attested wheel avoids executing dependency build backends.
+    "heinzel @ https://github.com/helmut-hoffer-von-ankershoffen/heinzel/releases/download/v0.7.2/heinzel-0.7.2-py3-none-any.whl",
     "coverage>=7.12",
     "httpx>=0.28",
     "hypothesis>=6.140",
@@ -47,7 +47,6 @@ test = [
 ]
 dev = [
     { include-group = "test" },
-    "actionlint-py>=1.7.12",
     "bump-my-version>=1.2.4,<2",
     "commitizen>=4.10.0,<5",
     "git-cliff>=2.14.0,<3",
@@ -70,6 +69,8 @@ packages = ["src/heinzel_acme"]
 
 [tool.uv]
 required-version = ">=0.13.0"
+# Dependencies must have wheels; reviewed workspace projects can still be built.
+no-build = true
 
 # Acme's org, site and team layers: separate plugins in plugins/, developed and released with the company layer, the
 # way a company's private plugin repository holds all of its layers (core ADR 0040).

@@ -16,7 +16,7 @@ BASE ?= $(REMOTE)/main
 GATE := "lock=uv lock --check" "&format=uv run ruff format --check ." "&ruff=uv run ruff check --no-fix ."
 LINT := \
 		"&zizmor=uv run zizmor --offline --quiet .github/workflows" \
-		"&actionlint=uv run actionlint" \
+		"&actionlint=$(TOOLS) run actionlint" \
 		"&typos=uv run typos" \
 		"&confidential=uv run --script scripts/check_confidentiality.py"
 TYPES := "&mypy=uv run mypy" "&pyright=uv run pyright"

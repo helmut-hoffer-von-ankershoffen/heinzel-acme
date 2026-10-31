@@ -136,6 +136,10 @@ make check     # lint, types, unit and integration tests of all four plugins (of
 make test-e2e  # installs Heinzelmännchen with uv and adds the team plugin from this checkout
 ```
 
+See the [development-tool security review](docs/SECURITY_REVIEW.md) for dependency-build and CLI input boundaries.
+Run `make setup` before the PR or release helpers. Their direct tool invocations reuse the installed environment;
+delegated checks, fixes and Git hooks retain their own dependency installation and build steps.
+
 Read [AGENTS.md](AGENTS.md) first. The plugins are one uv workspace: the company layer at the root, the others in
 `plugins/`, released together at one version. Tests use fakes and never reach a network; `hz acme seed` refuses to
 run the real CLIs inside a test session.

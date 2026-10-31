@@ -45,7 +45,7 @@ jobs:
       - name: Check the release for confidential terms
         env:
           CONFIDENTIAL_TERMS: ${{ secrets.CONFIDENTIAL_TERMS }}
-        run: uv run --script scripts/check_confidentiality.py
+        run: uv run --frozen --no-sync --no-build python scripts/check_confidentiality.py
       - name: Check that runtime dependencies keep the release MIT-compatible
         run: make licenses
       - run: make build # Heinzelmännchen builds the core and every first-party plugin, released together
@@ -60,7 +60,7 @@ jobs:
         with:
           subject-path: dist/*
       - name: Write release notes
-        run: uv run --script scripts/release_notes.py "$TAG" > release-notes.md
+        run: uv run --frozen --no-sync --no-build python scripts/release_notes.py "$TAG" > release-notes.md
       - name: Create the GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
