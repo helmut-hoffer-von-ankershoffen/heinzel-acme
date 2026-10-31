@@ -27,3 +27,13 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/heinzel_acme_lisbon"]
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/cli.png"
+surface = "cli"
+caption = "hz acme-lisbon calendar — isolated demonstration profile"
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/ui.png"
+surface = "ui"
+caption = "Lisbon site time-zone settings"

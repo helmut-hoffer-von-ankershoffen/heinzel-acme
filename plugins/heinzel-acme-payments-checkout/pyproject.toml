@@ -29,3 +29,13 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/heinzel_acme_payments_checkout"]
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/cli.png"
+surface = "cli"
+caption = "hz acme-payments-checkout info — isolated demonstration profile"
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/ui.png"
+surface = "ui"
+caption = "Installed reference layer and its playbook in the plugin manager"
