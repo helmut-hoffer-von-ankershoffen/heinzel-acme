@@ -1,7 +1,7 @@
 [project]
 name = "heinzel-acme"
 version = "0.1.2"
-description = "Acme, a made-up company: the root layer of the reference company."
+description = "ACME, a made-up company: the root layer of the reference company."
 readme = "README.md"
 authors = [{ name = "Helmut Hoffer von Ankershoffen", email = "helmuthva@gmail.com" }]
 license = "MIT"
@@ -30,7 +30,7 @@ Issues = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/issues"
 [dependency-groups]
 # What the unit, integration and e2e tests need, and no more: CI installs only this group for the test matrix.
 test = [
-    # Acme's other layers are workspace members, tested together.
+    # ACME's other layers are workspace members, tested together.
     "heinzel-acme-lisbon>=0.1.2",
     "heinzel-acme-payments>=0.1.2",
     "heinzel-acme-payments-checkout>=0.1.2",
@@ -72,7 +72,7 @@ required-version = ">=0.13.0"
 # Dependencies must have wheels; reviewed workspace projects can still be built.
 no-build = true
 
-# Acme's org, site and team layers: separate plugins in plugins/, developed and released with the company layer, the
+# ACME's org, site and team layers: separate plugins in plugins/, developed and released with the company layer, the
 # way a company's private plugin repository holds all of its layers (core ADR 0040).
 [tool.uv.workspace]
 members = ["plugins/*"]
@@ -221,7 +221,7 @@ filename = "plugins/heinzel-acme-payments/pyproject.toml"
 search = "name = \"heinzel-acme-payments\"\nversion = \"{current_version}\""
 replace = "name = \"heinzel-acme-payments\"\nversion = \"{new_version}\""
 
-[[tool.bumpversion.files]] # Acme's layers need the layers above them they are released with
+[[tool.bumpversion.files]] # ACME's layers need the layers above them they are released with
 filename = "plugins/heinzel-acme-payments/pyproject.toml"
 search = "\"heinzel-acme>={current_version}\""
 replace = "\"heinzel-acme>={new_version}\""
@@ -236,7 +236,7 @@ filename = "plugins/heinzel-acme-lisbon/pyproject.toml"
 search = "name = \"heinzel-acme-lisbon\"\nversion = \"{current_version}\""
 replace = "name = \"heinzel-acme-lisbon\"\nversion = \"{new_version}\""
 
-[[tool.bumpversion.files]] # Acme's layers need the layers above them they are released with
+[[tool.bumpversion.files]] # ACME's layers need the layers above them they are released with
 filename = "plugins/heinzel-acme-lisbon/pyproject.toml"
 search = "\"heinzel-acme>={current_version}\""
 replace = "\"heinzel-acme>={new_version}\""
@@ -251,17 +251,17 @@ filename = "plugins/heinzel-acme-payments-checkout/pyproject.toml"
 search = "name = \"heinzel-acme-payments-checkout\"\nversion = \"{current_version}\""
 replace = "name = \"heinzel-acme-payments-checkout\"\nversion = \"{new_version}\""
 
-[[tool.bumpversion.files]] # Acme's layers need the layers above them they are released with
+[[tool.bumpversion.files]] # ACME's layers need the layers above them they are released with
 filename = "plugins/heinzel-acme-payments-checkout/pyproject.toml"
 search = "\"heinzel-acme>={current_version}\""
 replace = "\"heinzel-acme>={new_version}\""
 
-[[tool.bumpversion.files]] # Acme's layers need the layers above them they are released with
+[[tool.bumpversion.files]] # ACME's layers need the layers above them they are released with
 filename = "plugins/heinzel-acme-payments-checkout/pyproject.toml"
 search = "\"heinzel-acme-payments>={current_version}\""
 replace = "\"heinzel-acme-payments>={new_version}\""
 
-[[tool.bumpversion.files]] # Acme's layers need the layers above them they are released with
+[[tool.bumpversion.files]] # ACME's layers need the layers above them they are released with
 filename = "plugins/heinzel-acme-payments-checkout/pyproject.toml"
 search = "\"heinzel-acme-lisbon>={current_version}\""
 replace = "\"heinzel-acme-lisbon>={new_version}\""
@@ -341,17 +341,24 @@ CPY = "CPY" # ruff rule prefix (flake8-copyright)
 Prompty = "Prompty" # a prompt file format, cited in docs/research/workflow-contracts.md
 intoto = "intoto" # in-toto attestations, as in provenance.intoto.jsonl
 
+[tool.heinzel.catalog]
+title = "ACME"
 [[tool.heinzel.catalog.screenshots]]
-path = "docs/assets/cli.png"
+path = "docs/assets/screenshots/company-workflow.png"
+surface = "ui"
+caption = "ACME theme and weekly-report workflow with fictional local demonstration data"
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/screenshots/theme-light.png"
+surface = "ui"
+caption = "The applied ACME theme in light mode; fictional weekly-report demonstration"
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/screenshots/theme-dark.png"
+surface = "ui"
+caption = "The same ACME workflow in dark mode; fictional local demonstration"
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/screenshots/cli-stack.png"
 surface = "cli"
-caption = "hz acme layers — isolated demonstration profile"
-
-[[tool.heinzel.catalog.screenshots]]
-path = "docs/assets/ui.png"
-surface = "ui"
-caption = "Installed ACME theme in the app"
-
-[[tool.heinzel.catalog.screenshots]]
-path = "docs/assets/ui-dark.png"
-surface = "ui"
-caption = "Installed ACME theme in the app — dark appearance"
+caption = "The real company, org, site and team stack with clearly named offline-demo adapters"

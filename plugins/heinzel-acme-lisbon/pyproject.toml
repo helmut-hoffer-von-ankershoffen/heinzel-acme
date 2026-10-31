@@ -1,7 +1,7 @@
 [project]
 name = "heinzel-acme-lisbon"
 version = "0.1.2"
-description = "Acme Lisbon, a made-up site of the reference company: time zone, working hours, meeting rhythm."
+description = "ACME Lisbon, a made-up site of the reference company: time zone, working hours, meeting rhythm."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
@@ -28,12 +28,24 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/heinzel_acme_lisbon"]
 
+[tool.heinzel.catalog]
+title = "ACME Lisbon"
 [[tool.heinzel.catalog.screenshots]]
-path = "docs/assets/cli.png"
-surface = "cli"
-caption = "hz acme-lisbon calendar — isolated demonstration profile"
+path = "docs/assets/screenshots/site-calendar.png"
+surface = "ui"
+caption = "Fictional ACME Lisbon demo: Friday stand-up, demo, and 17:00 report deadline in site and computer time."
 
 [[tool.heinzel.catalog.screenshots]]
-path = "docs/assets/ui.png"
+path = "docs/assets/screenshots/site-week-ahead.png"
 surface = "ui"
-caption = "Lisbon site time-zone settings"
+caption = "Fictional ACME Lisbon demo: a four-day window crosses the weekend to Monday's stand-up, planning, and OKR review."
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/screenshots/site-report-deadline.png"
+surface = "ui"
+caption = "Fictional Checkout demo: the locally seeded weekly-report contract and its inputs give context to Lisbon's report rhythm."
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/screenshots/cli-calendar.png"
+surface = "cli"
+caption = "Fictional ACME Lisbon demo: working hours, weekly rhythm, and Friday's upcoming events in site and computer time."

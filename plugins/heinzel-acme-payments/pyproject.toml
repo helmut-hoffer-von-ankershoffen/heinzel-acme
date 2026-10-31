@@ -1,7 +1,7 @@
 [project]
 name = "heinzel-acme-payments"
 version = "0.1.2"
-description = "Acme Payments, a made-up org of the reference company: how it plans, by quarterly OKRs."
+description = "ACME Payments, a made-up org of the reference company: how it plans, by quarterly OKRs."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
@@ -28,12 +28,19 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/heinzel_acme_payments"]
 
+[tool.heinzel.catalog]
+title = "ACME Payments"
 [[tool.heinzel.catalog.screenshots]]
-path = "docs/assets/cli.png"
-surface = "cli"
-caption = "hz acme-payments info — isolated demonstration profile"
+path = "docs/assets/screenshots/okr-type.png"
+surface = "ui"
+caption = "ACME Payments supplies the quarterly OKR asset type; fictional demonstration"
 
 [[tool.heinzel.catalog.screenshots]]
-path = "docs/assets/ui.png"
+path = "docs/assets/screenshots/okr-discovery.png"
 surface = "ui"
-caption = "Installed reference layer and its playbook in the plugin manager"
+caption = "Discover the fictional Payments OKRs, weekly report and engineering tracker through a local demo adapter"
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/screenshots/cli-assets.png"
+surface = "cli"
+caption = "Actual asset discovery using fictional ACME documents served by the offline demo adapter"
