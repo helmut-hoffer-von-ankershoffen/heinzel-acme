@@ -6,7 +6,7 @@ of the org `acme-payments` at the site `acme-lisbon`. Installing it installs its
 
 ## Install
 
-Start Heinzelmännchen with `uvx heinzel@latest` ([installation guide](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/install/)), then in a second terminal:
+Start Heinzelmännchen with `uvx heinzel@latest` ([installation guide](https://heinzel.team/guides/install/)), then in a second terminal:
 
 ```bash
 hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme#subdirectory=plugins/heinzel-acme-payments-checkout" --confirm
@@ -18,28 +18,28 @@ The org, site and company layers come with it.
 
 Real captures with fictional demonstration data and unconnected accounts.
 
-[![The Checkout weekly-report workflow](docs/assets/screenshots/report-workflow.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+[![The Checkout weekly-report workflow](docs/assets/screenshots/report-workflow.png)](https://heinzel.team/catalog/heinzel-acme-payments-checkout-8a7d294621/)
 
 *Checkout's report connects code, tracker and documents.*
 
-[![The compiled weekly-report contract and its inputs](docs/assets/screenshots/report-inputs.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+[![The compiled weekly-report contract and its inputs](docs/assets/screenshots/report-inputs.png)](https://heinzel.team/catalog/heinzel-acme-payments-checkout-8a7d294621/)
 
 *A compiled weekly-report contract with its inputs and local draft.*
 
-[![A saved draft in the app terminal](docs/assets/screenshots/draft-in-terminal.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+[![A saved draft in the app terminal](docs/assets/screenshots/draft-in-terminal.png)](https://heinzel.team/catalog/heinzel-acme-payments-checkout-8a7d294621/)
 
 *A locally saved fictional draft from a deterministic demo runner, in the app terminal.*
 
 <details>
 <summary>See the CLI output</summary>
 
-[![The saved draft in the terminal](docs/assets/screenshots/cli-draft.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+[![The saved draft in the terminal](docs/assets/screenshots/cli-draft.png)](https://heinzel.team/catalog/heinzel-acme-payments-checkout-8a7d294621/)
 
 *The same locally saved fictional report, ready to review and edit.*
 
 </details>
 
-[View the full gallery on the plugin page →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+[View the full gallery on the plugin page →](https://heinzel.team/catalog/heinzel-acme-payments-checkout-8a7d294621/)
 
 It brings the weekly report playbook:
 

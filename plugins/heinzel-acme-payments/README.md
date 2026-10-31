@@ -10,24 +10,24 @@ You do not install this layer on its own: it comes with the Checkout team, which
 
 Real captures with fictional demonstration data and unconnected accounts.
 
-[![The OKR asset type supplied by ACME Payments](docs/assets/screenshots/okr-type.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-f39fc70bf6/)
+[![The OKR asset type supplied by ACME Payments](docs/assets/screenshots/okr-type.png)](https://heinzel.team/catalog/heinzel-acme-payments-f39fc70bf6/)
 
 *ACME Payments supplies the quarterly OKR asset type.*
 
-[![Discovering the Payments OKRs](docs/assets/screenshots/okr-discovery.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-f39fc70bf6/)
+[![Discovering the Payments OKRs](docs/assets/screenshots/okr-discovery.png)](https://heinzel.team/catalog/heinzel-acme-payments-f39fc70bf6/)
 
 *Discover the fictional OKRs, weekly report and engineering tracker through a local demo adapter.*
 
 <details>
 <summary>See the CLI output</summary>
 
-[![Asset discovery in the terminal](docs/assets/screenshots/cli-assets.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-f39fc70bf6/)
+[![Asset discovery in the terminal](docs/assets/screenshots/cli-assets.png)](https://heinzel.team/catalog/heinzel-acme-payments-f39fc70bf6/)
 
 *Actual asset discovery using fictional ACME documents served by the offline demo adapter.*
 
 </details>
 
-[View the full gallery on the plugin page →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-f39fc70bf6/)
+[View the full gallery on the plugin page →](https://heinzel.team/catalog/heinzel-acme-payments-f39fc70bf6/)
 
 ```bash
 hz acme-payments info

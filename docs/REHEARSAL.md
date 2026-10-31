@@ -17,7 +17,7 @@ Never run any of this against a company account: `hz acme seed` creates reposito
 | A Google account | the three documents, `gws` | a personal account works; `gws` needs a Desktop OAuth client you create yourself in a Google Cloud project (`gws auth setup`), no administrator involved |
 | Claude Code, logged in, on both machines | the agent runner that drafts | `hz system doctor` checks it |
 | Zoom with AI Companion summaries | optional: meetings | needs a paid Zoom plan; the weekly report doesn't read meetings, so skip it |
-| `uv`, `git`, `gh`, `acli`, `gws` (Node.js for it) | everything | The [standard app installer](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/install/) can install uv; the optional integrations need their vendor CLIs. |
+| `uv`, `git`, `gh`, `acli`, `gws` (Node.js for it) | everything | The [standard app installer](https://heinzel.team/guides/install/) can install uv; the optional integrations need their vendor CLIs. |
 
 ## Mac mini: the manager
 
@@ -130,7 +130,7 @@ uvx heinzel@latest join https://github.com/<manager login>/hz-team-checkout
 ```
 
 The launcher installs the standard app and default plugins when needed. Follow the current
-[join-your-team guide](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/joining/) for authentication,
+[join-your-team guide](https://heinzel.team/guides/joining/) for authentication,
 setup, plugin confirmation and the information kept locally.
 
 Joining configures team membership; it does not install ACME or its integrations. On the engineer's machine,
