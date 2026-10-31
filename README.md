@@ -2,16 +2,17 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                                |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
-|------------------------------------ | -------: | -------: | -------: | -------: | ------: | --------: |
-| src/heinzel\_acme/\_\_init\_\_.py   |       25 |        1 |        0 |        0 |     96% |        45 |
-| src/heinzel\_acme/\_service.py      |       51 |        4 |       12 |        2 |     90% |28, 31-32, 104 |
-| src/heinzel\_acme/seed/\_render.py  |       23 |       17 |        8 |        0 |     19% |     14-30 |
-| src/heinzel\_acme/seed/\_runner.py  |       38 |        3 |        4 |        0 |     93% |     84-86 |
-| src/heinzel\_acme/seed/\_service.py |       78 |        0 |       24 |        2 |     98% |110-\>112, 112-\>114 |
-| **TOTAL**                           |  **524** |   **25** |   **88** |    **4** | **94%** |           |
+| Name                                                                  |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
+|---------------------------------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
+| plugins/heinzel-acme-lisbon/src/heinzel\_acme\_lisbon/\_\_init\_\_.py |       38 |        1 |        8 |        1 |     96% |        62 |
+| src/heinzel\_acme/\_\_init\_\_.py                                     |       25 |        1 |        0 |        0 |     96% |        45 |
+| src/heinzel\_acme/\_service.py                                        |       51 |        4 |       12 |        2 |     90% |28, 31-32, 104 |
+| src/heinzel\_acme/seed/\_render.py                                    |       23 |       17 |        8 |        0 |     19% |     14-30 |
+| src/heinzel\_acme/seed/\_runner.py                                    |       38 |        3 |        4 |        0 |     93% |     84-86 |
+| src/heinzel\_acme/seed/\_service.py                                   |       78 |        0 |       24 |        2 |     98% |110-\>112, 112-\>114 |
+| **TOTAL**                                                             |  **541** |   **26** |   **96** |    **5** | **94%** |           |
 
-11 files skipped due to complete coverage.
+10 files skipped due to complete coverage.
 
 
 ## Setup coverage badge
