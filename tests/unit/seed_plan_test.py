@@ -63,10 +63,7 @@ def test_the_world_is_made_up():
     assert all(person.email.endswith("@acme.example") for person in PEOPLE)
     assert {person.role for person in PEOPLE} <= {
         "engineer",
-        "principal",
         "engineering-manager",
-        "engineering-leadership",
         "product-manager",
-        "product-leadership",
         "program-manager",
     }

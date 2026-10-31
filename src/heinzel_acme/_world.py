@@ -37,7 +37,7 @@ PEOPLE: tuple[Person, ...] = (
     Person(handle="nadia", name="Nadia Moreira", role="engineering-manager"),
     Person(handle="tomas", name="Tomas Leal", role="engineer"),
     Person(handle="priya", name="Priya Raman", role="engineer"),
-    Person(handle="mara", name="Mara Okafor", role="principal"),
+    Person(handle="mara", name="Mara Okafor", role="engineer"),
     Person(handle="jonas", name="Jonas Berg", role="product-manager"),
 )
 
