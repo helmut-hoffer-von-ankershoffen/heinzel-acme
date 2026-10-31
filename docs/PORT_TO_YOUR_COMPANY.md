@@ -107,7 +107,7 @@ every `<company> binding` check up on your machine.
   invariants.
 
 **Check:** `make check` green; `hz heinzel playbooks` lists all four; `hz heinzel new weekly-report --template
-<company>-<org>-<team>:weekly-report --asset ...` followed by `hz heinzel check` has no diagnostics; `hz heinzel run
+<company>-<org>-<team>:weekly-report --asset ...` followed by `hz heinzel check` has no diagnostics; `hz heinzel wake
 weekly-report --dry-run` fetches every input with your own logins.
 
 ## 4. Release and install

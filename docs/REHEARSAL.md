@@ -106,8 +106,8 @@ hz team add <engineer handle> --login <engineer login> --role engineer --yes
 ```bash
 hz heinzel new weekly-report --template acme-payments-checkout:weekly-report --asset ...   # the seed's last lines
 hz heinzel show weekly-report              # every requirement bound, nothing unmet
-hz heinzel run weekly-report --dry-run     # the packet: merged pull requests, CHK items, the report, the tracker
-hz heinzel run weekly-report               # the draft
+hz heinzel wake weekly-report --dry-run     # the packet: merged pull requests, CHK items, the report, the tracker
+hz heinzel wake weekly-report               # the draft
 hz heinzel drafts --name weekly-report --latest
 ```
 
