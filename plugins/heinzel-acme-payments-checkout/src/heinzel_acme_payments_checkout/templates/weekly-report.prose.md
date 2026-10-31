@@ -14,7 +14,7 @@ hz:
   title: Checkout weekly report
   # Friday 17:00, the deadline in the Lisbon site calendar (`hz acme-lisbon calendar`). Five cron
   # fields in this machine's local time: on a machine outside Lisbon, convert it. Uncomment once a
-  # manual run (`hz heinzel run weekly-report`) reads right; until then it runs only by hand.
+  # manual run (`hz heinzel wake weekly-report`) reads right; until then it runs only by hand.
   # schedule: "0 17 * * FRI"
   # Capabilities, never vendors: the company layer recommends the bindings (`hz setup acme`):
   # code-host = github (gh), tracker = atlassian (acli), documents = google (gws).

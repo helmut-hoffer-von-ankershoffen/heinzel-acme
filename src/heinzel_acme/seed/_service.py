@@ -34,8 +34,8 @@ def _next(refs: dict[str, str]) -> list[str]:
     )
     return [
         f"hz heinzel new weekly-report --template {TEMPLATE} {assets}",
-        "hz heinzel run weekly-report --dry-run",
-        "hz heinzel run weekly-report",
+        "hz heinzel wake weekly-report --dry-run",
+        "hz heinzel wake weekly-report",
     ]
 
 
