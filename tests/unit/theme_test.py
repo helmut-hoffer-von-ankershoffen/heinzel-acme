@@ -1,4 +1,4 @@
-"""Acme's theme: valid as Heinzelmännchen checks it, and offered by the company module."""
+"""ACME's theme: valid as Heinzelmännchen checks it, and offered by the company module."""
 
 import tomllib
 from pathlib import Path
@@ -59,7 +59,7 @@ def test_the_theme_declares_the_logo_and_heinzel_serves_it():
     theme = Theme.model_validate(tomllib.loads(THEME.read_text(encoding="utf-8")))
     assert theme.logo is not None
     assert (theme.logo.light, theme.logo.dark, theme.logo.mark) == LOGO_FILES[1:] + LOGO_FILES[:1]
-    assert (theme.logo.alt, theme.logo.height) == ("Acme", "24px")
+    assert (theme.logo.alt, theme.logo.height) == ("ACME", "24px")
     (let,) = [let for let in heinzel_acme.module.lets if isinstance(let, ThemeLet)]
     logos = let.logos()
     assert logos is not None

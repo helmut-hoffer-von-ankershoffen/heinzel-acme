@@ -27,7 +27,7 @@ def test_list_and_selection_keep_sound_off_until_the_person_chooses(boot):
     listed = invoke(kernel, "system", "sound", "list")
     assert (listed["selected"], listed["effective"], listed["follow_theme"]) == ("off", "off", False)
     (sound,) = [sound for sound in listed["soundscapes"] if sound["name"] == "acme"]
-    assert (sound["title"], sound["plugin"], sound["kind"]) == ("Acme", "heinzel-acme", "stream")
+    assert (sound["title"], sound["plugin"], sound["kind"]) == ("ACME", "heinzel-acme", "stream")
     assert sound["stream"]["embed_url"] == "https://www.youtube-nocookie.com/embed/t9PF00M2yDY"
     assert sound["stream"]["watch_url"] == "https://www.youtube.com/watch?v=t9PF00M2yDY"
     assert invoke(kernel, "system", "sound", "use", "acme")["effective"] == "acme"
