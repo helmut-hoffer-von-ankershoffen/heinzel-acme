@@ -8,6 +8,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from urllib.request import urlopen
 
@@ -41,7 +42,9 @@ def hz(tmp_path_factory):
         wheel = root / "heinzel-0.7.2-py3-none-any.whl"
         wheel.write_bytes(data)
         spec = str(wheel)
-    subprocess.run([uv, "tool", "install", "--no-build", spec], check=True, env=env, timeout=240)
+    subprocess.run(
+        [uv, "tool", "install", "--python", sys.executable, "--no-build", spec], check=True, env=env, timeout=240
+    )
 
     def run(*args: str) -> str:
         result = subprocess.run(

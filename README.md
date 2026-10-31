@@ -1,22 +1,51 @@
 # heinzel-acme
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=helmut-hoffer-von-ankershoffen_heinzel-acme&metric=alert_status)](https://sonarcloud.io/summary/overall?id=helmut-hoffer-von-ankershoffen_heinzel-acme)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=helmut-hoffer-von-ankershoffen_heinzel-acme&metric=security_rating)](https://sonarcloud.io/summary/overall?id=helmut-hoffer-von-ankershoffen_heinzel-acme)
+<!-- badges:start -->
+[![CI](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/ci.yml/badge.svg)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/ci.yml) [![Coverage](https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel-acme/python-coverage-comment-action-data/badge.svg)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/tree/python-coverage-comment-action-data) [![CodeQL](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/codeql.yml/badge.svg)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/codeql.yml) [![Release](https://img.shields.io/github/v/release/helmut-hoffer-von-ankershoffen/heinzel-acme?sort=semver)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/releases) [![PyPI](https://img.shields.io/badge/PyPI-not%20published-lightgrey)](#install-and-look) [![Python](https://img.shields.io/badge/python-3.12%2B-blue)](pyproject.toml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=helmut-hoffer-von-ankershoffen_heinzel-acme&metric=alert_status)](https://sonarcloud.io/summary/overall?id=helmut-hoffer-von-ankershoffen_heinzel-acme) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=helmut-hoffer-von-ankershoffen_heinzel-acme&metric=security_rating)](https://sonarcloud.io/summary/overall?id=helmut-hoffer-von-ankershoffen_heinzel-acme) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+<!-- badges:end -->
 
-The reference company for [Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel): a made-up
-company, **Acme** (acme.example), modelled end to end as four plugins in one repository, the way a real company keeps
-its own plugins in a private repository. It is the worked example of Heinzelmännchen's layers and playbooks
-([core ADR 0040](https://github.com/helmut-hoffer-von-ankershoffen/heinzel/blob/main/docs/adr/0040-layers-and-playbooks-are-plugins.md),
-[ADR 0037](https://github.com/helmut-hoffer-von-ankershoffen/heinzel/blob/main/docs/adr/0037-plugins-bring-playbooks.md))
-and their test bed.
+**A fictional company you can explore, install and adapt for your own team.**
 
-Everything here is fiction: the company, its org Payments, its team Checkout, its site Lisbon, its people and its
-documents.
+[**Explore Acme on the plugin page →**](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+· [Install the team stack](#install-and-look) · [Port it to your company](#port-it-to-your-company)
 
-[![CI](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/ci.yml/badge.svg)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/ci.yml)
-[![Coverage](https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel-acme/python-coverage-comment-action-data/badge.svg)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/tree/python-coverage-comment-action-data)
+<a href="https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/ui-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/assets/ui.png">
+  <img src="docs/assets/ui.png" alt="The installed ACME theme in Heinzelmännchen, using an isolated demonstration profile" width="1120">
+</picture>
+</a>
+
+*The running ACME theme, captured with Heinzelmännchen 0.9.8 and fictional profile data. Accounts are unconnected;
+the Doctor card shows the remaining setup. [View the full gallery and soundscape →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)*
+
+Acme is the reference company for [Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel):
+four plugins modelling a company, an organization, a site and a team. Installing the Checkout team brings its
+company, Payments organization and Lisbon site with it.
+
+- **Explore a complete team stack:** layers, recommended integrations, roles and calendars.
+- **Try a weekly-report playbook:** templates and contracts that a team can adapt.
+- **Make it yours:** use the [porting runbook](docs/PORT_TO_YOUR_COMPANY.md) as a worked example for a private company repository.
+
+Everything here is fiction: Acme (acme.example), its people, its teams and its documents. It follows the core's
+[layer model](https://github.com/helmut-hoffer-von-ankershoffen/heinzel/blob/main/docs/adr/0040-layers-and-playbooks-are-plugins.md)
+and [plugin playbooks](https://github.com/helmut-hoffer-von-ankershoffen/heinzel/blob/main/docs/adr/0037-plugins-bring-playbooks.md).
 
 ## The layers
+
+<details>
+<summary>See the CLI screenshot</summary>
+
+[![The Acme company, site, organization and team layers shown by the hz acme layers command](docs/assets/cli.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+
+*Real `hz acme layers` output from the same isolated demonstration profile.*
+
+
+</details>
+
+<details>
+<summary>Layer dependency diagram</summary>
 
 ```mermaid
 flowchart TB
@@ -29,6 +58,8 @@ flowchart TB
     payments --> checkout
     lisbon -. site .-> checkout
 ```
+
+</details>
 
 Each box is a plugin, named after its path from the root (`heinzel-<name>`). A layer declares its parent and, for a
 team, its site; Heinzelmännchen stacks a person's layers **general to specific**: for Checkout that is `acme`, then

@@ -23,8 +23,21 @@ The source-only
 `actionlint-py` wrapper is replaced by the same actionlint 1.7.12 binary, pinned with the vendor release checksums
 for all supported platforms through the existing tool manifest.
 
-The project defaults to `no-build = true`: third-party dependencies need wheels. This permits the reviewed local
-workspace builds while preventing an ordinary dependency installation from executing a dependency source backend.
+The project defaults to `no-build = true`: ordinary third-party dependency installations need wheels. Reviewed
+local workspace projects can still be built.
+
+### Python 3.15 compatibility build
+
+PyYAML 6.0.3 has no upstream Python 3.15 wheel. That matrix job skips only PyYAML during the frozen wheel-only
+sync, then runs `scripts/bootstrap-pyyaml.sh`. This explicit exception builds the pure-Python wheel from the
+same source archive and SHA-256 recorded in `uv.lock`. It verifies the archive before executing a backend,
+uses a disposable environment with hash-pinned backend wheels, disables the optional native extension, and
+installs the resulting local wheel without resolving dependencies. The job has no release credentials.
+Tests reject altered archive contents before any backend command, and enforce agreement with the main lockfile.
+This preserves the existing Python matrix without enabling general source-distribution builds.
+
+Installed acceptance selects the same interpreter as its test process, avoiding accidental selection of an
+unrelated system Python with different available dependency wheels.
 
 ## Findings requiring input-boundary review
 
@@ -35,7 +48,7 @@ workspace builds while preventing an ordinary dependency installation from execu
 | `scripts/changelog_intros.py:main` | A local developer or the release helper explicitly selects input/output changelog files. The release helper supplies its own temporary previous file and the fixed `CHANGELOG.md` output. There is no HTTP input, privilege boundary or plugin operation. |
 | `scripts/release_notes.py:main` | The optional input filename is an intentional local file-reader interface. Publication supplies only a release tag and reads the fixed `CHANGELOG.md`; it does not supply an external filename. |
 | `scripts/check_confidentiality.py:sources` | The commit-message filename is supplied by the local Git hook. Worktrees may place it outside the checkout, in the shared Git directory. The tool only scans it and reports term numbers, not contents. Arbitrary network callers cannot invoke it. |
-| CI and Release `uv sync` | Installation uses `--frozen --no-build`, with a wheel-only SDK dependency and the project-level no-build policy. Reviewed local workspace projects can still be built. The previous required Git dependency build has been removed. |
+| CI and Release `uv sync` | Ordinary installation uses `--frozen --no-build`, with a wheel-only SDK dependency and the project-level no-build policy. The narrowly isolated Python 3.15 PyYAML build is documented above. The previous SDK Git build is removed. |
 
 Review any changes to these boundaries again. Do not add broad analyzer exclusions, disable security rules or use
 `NOSONAR` to suppress unreviewed findings. A false-positive resolution needs a finding-specific explanation.
