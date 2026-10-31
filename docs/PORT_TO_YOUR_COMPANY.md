@@ -1,4 +1,4 @@
-# Port Acme to your company
+# Port ACME to your company
 
 A runbook for one session, a coding agent's or yours, with nothing but this repository and access to your company's
 GitHub: it creates a **private** repository `heinzel-<company>` with the same shape as this one (a company layer, an
@@ -18,7 +18,7 @@ Two rules hold throughout:
 
 Ask the person for these, and write the answers into the new repository's `INTENT.md` as you go:
 
-| Input | Example (Acme) | Becomes |
+| Input | Example (ACME) | Becomes |
 | --- | --- | --- |
 | Company slug | `acme` | the company layer `heinzel-<company>`, package `heinzel_<company>` |
 | Org slug | `payments` | `heinzel-<company>-<org>` |
@@ -49,7 +49,7 @@ Rename, longest names first so no shorter one is replaced inside a longer one:
 | `acme-payments`, `acme_payments` | `<company>-<org>`, `<company>_<org>` |
 | `acme-lisbon`, `acme_lisbon` | `<company>-<site>`, `<company>_<site>` |
 | `heinzel-acme`, `heinzel_acme`, `acme` (module and command) | `heinzel-<company>`, `heinzel_<company>`, `<company>` |
-| `Acme`, `Payments`, `Checkout`, `Lisbon`, `acme.example` | your names and domain |
+| `ACME`, `Payments`, `Checkout`, `Lisbon`, `acme.example` | your names and domain |
 | the plugin directories under `plugins/` and the packages under `src/` | the same renames (`git mv`) |
 | `.copier-answers.yml`: `plugin_name`, `project_name`, `package_name`, `github_owner` | your answers |
 
@@ -71,7 +71,7 @@ Edit `src/heinzel_<company>/_bindings.py`: one row per capability (`code-host`, 
 command. The company playbook recommends exactly these rows; `hz setup <company>` offers them one by one.
 
 Where a first-party adapter fits (GitHub through `gh`, Jira or Confluence through `acli`, Google Workspace through
-`gws`, Zoom summaries through mail), bind it as Acme does. Where the company reaches a tool another way (an internal
+`gws`, Zoom summaries through mail), bind it as ACME does. Where the company reaches a tool another way (an internal
 CLI, an MCP gateway the company runs, an API with a token an employee may create), add the provider to the company
 layer, or to a layer of its own if only some teams use it:
 

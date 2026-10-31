@@ -1,6 +1,6 @@
-"""Where Acme's layers are declared: the one place that bridges to the core's layer API (Heinzelmännchen ADR 0040).
+"""Where ACME's layers are declared: the one place that bridges to the core's layer API (Heinzelmännchen ADR 0040).
 
-LAYER API BRIDGE. Every Acme plugin declares its place in the company's tree with `declare(module, parent=...,
+LAYER API BRIDGE. Every ACME plugin declares its place in the company's tree with `declare(module, parent=...,
 site=..., roles=...)`, the same arguments as the core's `Module.layer(...)`. When the installed Heinzelmännchen has
 `Module.layer` (the pull request "plugins are layers with a parent, stacked general to specific"), `declare` calls it,
 so the kernel stacks the layers and `hz system layer list` shows them. When it hasn't, `declare` records the layer
@@ -72,7 +72,7 @@ def declare(module: Module, *, parent: str | None = None, site: str | None = Non
 
 
 def declared() -> list[Layer]:
-    """Every layer the imported Acme plugins declared, root first, then by name along the tree."""
+    """Every layer the imported ACME plugins declared, root first, then by name along the tree."""
     return sorted(_DECLARED.values(), key=lambda layer: (layer.parent is not None, layer.name))
 
 

@@ -1,8 +1,8 @@
-# The Acme dress rehearsal
+# The ACME dress rehearsal
 
 A rehearsal of Heinzelmännchen's first slice, the team's weekly report, on two machines and in **your own trial
-accounts**, with the made-up Acme world seeded into them. The Mac mini plays the Checkout team's engineering manager
-(Nadia in the Acme world, the report owner); the MacBook Air plays an engineer who joins the team. At the end you
+accounts**, with the made-up ACME world seeded into them. The Mac mini plays the Checkout team's engineering manager
+(Nadia in the ACME world, the report owner); the MacBook Air plays an engineer who joins the team. At the end you
 have a draft of Checkout's weekly report, made from real pull requests, Jira items and Google documents, and numbers
 that say how well each step went.
 
@@ -52,7 +52,7 @@ gws auth login --scopes https://www.googleapis.com/auth/drive.file,https://www.g
 `drive.file` lets the seed create its three documents (and only files it creates); the read-only scopes are what the
 Google adapter reads with. After the rehearsal, log in again without `drive.file`.
 
-### 3. Accept Acme's bindings
+### 3. Accept ACME's bindings
 
 ```bash
 hz setup acme           # code-host github, tracker atlassian, documents/calendar/mail google, meetings zoom: yes to each you use
@@ -60,7 +60,7 @@ hz setup acme-lisbon    # the site's time zone, Europe/Lisbon
 hz system doctor        # every "acme binding" check up, except the ones you skipped
 ```
 
-### 4. Seed the Acme world
+### 4. Seed the ACME world
 
 ```bash
 hz acme seed --github-owner <your login> --email <your Atlassian e-mail>          # a dry run: every command, nothing runs
@@ -69,7 +69,7 @@ hz acme seed --github-owner <your login> --email <your Atlassian e-mail> --yes  
 
 It creates the private repository `<your login>/acme-checkout` with four pull requests (three merged), the Jira
 project `CHK` with seven items in To Do, In Progress and Done, and three Google files: the rolling **Checkout weekly
-report** (weeks 41 and 42), **Acme Payments OKRs Q4** and the **Checkout engineering tracker** sheet. It stops at
+report** (weeks 41 and 42), **ACME Payments OKRs Q4** and the **Checkout engineering tracker** sheet. It stops at
 the first failure; seed the parts that didn't finish again with `--only github`, `--only jira` or `--only google`.
 The last lines are the `hz heinzel new` command with every `--asset` filled in.
 
@@ -118,7 +118,7 @@ hz heinzel sent weekly-report --file <the text you sent> --edit-minutes <your es
 hz heinzel show weekly-report              # the success test: drafting time, cost, share changed
 ```
 
-`hz heinzel discover` runs the playbooks' hints: in a trial account they find nothing, because the hints name Acme's
+`hz heinzel discover` runs the playbooks' hints: in a trial account they find nothing, because the hints name ACME's
 own (made-up) document ids. That is expected; note it under "What to measure".
 
 ## MacBook Air: the engineer
@@ -133,7 +133,7 @@ The launcher installs the standard app and default plugins when needed. Follow t
 [join-your-team guide](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/joining/) for authentication,
 setup, plugin confirmation and the information kept locally.
 
-Joining configures team membership; it does not install Acme or its integrations. On the engineer's machine,
+Joining configures team membership; it does not install ACME or its integrations. On the engineer's machine,
 repeat the plugin additions in step 1, sign in as the engineer in step 2, and accept the bindings in step 3.
 
 Then run the weekly report the way the manager did (step 6), against the same seeded world.
@@ -157,5 +157,5 @@ Write each number down as you go; the point is to find what breaks before a real
 ## Clean up
 
 Delete `<your login>/acme-checkout` and `hz-team-checkout` on GitHub, the `CHK` project in Jira and the three Google
-files, then `hz system plugin remove heinzel-acme-payments-checkout` (and the other Acme plugins) and log `gws` in
+files, then `hz system plugin remove heinzel-acme-payments-checkout` (and the other ACME plugins) and log `gws` in
 again without `drive.file`.

@@ -1,20 +1,20 @@
-"""The made-up Acme world: its people, its Checkout team's tracker items, pull requests and documents.
+"""The made-up ACME world: its people, its Checkout team's tracker items, pull requests and documents.
 
-Everything here is fiction (company Acme at acme.example, org Payments, team Checkout, site Lisbon). `hz acme seed`
+Everything here is fiction (company ACME at acme.example, org Payments, team Checkout, site Lisbon). `hz acme seed`
 writes it into the person's own trial accounts for a dress rehearsal of the weekly report; tests read it to check the
 playbook against a world that has every asset the template contract needs.
 """
 
 from dataclasses import dataclass
 
-COMPANY = "Acme"
+COMPANY = "ACME"
 DOMAIN = "acme.example"
 ORG = "Payments"
 TEAM = "Checkout"
 SITE = "Lisbon"
 PROJECT_KEY = "CHK"
 """The Checkout team's tracker project key; fixed, so the playbook's hints and the seeded world agree."""
-PROJECT_NAME = "Acme Checkout"
+PROJECT_NAME = "ACME Checkout"
 REPOSITORY = "acme-checkout"
 """The demo repository's name; it is created under the person's own GitHub account."""
 
@@ -118,7 +118,7 @@ CHANGES: tuple[Change, ...] = (
 )
 
 OKR_DOC = """\
-<h1>Acme Payments OKRs, Q4</h1>
+<h1>ACME Payments OKRs, Q4</h1>
 <p>Owner: the Payments org. Teams: Checkout, Payouts. Reviewed every second Monday.</p>
 <h2>O1: Paying is effortless</h2>
 <ul>

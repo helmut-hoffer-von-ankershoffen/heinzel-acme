@@ -4,6 +4,33 @@ The team layer of [heinzel-acme](../../README.md), Heinzelmännchen's made-up re
 of the org `acme-payments` at the site `acme-lisbon`. Installing it installs its stack: `acme`, `acme-payments`,
 `acme-lisbon`.
 
+## Gallery
+
+Real captures with fictional demonstration data and unconnected accounts.
+
+[![The Checkout weekly-report workflow](docs/assets/screenshots/report-workflow.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+
+*Checkout's report connects code, tracker and documents.*
+
+[![The compiled weekly-report contract and its inputs](docs/assets/screenshots/report-inputs.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+
+*A compiled weekly-report contract with its inputs and local draft.*
+
+[![A saved draft in the app terminal](docs/assets/screenshots/draft-in-terminal.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+
+*A locally saved fictional draft from a deterministic demo runner, in the app terminal.*
+
+<details>
+<summary>See the CLI output</summary>
+
+[![The saved draft in the terminal](docs/assets/screenshots/cli-draft.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+
+*The same locally saved fictional report, ready to review and edit.*
+
+</details>
+
+[View the full gallery on the plugin page →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+
 It brings the weekly report playbook:
 
 - asset types `weekly-report` (the rolling report document, kept by the template), `engineering-tracker` (the

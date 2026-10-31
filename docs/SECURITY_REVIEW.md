@@ -1,6 +1,6 @@
 # Development-tool security review
 
-Acme's SonarCloud security findings include local development commands. Review their actual input boundaries
+ACME's SonarCloud security findings include local development commands. Review their actual input boundaries
 before changing the commands or resolving a finding. Plugin runtime code is not exposed through these scripts.
 
 ## Changes

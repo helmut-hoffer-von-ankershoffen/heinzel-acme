@@ -1,4 +1,4 @@
-"""Acme Payments Checkout, a made-up team: the team layer of the reference company (core ADR 0040).
+"""ACME Payments Checkout, a made-up team: the team layer of the reference company (core ADR 0040).
 
 The team layer brings the team's own work: the weekly report playbook. Its asset types are the documents and places
 the report is made from and kept in (the weekly report document, the engineering tracker, the tracker project and the
@@ -16,10 +16,10 @@ from pydantic import Field
 from heinzel_acme import LayerAbout, about_layer, layers
 
 WEEKLY_REPORT_DOCUMENT = "1AcmeCheckoutWeeklyReportReferenceId00000"
-"""Acme's own rolling weekly report document: made up. A real team puts its document's id here; in a trial account
+"""ACME's own rolling weekly report document: made up. A real team puts its document's id here; in a trial account
 the hint reports it as not found, and you name your copy with `--asset weekly-report=<id>`."""
 TRACKER_DOCUMENT = "1AcmeCheckoutEngineeringTrackerRefId00000"
-"""Acme's own engineering tracker sheet: made up, like the weekly report document."""
+"""ACME's own engineering tracker sheet: made up, like the weekly report document."""
 TEMPLATES = Path(__file__).parent / "templates"
 """The template contracts, `<name>.prose.md`, read when the plugin is imported."""
 DRAFT_TAGS = {
@@ -36,7 +36,7 @@ class CheckoutAbout(LayerAbout):
     draft_tags: dict[str, str] = Field(description="How a draft is marked in place, by asset type (ADR 0038).")
 
 
-module = Module("acme-payments-checkout", "Acme Payments Checkout, a made-up team: its weekly report playbook.")
+module = Module("acme-payments-checkout", "ACME Payments Checkout, a made-up team: its weekly report playbook.")
 layers.declare(module, parent="acme-payments", site="acme-lisbon")
 module.playbook(
     "Draft Checkout's weekly report by Friday 17:00 Lisbon time from the week's merged pull requests, tracker changes, "
@@ -82,7 +82,7 @@ module.playbook(
 
 @module.operation
 def info() -> CheckoutAbout:
-    """Show this plugin, its place in Acme's tree, what it brings and how drafts are marked in place."""
+    """Show this plugin, its place in ACME's tree, what it brings and how drafts are marked in place."""
     base = about_layer(
         "heinzel-acme-payments-checkout",
         module.name,
