@@ -133,6 +133,9 @@ The launcher installs the standard app and default plugins when needed. Follow t
 [join-your-team guide](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/joining/) for authentication,
 setup, plugin confirmation and the information kept locally.
 
+Joining configures team membership; it does not install Acme or its integrations. On the engineer's machine,
+repeat the plugin additions in step 1, sign in as the engineer in step 2, and accept the bindings in step 3.
+
 Then run the weekly report the way the manager did (step 6), against the same seeded world.
 
 ## What to measure
