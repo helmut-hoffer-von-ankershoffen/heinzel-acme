@@ -18,7 +18,6 @@ def test_readme_status_badges_share_one_row():
         "CI",
         "Coverage",
         "CodeQL",
-        "PyPI",
         "Python",
         "Quality Gate Status",
         "Security Rating",
@@ -26,3 +25,7 @@ def test_readme_status_badges_share_one_row():
     ):
         assert f"[![{label}](" in badges
         assert f"[![{label}](" not in text[: match.start()] + text[match.end() :]
+
+
+def test_unpublished_package_has_no_pypi_badge():
+    assert "[![PyPI]" not in (ROOT / "README.md").read_text()
