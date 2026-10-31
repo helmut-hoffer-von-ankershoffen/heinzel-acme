@@ -339,3 +339,18 @@ venv = ".venv"
 CPY = "CPY" # ruff rule prefix (flake8-copyright)
 Prompty = "Prompty" # a prompt file format, cited in docs/research/workflow-contracts.md
 intoto = "intoto" # in-toto attestations, as in provenance.intoto.jsonl
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/cli.png"
+surface = "cli"
+caption = "hz acme layers — isolated demonstration profile"
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/ui.png"
+surface = "ui"
+caption = "Installed ACME theme in the app"
+
+[[tool.heinzel.catalog.screenshots]]
+path = "docs/assets/ui-dark.png"
+surface = "ui"
+caption = "Installed ACME theme in the app — dark appearance"
