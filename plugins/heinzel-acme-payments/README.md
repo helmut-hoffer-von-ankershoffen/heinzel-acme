@@ -4,6 +4,8 @@ The org layer of [heinzel-acme](../../README.md), Heinzelmännchen's made-up ref
 under the company layer `acme`. It brings how the org plans: a playbook with the `okr` asset type, the quarter's OKR
 document, and a hint that confirms the org's own document. Every team below it reads it through its stack.
 
+You do not install this layer on its own: it comes with the Checkout team, which depends on it. See [Install and look](../../README.md#install-and-look).
+
 ## Gallery
 
 Real captures with fictional demonstration data and unconnected accounts.

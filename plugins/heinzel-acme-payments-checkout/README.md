@@ -4,6 +4,16 @@ The team layer of [heinzel-acme](../../README.md), Heinzelmännchen's made-up re
 of the org `acme-payments` at the site `acme-lisbon`. Installing it installs its stack: `acme`, `acme-payments`,
 `acme-lisbon`.
 
+## Install
+
+Start Heinzelmännchen with `uvx heinzel@latest` ([installation guide](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/install/)), then in a second terminal:
+
+```bash
+hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme#subdirectory=plugins/heinzel-acme-payments-checkout" --confirm
+```
+
+The org, site and company layers come with it.
+
 ## Gallery
 
 Real captures with fictional demonstration data and unconnected accounts.
@@ -43,5 +53,5 @@ It brings the weekly report playbook:
 
 ```bash
 hz heinzel new weekly-report --template acme-payments-checkout:weekly-report --asset weekly-report=<id> ...
-hz heinzel run weekly-report --dry-run
+hz heinzel wake weekly-report --dry-run
 ```

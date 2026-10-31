@@ -5,6 +5,8 @@ under the company layer `acme` and beside the org tree. It brings the site calen
 (Europe/Lisbon, a setting `[acme-lisbon] time_zone` its playbook recommends), working hours, and the rhythm of
 stand-up, planning, demo and the Friday 17:00 weekly report deadline.
 
+You do not install this layer on its own: it comes with the Checkout team, which depends on it. See [Install and look](../../README.md#install-and-look).
+
 ## Gallery
 
 Real captures with fictional demonstration data and unconnected accounts.

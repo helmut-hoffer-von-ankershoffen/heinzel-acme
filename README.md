@@ -4,25 +4,25 @@
 [![CI](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/ci.yml/badge.svg)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/ci.yml) [![Coverage](https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel-acme/python-coverage-comment-action-data/badge.svg)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/tree/python-coverage-comment-action-data) [![CodeQL](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/codeql.yml/badge.svg)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/codeql.yml) [![Release](https://img.shields.io/github/v/release/helmut-hoffer-von-ankershoffen/heinzel-acme?sort=semver)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/releases) [![Python](https://img.shields.io/badge/python-3.12%2B-blue)](pyproject.toml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=helmut-hoffer-von-ankershoffen_heinzel-acme&metric=alert_status)](https://sonarcloud.io/summary/overall?id=helmut-hoffer-von-ankershoffen_heinzel-acme) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=helmut-hoffer-von-ankershoffen_heinzel-acme&metric=security_rating)](https://sonarcloud.io/summary/overall?id=helmut-hoffer-von-ankershoffen_heinzel-acme) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 <!-- badges:end -->
 
-**A fictional company you can explore, install and adapt for your own team.**
+**A fictional company you can install, explore and copy for your own team.** ACME is the reference company for
+[Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel), the open-source crew of AI helpers that
+drafts your team's busywork and asks before anything leaves your machine. Four plugins give a made-up team its
+company, organization, site and team layers, with a weekly-report playbook that drafts locally for you to edit.
 
 [**Explore ACME on the plugin page →**](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
 · [Install the team stack](#install-and-look) · [Port it to your company](#port-it-to-your-company)
 
-<a href="https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/ui-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="docs/assets/ui.png">
-  <img src="docs/assets/ui.png" alt="The installed ACME theme in Heinzelmännchen, using an isolated demonstration profile" width="1120">
-</picture>
-</a>
+[![The workflow view in ACME's installed theme: connected systems, discovered assets and the weekly-report contract they feed, drawn as a graph](docs/assets/screenshots/company-workflow.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
 
-*The running ACME theme, captured with Heinzelmännchen 0.9.8 and fictional profile data. Accounts are unconnected;
-the Doctor card shows the remaining setup. [View the full gallery and soundscape →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)*
+*The running app with the ACME theme, captured with Heinzelmännchen 0.9.8 and fictional data. Accounts are
+unconnected; the drafts you see are saved locally and sent nowhere. [View the full gallery and soundscape →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)*
 
-ACME is the reference company for [Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel):
-four plugins modelling a company, an organization, a site and a team. Installing the Checkout team brings its
-company, Payments organization and Lisbon site with it.
+<table><tr><td width="96"><img src="https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel/e6c2e707726741e28ecc9360a3683fc00e968dfb/docs/assets/website/helper-draftkeeper.svg" width="72" alt="Ada, a Heinzelmännchen with a teal hat and rose shirt, carrying a draft"></td><td>
+
+**Ada:** "Here is how the pieces connect." Installing the Checkout team brings its Payments organization, Lisbon site
+and ACME company with it, stacked from general to specific.
+
+</td></tr></table>
 
 - **Explore a complete team stack:** layers, recommended integrations, roles and calendars.
 - **Try a weekly-report playbook:** templates and contracts that a team can adapt.
@@ -36,17 +36,10 @@ and [plugin playbooks](https://github.com/helmut-hoffer-von-ankershoffen/heinzel
 
 Real captures with fictional demonstration data and unconnected accounts.
 
-[![The ACME theme and weekly-report workflow](docs/assets/screenshots/company-workflow.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
-
-*ACME theme and weekly-report workflow with fictional local demonstration data.*
-
-[![The applied ACME theme in light mode](docs/assets/screenshots/theme-light.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
-
-*The applied ACME theme in light mode.*
-
-[![The same ACME workflow in dark mode](docs/assets/screenshots/theme-dark.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
-
-*The same workflow in dark mode.*
+<table><tr>
+<td width="50%" valign="top"><a href="https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/"><img src="docs/assets/screenshots/theme-light.png" alt="The applied ACME theme in light mode" width="100%"></a><br><sub>The applied ACME theme in light mode.</sub></td>
+<td width="50%" valign="top"><a href="https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/"><img src="docs/assets/screenshots/theme-dark.png" alt="The same ACME workflow in dark mode" width="100%"></a><br><sub>The same workflow in dark mode.</sub></td>
+</tr></table>
 
 <details>
 <summary>See the CLI output</summary>
@@ -60,16 +53,6 @@ Real captures with fictional demonstration data and unconnected accounts.
 [View the full gallery on the plugin page →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
 
 ## The layers
-
-<details>
-<summary>See the CLI screenshot</summary>
-
-[![The ACME company, site, organization and team layers shown by the hz acme layers command](docs/assets/cli.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
-
-*Real `hz acme layers` output from the same isolated demonstration profile.*
-
-
-</details>
 
 <details>
 <summary>Layer dependency diagram</summary>
@@ -102,17 +85,28 @@ and nothing any layer brings becomes your configuration until you accept it (`hz
 
 ## Install and look
 
-For macOS and Linux, start with the [standard app installation guide](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/install/).
-Use `uvx heinzel@latest` if uv is available, or its guided curl/wget installer to install prerequisites automatically.
-Windows may work, but is not supported.
+You need Heinzelmännchen first. One command installs the app with its default plugins and opens it:
 
-Once Heinzelmännchen is installed:
+```sh
+uvx heinzel@latest
+```
+
+No uv yet? The guided installer sets it up first:
+
+```sh
+curl -LsSf https://helmut.hoffer-von-ankershoffen.me/heinzel/install.sh | sh
+```
+
+Supported on **macOS and Linux**; Windows may work, but is not supported. Details: the
+[standard app installation guide](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/install/).
+
+In a second terminal, add the Checkout team. Its layers come with it:
 
 ```bash
 hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme#subdirectory=plugins/heinzel-acme-payments-checkout" --confirm
 ```
 
-One plugin, the team's: its org, site and company come with it, as its dependencies. Then:
+Then look around:
 
 ```bash
 hz system layer list        # the tree, from the core (a core with the layer API)
@@ -131,12 +125,22 @@ that fixes it.
 
 ## The weekly report
 
+[![A saved weekly-report draft, listed in the app's terminal and ending: fictional local demonstration, review before sharing](plugins/heinzel-acme-payments-checkout/docs/assets/screenshots/draft-in-terminal.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+
+*A locally saved fictional draft from a deterministic demo runner. [See the Checkout gallery →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)*
+
+<table><tr><td width="96"><img src="https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel/e6c2e707726741e28ecc9360a3683fc00e968dfb/docs/assets/website/helper-reviewer.svg" width="72" alt="Otto, an old Heinzelmännchen with a slate hat and a long white beard"></td><td>
+
+**Otto:** "A first draft. You decide what stays." The report is saved on your machine; nothing is posted or sent for you.
+
+</td></tr></table>
+
 ```bash
 hz heinzel new weekly-report --template acme-payments-checkout:weekly-report \
   --asset weekly-report=<doc id> --asset engineering-tracker=<sheet id> \
   --asset tracker-project=CHK --asset code-repo=<owner>/acme-checkout
-hz heinzel run weekly-report --dry-run     # the inputs, fetched through gh, acli and gws; no agent, no cost
-hz heinzel run weekly-report               # the draft, saved locally for you to edit and send
+hz heinzel wake weekly-report --dry-run     # the inputs, fetched through gh, acli and gws; no agent, no cost
+hz heinzel wake weekly-report               # the draft, saved locally for you to edit and send
 ```
 
 To try it against a real (trial) world, [docs/REHEARSAL.md](docs/REHEARSAL.md) walks a manager and an engineer through
@@ -152,6 +156,7 @@ through a private layer, and what to verify first. This repository plus that run
 
 Each plugin declares its supported SDK range in its project metadata. The development lock records the SDK used by
 tests; users install the standard app without selecting an SDK version. No unreleased Core checkout is required.
+Plugin releases are independent of Core. An explicitly selected plugin tag or commit stays pinned when hz updates.
 
 ## Theme
 
@@ -183,8 +188,6 @@ hz system config set system.sound.follow_theme false
 hz system sound use acme
 hz system sound use off
 ```
-
-Plugin releases are independent of Core. An explicitly selected plugin tag or commit stays pinned when hz updates.
 
 ## Develop
 
