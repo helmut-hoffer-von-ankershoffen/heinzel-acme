@@ -63,7 +63,7 @@ def github(owner: str) -> list[Step]:
             summary=f"Create the private demo repository {repo} with a README",
             tool="gh",
             args=("repo", "create", repo, "--private", "--add-readme", "--description",
-                  "Acme Checkout: a made-up repository for a Heinzelmännchen rehearsal"),
+                  "ACME Checkout: a made-up repository for a Heinzelmännchen rehearsal"),
         ),
         Step(summary="Clone it into the working directory", tool="gh", args=("repo", "clone", repo, clone),
              remote=False),
@@ -100,7 +100,7 @@ def jira(email: str) -> list[Step]:
     project = {
         "key": PROJECT_KEY,
         "name": PROJECT_NAME,
-        "description": "Acme Checkout: a made-up project for a Heinzelmännchen rehearsal.",
+        "description": "ACME Checkout: a made-up project for a Heinzelmännchen rehearsal.",
         "leadAccountEmail": email,
         "projectTypeKey": "software",
         "projectTemplateKey": PROJECT_TEMPLATE,
@@ -132,7 +132,7 @@ def google() -> list[Step]:
     """Create the weekly report and OKR documents and the engineering tracker sheet, by uploading converted files."""
     files = (
         ("weekly-report", "weekly-report.html", "Checkout weekly report", DOCUMENT, "text/html", WEEKLY_REPORT_DOC),
-        ("okr", "okr.html", "Acme Payments OKRs Q4", DOCUMENT, "text/html", OKR_DOC),
+        ("okr", "okr.html", "ACME Payments OKRs Q4", DOCUMENT, "text/html", OKR_DOC),
         ("engineering-tracker", "tracker.csv", "Checkout engineering tracker", SPREADSHEET, "text/csv",
          TRACKER_SHEET),
     )  # fmt: skip

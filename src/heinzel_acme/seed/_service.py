@@ -40,7 +40,7 @@ def _next(refs: dict[str, str]) -> list[str]:
 
 
 class SeedService:
-    """Seeds the made-up Acme world into the person's own trial accounts, through the vendor CLIs."""
+    """Seeds the made-up ACME world into the person's own trial accounts, through the vendor CLIs."""
 
     def __init__(self, commands: Subprocesses, workdir: Callable[[], str] | None = None) -> None:
         """Use `commands` to run the CLIs; `workdir` makes the working directory (a new temporary one by default)."""

@@ -12,11 +12,11 @@ Read [INTENT.md](INTENT.md) first.
 3. **Every change is tested** as `unit`, `integration` or `e2e`; the suite refuses anything else.
 4. **Conventional commits**, always. Versions and the changelog are derived from them.
 5. **Review before you finish** with the `review` skill and resolve every Critical and Required finding.
-6. **Public and fictional.** Only made-up names: Acme (acme.example), org Payments, team Checkout, site Lisbon, the
+6. **Public and fictional.** Only made-up names: ACME (acme.example), org Payments, team Checkout, site Lisbon, the
    people in `src/heinzel_acme/_world.py`. Never a real company, team, product or person, in files, commit messages
    or pull request titles; `scripts/check_confidentiality.py` checks a private term list.
 7. **Layers follow the core's ADR 0040.** A plugin per layer, named after its path, depending on its parent and site;
-   declared only through `heinzel_acme.layers.declare` to retain the Acme tree view alongside the released core's `Module.layer`
+   declared only through `heinzel_acme.layers.declare` to retain the ACME tree view alongside the released core's `Module.layer`
    (`tests/unit/repository_test.py` keeps these rules).
 
 ## Commands
@@ -39,8 +39,8 @@ src/heinzel_acme/                 the company layer `acme`
   __init__.py                     module, its layer, the playbook recommending the bindings, info, layers, doctor
   layers.py                       THE bridge to the core's layer API (`declare`); every layer declares through it
   _bindings.py                    capability -> adapter, plugin, transport, login: what `hz setup acme` offers
-  themes/, soundscapes/           Acme's released theme, logo and opt-in soundscape
-  _world.py                       the made-up Acme world (people, items, pull requests, documents)
+  themes/, soundscapes/           ACME's released theme, logo and opt-in soundscape
+  _world.py                       the made-up ACME world (people, items, pull requests, documents)
   seed/                           `hz acme seed`, rehearsal only: plan (pure), runner (vendor CLIs), service
 plugins/heinzel-acme-payments/    the org layer: the okr asset type
 plugins/heinzel-acme-lisbon/      the site layer: the site calendar as data

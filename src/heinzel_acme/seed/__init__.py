@@ -1,4 +1,4 @@
-"""`hz acme seed`: REHEARSAL ONLY. Writes the made-up Acme world into the person's own trial accounts.
+"""`hz acme seed`: REHEARSAL ONLY. Writes the made-up ACME world into the person's own trial accounts.
 
 A dry run by default: it lists every command it would run, and changes nothing. With `--yes` it creates, through the
 vendor CLIs logged in as the person, a private demo repository with a few pull requests (`gh`), the Jira project
@@ -16,7 +16,7 @@ from heinzel_acme.seed._render import render
 from heinzel_acme.seed._runner import Subprocesses
 from heinzel_acme.seed._service import SeedService
 
-module = Module("seed", "Rehearsal only: seed the made-up Acme world into your own trial accounts.")
+module = Module("seed", "Rehearsal only: seed the made-up ACME world into your own trial accounts.")
 module.service(Subprocesses)
 module.service(SeedService)
 
@@ -35,7 +35,7 @@ def seed(
     ] = None,
     yes: Annotated[bool, Field(description="Carry out the plan; without it nothing runs.")] = False,
 ) -> SeedPlan:
-    """Rehearsal only: show, then with --yes create, the made-up Acme world in your own trial accounts."""
+    """Rehearsal only: show, then with --yes create, the made-up ACME world in your own trial accounts."""
     return service.seed(owner=github_owner, email=email, only=only or [], yes=yes)
 
 
