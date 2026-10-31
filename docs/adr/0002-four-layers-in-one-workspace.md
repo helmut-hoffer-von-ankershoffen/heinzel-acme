@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-10-24
+amended-by: 0003
 ---
 
 # 0002: Acme is four plugins in one workspace, declared through one bridge to the core's layer API

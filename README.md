@@ -14,7 +14,7 @@ company, organization, site and team layers, with a weekly-report playbook that 
 
 [![The workflow view in ACME's installed theme: connected systems, discovered assets and the weekly-report contract they feed, drawn as a graph](docs/assets/screenshots/company-workflow.png)](https://heinzel.team/catalog/heinzel-acme-aa9ce1cf07/)
 
-*The running app with the ACME theme, captured with Heinzelmännchen 0.9.8 and fictional data. Accounts are
+*The running app in the ACME theme, with fictional data. Accounts are
 unconnected; the drafts you see are saved locally and sent nowhere. [View the full gallery and soundscape →](https://heinzel.team/catalog/heinzel-acme-aa9ce1cf07/)*
 
 <table><tr><td width="96"><img src="https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel/e6c2e707726741e28ecc9360a3683fc00e968dfb/docs/assets/website/helper-draftkeeper.svg" width="72" alt="Ada, a Heinzelmännchen with a teal hat and rose shirt, carrying a draft"></td><td>
@@ -81,7 +81,7 @@ and nothing any layer brings becomes your configuration until you accept it (`hz
 | [`heinzel-acme`](src/heinzel_acme/) | company | Bindings for code host (GitHub, `gh`), tracker (Jira, `acli`), documents, calendar and mail (Google Workspace, `gws`) and meetings (Zoom's summary e-mails), offered by `hz setup acme`; roles; a doctor check per binding; `hz acme layers`; `hz acme seed` |
 | [`heinzel-acme-payments`](plugins/heinzel-acme-payments/) | org | A playbook with the `okr` asset type: the org's quarterly OKR document |
 | [`heinzel-acme-lisbon`](plugins/heinzel-acme-lisbon/) | site | The site calendar as data (`hz acme-lisbon calendar`): Europe/Lisbon, 09:00 to 18:00, stand-up, planning, demo, the Friday 17:00 report deadline |
-| [`heinzel-acme-payments-checkout`](plugins/heinzel-acme-payments-checkout/) | team | The weekly report playbook: asset types (weekly report document, engineering tracker, tracker project, code repository) with discovery hints, and the template contract `acme-payments-checkout:weekly-report`, a draft ready by Friday 17:00 |
+| [`heinzel-acme-payments-checkout`](plugins/heinzel-acme-payments-checkout/) | team | The weekly report playbook: asset types (weekly report document, engineering tracker, tracker project, code repository) with discovery hints, and the template contract `acme-payments-checkout:weekly-report`, a draft by hand, schedulable for Friday 17:00 |
 
 ## Install and look
 
@@ -109,7 +109,7 @@ hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/hein
 Then look around:
 
 ```bash
-hz system layer list        # the tree, from the core (a core with the layer API)
+hz system layer list        # the tree, from the core
 hz system layer show        # your stack: acme → acme-payments + acme-lisbon → acme-payments-checkout
 hz acme layers              # the same tree as ACME declares it, on any core
 hz acme info                # the bindings ACME recommends and how they stand on this machine
@@ -197,7 +197,7 @@ make check     # lint, types, unit and integration tests of all four plugins (of
 make test-e2e  # installs Heinzelmännchen with uv and adds the team plugin from this checkout
 ```
 
-See the [development-tool security review](docs/SECURITY_REVIEW.md) for dependency-build and CLI input boundaries.
+See the [threat model](docs/SECURITY_REVIEW.md) for what the plugins read, write and send.
 Run `make setup` before the PR or release helpers. Their direct tool invocations reuse the installed environment;
 delegated checks, fixes and Git hooks retain their own dependency installation and build steps.
 
