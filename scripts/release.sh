@@ -23,11 +23,11 @@ die() { echo "error: $*" >&2; exit 1; }
 
 git fetch --tags --quiet origin 2>/dev/null || true
 
-current="$(uv run --frozen bump-my-version show current_version)"
+current="$(uv run --no-sync --no-build --frozen bump-my-version show current_version)"
 if [[ "$bump" == "auto" ]]; then
-  next="$(uv run --frozen git-cliff --offline --bumped-version)"
+  next="$(uv run --no-sync --no-build --frozen git-cliff --offline --bumped-version)"
 else
-  next="$(uv run --frozen bump-my-version show --increment "$bump" new_version)"
+  next="$(uv run --no-sync --no-build --frozen bump-my-version show --increment "$bump" new_version)"
 fi
 next="${next#v}"
 tag="v$next"
@@ -38,15 +38,15 @@ git rev-parse -q --verify "refs/tags/$tag" >/dev/null && die "tag $tag already e
 
 echo "Preparing $tag (was $current)" >&2
 git switch --quiet --create "release/$tag"
-uv run --frozen bump-my-version bump --new-version "$next" --no-commit --no-tag --allow-dirty >&2
+uv run --no-sync --no-build --frozen bump-my-version bump --new-version "$next" --no-commit --no-tag --allow-dirty >&2
 uv lock --quiet
 # Regenerate what derives from the version (the plugin template's pyproject, generated docs); the release PR's
 # lint fails otherwise.
 make --no-print-directory fix >&2
 # git-cliff writes every release from the commits; the introductions written under the headings come from the old file.
 if [[ -f CHANGELOG.md ]]; then cp CHANGELOG.md "$work/previous.md"; fi
-uv run --frozen git-cliff --offline --tag "$tag" --output CHANGELOG.md
-uv run --script scripts/changelog_intros.py "$work/previous.md" CHANGELOG.md --version "$next" \
+uv run --no-sync --no-build --frozen git-cliff --offline --tag "$tag" --output CHANGELOG.md
+uv run --frozen --no-sync --no-build python scripts/changelog_intros.py "$work/previous.md" CHANGELOG.md --version "$next" \
   --intro "${INTRO:-}"
 git add --update
 git commit --quiet --message "chore(release): $tag"
@@ -54,7 +54,7 @@ git commit --quiet --message "chore(release): $tag"
 if [[ "$open_pr" == "--open-pr" ]]; then
   git ls-remote --exit-code --heads origin "release/$tag" >/dev/null && die "release/$tag already exists on origin"
   git push --quiet --set-upstream origin "release/$tag"
-  uv run --script scripts/release_notes.py "$tag" > "$work/notes.md"
+  uv run --frozen --no-sync --no-build python scripts/release_notes.py "$tag" > "$work/notes.md"
   gh pr create --base main --head "release/$tag" --title "chore(release): $tag" --body-file "$work/notes.md" >&2
 fi
 echo "$tag"

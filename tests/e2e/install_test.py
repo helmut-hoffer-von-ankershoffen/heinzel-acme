@@ -1,20 +1,27 @@
 """Install Heinzelmännchen with `uv tool install`, develop the team plugin, use its stack. Needs network.
 
-Set HZ_SPEC to test against another Heinzelmännchen, e.g. `HZ_SPEC=git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@main`.
+Set HZ_SPEC to test against another Heinzelmännchen wheel, e.g. `HZ_SPEC=/path/to/heinzel.whl`.
 """
 
+import hashlib
 import json
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
+from urllib.request import urlopen
 
 import pytest
 
 pytestmark = [pytest.mark.e2e, pytest.mark.timeout(300)]
 
 REPO = Path(__file__).resolve().parents[2]
-HZ_SPEC = os.environ.get("HZ_SPEC", "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel@v0.7.2")
+DEFAULT_SDK = (
+    "https://github.com/helmut-hoffer-von-ankershoffen/heinzel/releases/download/v0.7.2/heinzel-0.7.2-py3-none-any.whl"
+)
+SDK_SHA256 = "c93d960d66488358c94bbb043cd87abd63c8d4e2de9e058a65abc3bbb03cdcc8"
+HZ_SPEC = os.environ.get("HZ_SPEC", DEFAULT_SDK)
 
 
 @pytest.fixture(scope="module")
@@ -24,7 +31,20 @@ def hz(tmp_path_factory):
     env.pop("VIRTUAL_ENV", None)
     uv = shutil.which("uv")
     assert uv, "uv is not on PATH: https://docs.astral.sh/uv/"
-    subprocess.run([uv, "tool", "install", HZ_SPEC], check=True, env=env, timeout=240)
+    spec = HZ_SPEC
+    if spec == DEFAULT_SDK:
+        # uv tool install does not enforce URL hash fragments; verify before executing the wheel.
+        with urlopen(DEFAULT_SDK, timeout=60) as response:
+            data = response.read()
+        if hashlib.sha256(data).hexdigest() != SDK_SHA256:
+            msg = "SDK wheel checksum mismatch; refusing to install"
+            raise ValueError(msg)
+        wheel = root / "heinzel-0.7.2-py3-none-any.whl"
+        wheel.write_bytes(data)
+        spec = str(wheel)
+    subprocess.run(
+        [uv, "tool", "install", "--python", sys.executable, "--no-build", spec], check=True, env=env, timeout=240
+    )
 
     def run(*args: str) -> str:
         result = subprocess.run(
