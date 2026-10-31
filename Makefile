@@ -114,7 +114,7 @@ secrets: ## Scan the whole git history for credentials with gitleaks (the pre-co
 licenses: ## Check that runtime dependencies' licenses are on .license-allowlist, so releases stay MIT-compatible
 	bash scripts/check_licenses.sh
 
-build: ## Build wheels and sdists into dist/ (every Acme layer: company, org, site, team)
+build: ## Build wheels and sdists into dist/ (every ACME layer: company, org, site, team)
 	uv build --all-packages
 
 changelog: ## Preview the changelog for unreleased commits

@@ -6,7 +6,7 @@
 
 **A fictional company you can explore, install and adapt for your own team.**
 
-[**Explore Acme on the plugin page →**](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+[**Explore ACME on the plugin page →**](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
 · [Install the team stack](#install-and-look) · [Port it to your company](#port-it-to-your-company)
 
 <a href="https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/">
@@ -20,7 +20,7 @@
 *The running ACME theme, captured with Heinzelmännchen 0.9.8 and fictional profile data. Accounts are unconnected;
 the Doctor card shows the remaining setup. [View the full gallery and soundscape →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)*
 
-Acme is the reference company for [Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel):
+ACME is the reference company for [Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel):
 four plugins modelling a company, an organization, a site and a team. Installing the Checkout team brings its
 company, Payments organization and Lisbon site with it.
 
@@ -28,16 +28,43 @@ company, Payments organization and Lisbon site with it.
 - **Try a weekly-report playbook:** templates and contracts that a team can adapt.
 - **Make it yours:** use the [porting runbook](docs/PORT_TO_YOUR_COMPANY.md) as a worked example for a private company repository.
 
-Everything here is fiction: Acme (acme.example), its people, its teams and its documents. It follows the core's
+Everything here is fiction: ACME (acme.example), its people, its teams and its documents. It follows the core's
 [layer model](https://github.com/helmut-hoffer-von-ankershoffen/heinzel/blob/main/docs/adr/0040-layers-and-playbooks-are-plugins.md)
 and [plugin playbooks](https://github.com/helmut-hoffer-von-ankershoffen/heinzel/blob/main/docs/adr/0037-plugins-bring-playbooks.md).
+
+## Gallery
+
+Real captures with fictional demonstration data and unconnected accounts.
+
+[![The ACME theme and weekly-report workflow](docs/assets/screenshots/company-workflow.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+
+*ACME theme and weekly-report workflow with fictional local demonstration data.*
+
+[![The applied ACME theme in light mode](docs/assets/screenshots/theme-light.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+
+*The applied ACME theme in light mode.*
+
+[![The same ACME workflow in dark mode](docs/assets/screenshots/theme-dark.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+
+*The same workflow in dark mode.*
+
+<details>
+<summary>See the CLI output</summary>
+
+[![The ACME company, org, site and team stack in the terminal](docs/assets/screenshots/cli-stack.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+
+*The real company, org, site and team stack, with clearly named offline-demo adapters.*
+
+</details>
+
+[View the full gallery on the plugin page →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
 
 ## The layers
 
 <details>
 <summary>See the CLI screenshot</summary>
 
-[![The Acme company, site, organization and team layers shown by the hz acme layers command](docs/assets/cli.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+[![The ACME company, site, organization and team layers shown by the hz acme layers command](docs/assets/cli.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
 
 *Real `hz acme layers` output from the same isolated demonstration profile.*
 
@@ -90,8 +117,8 @@ One plugin, the team's: its org, site and company come with it, as its dependenc
 ```bash
 hz system layer list        # the tree, from the core (a core with the layer API)
 hz system layer show        # your stack: acme → acme-payments + acme-lisbon → acme-payments-checkout
-hz acme layers              # the same tree as Acme declares it, on any core
-hz acme info                # the bindings Acme recommends and how they stand on this machine
+hz acme layers              # the same tree as ACME declares it, on any core
+hz acme info                # the bindings ACME recommends and how they stand on this machine
 hz system doctor            # which adapter plugins and logins are missing
 hz heinzel playbooks       # what each layer's playbook offers
 hz setup acme               # accept the bindings you want, one by one
@@ -113,7 +140,7 @@ hz heinzel run weekly-report               # the draft, saved locally for you to
 ```
 
 To try it against a real (trial) world, [docs/REHEARSAL.md](docs/REHEARSAL.md) walks a manager and an engineer through
-it on two machines, with `hz acme seed` creating the Acme world in your own trial accounts.
+it on two machines, with `hz acme seed` creating the ACME world in your own trial accounts.
 
 ## Port it to your company
 
@@ -133,13 +160,13 @@ hz system theme use acme
 ```
 
 The `acme` theme ([`src/heinzel_acme/themes/acme.toml`](src/heinzel_acme/themes/acme.toml)) is deep teal on warm
-off-white, slate at night, with Acme's logo in [`themes/logo/`](src/heinzel_acme/themes/logo/): a peak shaped like an
+off-white, slate at night, with ACME's logo in [`themes/logo/`](src/heinzel_acme/themes/logo/): a peak shaped like an
 "A" standing on an anvil's base, hand-written SVG, teal `#0f766e` in light mode and `#2dd4bf` in dark mode.
 
 ## Sound
 
 The plugin offers the [requested YouTube video](https://www.youtube.com/watch?v=t9PF00M2yDY) as the `acme`
-soundscape. It pairs only with the Acme theme. It uses the core's privacy-enhanced player, with no downloaded or
+soundscape. It pairs only with the ACME theme. It uses the core's privacy-enhanced player, with no downloaded or
 bundled media; installation leaves sound off, and the person still presses **Play** in the web player.
 
 ```sh

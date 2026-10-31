@@ -5,7 +5,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 NOTICE = (
-    "Rehearsal only: this writes the made-up Acme world into YOUR OWN trial accounts (GitHub, Jira, Google). "
+    "Rehearsal only: this writes the made-up ACME world into YOUR OWN trial accounts (GitHub, Jira, Google). "
     "Never point it at a company account."
 )
 
@@ -22,7 +22,7 @@ class StepView(BaseModel):
 
 
 class SeedPlan(BaseModel):
-    """The Acme world to seed: every step before it runs, and with `--yes` what happened and what to run next."""
+    """The ACME world to seed: every step before it runs, and with `--yes` what happened and what to run next."""
 
     notice: str = Field(default=NOTICE, description="What this is for, and what it is not for.")
     dry_run: bool = Field(description="True unless `--yes` was given: nothing was run.")

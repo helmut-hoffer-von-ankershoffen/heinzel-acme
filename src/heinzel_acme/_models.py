@@ -1,10 +1,10 @@
-"""Models returned by the company plugin's operations, and shared by Acme's other layers."""
+"""Models returned by the company plugin's operations, and shared by ACME's other layers."""
 
 from pydantic import BaseModel, Field
 
 
 class LayerView(BaseModel):
-    """One layer of Acme's tree."""
+    """One layer of ACME's tree."""
 
     name: str = Field(description="Its module name: its path from the root, joined with dashes.")
     label: str = Field(description="What people call it, from where it sits: company, org, site or team.")
@@ -16,7 +16,7 @@ class LayerView(BaseModel):
 
 
 class LayerList(BaseModel):
-    """`hz acme layers`: Acme's layers that are installed, and what is missing."""
+    """`hz acme layers`: ACME's layers that are installed, and what is missing."""
 
     layers: list[LayerView] = Field(description="Root first.")
     missing: list[str] = Field(description="Layers named as a parent or site whose plugin isn't installed.")
@@ -27,7 +27,7 @@ class BindingView(BaseModel):
 
     capability: str = Field(description="The capability.")
     setting: str = Field(description="The setting that binds it, as `hz system config set` takes it.")
-    adapter: str = Field(description="The adapter Acme binds to it.")
+    adapter: str = Field(description="The adapter ACME binds to it.")
     plugin: str = Field(description="The plugin that brings the adapter.")
     transport: str = Field(description="What the adapter talks through.")
     login: str = Field(description="What you run once so it reads as you.")
@@ -36,16 +36,16 @@ class BindingView(BaseModel):
 
 
 class LayerAbout(BaseModel):
-    """What an Acme plugin is: its distribution and version, its place in the tree and what it brings."""
+    """What an ACME plugin is: its distribution and version, its place in the tree and what it brings."""
 
     plugin: str = Field(description="Distribution name of the plugin.")
     version: str = Field(description="Installed version of the plugin.")
     heinzel_version: str = Field(description="Version of the Heinzelmännchen it runs in.")
-    layer: LayerView | None = Field(description="Its place in Acme's tree.")
+    layer: LayerView | None = Field(description="Its place in ACME's tree.")
     brings: list[str] = Field(description="What this layer contributes, in words.")
 
 
 class AcmeAbout(LayerAbout):
     """The company plugin: its layer and the bindings it recommends."""
 
-    bindings: list[BindingView] = Field(description="The capability bindings Acme recommends.")
+    bindings: list[BindingView] = Field(description="The capability bindings ACME recommends.")

@@ -1,4 +1,4 @@
-"""Heinzelmännchen's CLI head with Acme's four layers discovered through their real entry points. Offline."""
+"""Heinzelmännchen's CLI head with ACME's four layers discovered through their real entry points. Offline."""
 
 import tomllib
 

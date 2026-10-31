@@ -42,7 +42,7 @@ def layer_view(name: str) -> LayerView | None:
 
 
 def about_layer(distribution: str, name: str, brings: list[str]) -> LayerAbout:
-    """What an Acme plugin is; each layer's `info` operation returns it."""
+    """What an ACME plugin is; each layer's `info` operation returns it."""
     return LayerAbout(
         plugin=distribution,
         version=installed_version(distribution),
@@ -53,14 +53,14 @@ def about_layer(distribution: str, name: str, brings: list[str]) -> LayerAbout:
 
 
 class AcmeService:
-    """What the company plugin knows: Acme's layer tree and its recommended bindings."""
+    """What the company plugin knows: ACME's layer tree and its recommended bindings."""
 
     def __init__(self, view: CapabilityView) -> None:
         """Create the service; the kernel injects what modules may know about capabilities."""
         self._view = view
 
     def bindings(self) -> list[BindingView]:
-        """Each binding Acme recommends, whether its adapter is installed and what is bound now."""
+        """Each binding ACME recommends, whether its adapter is installed and what is bound now."""
         return [
             BindingView(
                 capability=b.capability,
@@ -83,14 +83,14 @@ class AcmeService:
             [
                 "capability bindings: code host, tracker, documents, calendar, mail, meetings (hz setup acme)",
                 "roles: tech-lead, report-owner",
-                "hz acme seed: the made-up Acme world for a rehearsal, in your own trial accounts",
+                "hz acme seed: the made-up ACME world for a rehearsal, in your own trial accounts",
             ],
         )
         return AcmeAbout(**base.model_dump(), bindings=self.bindings())
 
     @staticmethod
     def layers() -> LayerList:
-        """The installed Acme layers, root first, and the layers they name that aren't installed."""
+        """The installed ACME layers, root first, and the layers they name that aren't installed."""
         declared = layers.declared()
         names = {layer.name for layer in declared}
         named = {n for layer in declared for n in (layer.parent, layer.site) if n is not None}
@@ -116,20 +116,20 @@ class AcmeService:
                     Check(
                         name=name,
                         status=Status.DEGRADED,
-                        detail=f"Acme reads {binding.capability} through {binding.adapter}, which isn't installed",
+                        detail=f"ACME reads {binding.capability} through {binding.adapter}, which isn't installed",
                         fix=f"hz system plugin add {binding.plugin}, then {binding.login}",
                     )
                 )
             elif binding.bound not in {binding.adapter, None}:  # the person's choice wins over the company's
                 checks.append(
-                    Check(name=name, status=Status.UP, detail=f"you bound {binding.bound}; Acme uses {binding.adapter}")
+                    Check(name=name, status=Status.UP, detail=f"you bound {binding.bound}; ACME uses {binding.adapter}")
                 )
             elif binding.bound is None:
                 checks.append(
                     Check(
                         name=name,
                         status=Status.DEGRADED,
-                        detail=f"nothing bound to it; Acme recommends {binding.adapter}",
+                        detail=f"nothing bound to it; ACME recommends {binding.adapter}",
                         fix=f"hz setup acme, or hz system config set {binding.setting} {binding.adapter}",
                     )
                 )

@@ -1,6 +1,6 @@
-"""How Acme reaches its tools: one capability binding per row, the adapter that serves it and how people sign in.
+"""How ACME reaches its tools: one capability binding per row, the adapter that serves it and how people sign in.
 
-Acme uses only what an ordinary employee may (Heinzelmännchen ADR 0035): each adapter is a first-party plugin whose
+ACME uses only what an ordinary employee may (Heinzelmännchen ADR 0035): each adapter is a first-party plugin whose
 transport is the vendor's CLI, logged in as the person. The rows become the company playbook's recommended settings,
 which `hz setup acme` offers one by one and writes only on yes; `hz system doctor` says which adapter plugin is
 missing. A company that reaches its tools differently replaces this table in its own company plugin
@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class Binding:
-    """One capability, the adapter Acme binds to it, and what that adapter needs on the person's machine."""
+    """One capability, the adapter ACME binds to it, and what that adapter needs on the person's machine."""
 
     capability: str
     """The core's capability name, e.g. `code-host`."""
@@ -75,7 +75,7 @@ BINDINGS: tuple[Binding, ...] = (
         login="switch on meeting summaries in Zoom, mailed to you",
     ),
 )
-"""Acme's default bindings: code host, tracker, documents, calendar, mail and meetings."""
+"""ACME's default bindings: code host, tracker, documents, calendar, mail and meetings."""
 
 
 def recommended() -> dict[str, str]:
