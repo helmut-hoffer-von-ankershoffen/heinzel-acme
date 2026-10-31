@@ -1,5 +1,8 @@
 # heinzel-acme
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=helmut-hoffer-von-ankershoffen_heinzel-acme&metric=alert_status)](https://sonarcloud.io/summary/overall?id=helmut-hoffer-von-ankershoffen_heinzel-acme)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=helmut-hoffer-von-ankershoffen_heinzel-acme&metric=security_rating)](https://sonarcloud.io/summary/overall?id=helmut-hoffer-von-ankershoffen_heinzel-acme)
+
 The reference company for [Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel): a made-up
 company, **Acme** (acme.example), modelled end to end as four plugins in one repository, the way a real company keeps
 its own plugins in a private repository. It is the worked example of Heinzelmännchen's layers and playbooks
