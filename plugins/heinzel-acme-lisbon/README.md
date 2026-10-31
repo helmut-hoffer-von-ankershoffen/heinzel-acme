@@ -11,24 +11,24 @@ You do not install this layer on its own: it comes with the Checkout team, which
 
 Real captures with fictional demonstration data and unconnected accounts.
 
-[![ACME Lisbon calendar](docs/assets/screenshots/site-calendar.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-lisbon-f5f1f19a1e/)
+[![ACME Lisbon calendar](docs/assets/screenshots/site-calendar.png)](https://heinzel.team/catalog/heinzel-acme-lisbon-f5f1f19a1e/)
 
 *Friday stand-up, demo and the 17:00 report deadline in site and computer time.*
 
-[![ACME Lisbon week ahead](docs/assets/screenshots/site-week-ahead.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-lisbon-f5f1f19a1e/)
+[![ACME Lisbon week ahead](docs/assets/screenshots/site-week-ahead.png)](https://heinzel.team/catalog/heinzel-acme-lisbon-f5f1f19a1e/)
 
 *A four-day window crosses the weekend to Monday's stand-up, planning and OKR review.*
 
 <details>
 <summary>See the CLI output</summary>
 
-[![ACME Lisbon calendar in the terminal](docs/assets/screenshots/cli-calendar.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-lisbon-f5f1f19a1e/)
+[![ACME Lisbon calendar in the terminal](docs/assets/screenshots/cli-calendar.png)](https://heinzel.team/catalog/heinzel-acme-lisbon-f5f1f19a1e/)
 
 *Working hours, weekly rhythm and Friday's upcoming events in site and computer time.*
 
 </details>
 
-[View the full gallery on the plugin page →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-lisbon-f5f1f19a1e/)
+[View the full gallery on the plugin page →](https://heinzel.team/catalog/heinzel-acme-lisbon-f5f1f19a1e/)
 
 ```bash
 hz acme-lisbon calendar --days 7     # at the site and on this machine

@@ -9,13 +9,13 @@
 drafts your team's busywork and asks before anything leaves your machine. Four plugins give a made-up team its
 company, organization, site and team layers, with a weekly-report playbook that drafts locally for you to edit.
 
-[**Explore ACME on the plugin page →**](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+[**Explore ACME on the plugin page →**](https://heinzel.team/catalog/heinzel-acme-aa9ce1cf07/)
 · [Install the team stack](#install-and-look) · [Port it to your company](#port-it-to-your-company)
 
-[![The workflow view in ACME's installed theme: connected systems, discovered assets and the weekly-report contract they feed, drawn as a graph](docs/assets/screenshots/company-workflow.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+[![The workflow view in ACME's installed theme: connected systems, discovered assets and the weekly-report contract they feed, drawn as a graph](docs/assets/screenshots/company-workflow.png)](https://heinzel.team/catalog/heinzel-acme-aa9ce1cf07/)
 
 *The running app with the ACME theme, captured with Heinzelmännchen 0.9.8 and fictional data. Accounts are
-unconnected; the drafts you see are saved locally and sent nowhere. [View the full gallery and soundscape →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)*
+unconnected; the drafts you see are saved locally and sent nowhere. [View the full gallery and soundscape →](https://heinzel.team/catalog/heinzel-acme-aa9ce1cf07/)*
 
 <table><tr><td width="96"><img src="https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel/e6c2e707726741e28ecc9360a3683fc00e968dfb/docs/assets/website/helper-draftkeeper.svg" width="72" alt="Ada, a Heinzelmännchen with a teal hat and rose shirt, carrying a draft"></td><td>
 
@@ -37,20 +37,20 @@ and [plugin playbooks](https://github.com/helmut-hoffer-von-ankershoffen/heinzel
 Real captures with fictional demonstration data and unconnected accounts.
 
 <table><tr>
-<td width="50%" valign="top"><a href="https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/"><img src="docs/assets/screenshots/theme-light.png" alt="The applied ACME theme in light mode" width="100%"></a><br><sub>The applied ACME theme in light mode.</sub></td>
-<td width="50%" valign="top"><a href="https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/"><img src="docs/assets/screenshots/theme-dark.png" alt="The same ACME workflow in dark mode" width="100%"></a><br><sub>The same workflow in dark mode.</sub></td>
+<td width="50%" valign="top"><a href="https://heinzel.team/catalog/heinzel-acme-aa9ce1cf07/"><img src="docs/assets/screenshots/theme-light.png" alt="The applied ACME theme in light mode" width="100%"></a><br><sub>The applied ACME theme in light mode.</sub></td>
+<td width="50%" valign="top"><a href="https://heinzel.team/catalog/heinzel-acme-aa9ce1cf07/"><img src="docs/assets/screenshots/theme-dark.png" alt="The same ACME workflow in dark mode" width="100%"></a><br><sub>The same workflow in dark mode.</sub></td>
 </tr></table>
 
 <details>
 <summary>See the CLI output</summary>
 
-[![The ACME company, org, site and team stack in the terminal](docs/assets/screenshots/cli-stack.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+[![The ACME company, org, site and team stack in the terminal](docs/assets/screenshots/cli-stack.png)](https://heinzel.team/catalog/heinzel-acme-aa9ce1cf07/)
 
 *The real company, org, site and team stack, with clearly named offline-demo adapters.*
 
 </details>
 
-[View the full gallery on the plugin page →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-aa9ce1cf07/)
+[View the full gallery on the plugin page →](https://heinzel.team/catalog/heinzel-acme-aa9ce1cf07/)
 
 ## The layers
 
@@ -94,11 +94,11 @@ uvx heinzel@latest
 No uv yet? The guided installer sets it up first:
 
 ```sh
-curl -LsSf https://helmut.hoffer-von-ankershoffen.me/heinzel/install.sh | sh
+curl -LsSf https://heinzel.team/install.sh | sh
 ```
 
 Supported on **macOS and Linux**; Windows may work, but is not supported. Details: the
-[standard app installation guide](https://helmut.hoffer-von-ankershoffen.me/heinzel/guides/install/).
+[standard app installation guide](https://heinzel.team/guides/install/).
 
 In a second terminal, add the Checkout team. Its layers come with it:
 
@@ -125,9 +125,9 @@ that fixes it.
 
 ## The weekly report
 
-[![A saved weekly-report draft, listed in the app's terminal and ending: fictional local demonstration, review before sharing](plugins/heinzel-acme-payments-checkout/docs/assets/screenshots/draft-in-terminal.png)](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)
+[![A saved weekly-report draft, listed in the app's terminal and ending: fictional local demonstration, review before sharing](plugins/heinzel-acme-payments-checkout/docs/assets/screenshots/draft-in-terminal.png)](https://heinzel.team/catalog/heinzel-acme-payments-checkout-8a7d294621/)
 
-*A locally saved fictional draft from a deterministic demo runner. [See the Checkout gallery →](https://helmut.hoffer-von-ankershoffen.me/heinzel/catalog/heinzel-acme-payments-checkout-8a7d294621/)*
+*A locally saved fictional draft from a deterministic demo runner. [See the Checkout gallery →](https://heinzel.team/catalog/heinzel-acme-payments-checkout-8a7d294621/)*
 
 <table><tr><td width="96"><img src="https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel/e6c2e707726741e28ecc9360a3683fc00e968dfb/docs/assets/website/helper-reviewer.svg" width="72" alt="Otto, an old Heinzelmännchen with a slate hat and a long white beard"></td><td>
 
