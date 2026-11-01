@@ -1,13 +1,25 @@
-# heinzel-acme
+# ACME for Heinzelmännchen
 
 <!-- badges:start -->
 [![CI](https://img.shields.io/github/actions/workflow/status/helmut-hoffer-von-ankershoffen/heinzel-acme/ci.yml?branch=main&label=CI)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/ci.yml) [![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel-acme/python-coverage-comment-action-data/endpoint.json)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/tree/python-coverage-comment-action-data) [![CodeQL](https://img.shields.io/github/actions/workflow/status/helmut-hoffer-von-ankershoffen/heinzel-acme/codeql.yml?branch=main&label=CodeQL)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/actions/workflows/codeql.yml) [![Release](https://img.shields.io/github/v/release/helmut-hoffer-von-ankershoffen/heinzel-acme?sort=semver)](https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/releases) [![Python](https://img.shields.io/badge/python-3.12%2B-blue)](pyproject.toml) [![Quality Gate Status](https://img.shields.io/sonar/quality_gate/helmut-hoffer-von-ankershoffen_heinzel-acme?server=https://sonarcloud.io&label=Quality%20Gate%20Status)](https://sonarcloud.io/summary/overall?id=helmut-hoffer-von-ankershoffen_heinzel-acme) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=helmut-hoffer-von-ankershoffen_heinzel-acme&metric=security_rating)](https://sonarcloud.io/summary/overall?id=helmut-hoffer-von-ankershoffen_heinzel-acme) [![License: MIT](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
 <!-- badges:end -->
 
-**A fictional company you can install, explore and copy for your own team.** ACME is the reference company for
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel/main/docs/assets/hero-dark.svg">
+    <img src="https://raw.githubusercontent.com/helmut-hoffer-von-ankershoffen/heinzel/main/docs/assets/hero-light.svg" alt="A small crowd of Heinzelmännchen helpers walking together" width="860">
+  </picture>
+</p>
+
+**ACME is a fictional company you can install, explore and copy for your own team.** It is the reference company for
 [Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel), the open-source crew of AI helpers that
-drafts your team's busywork and asks before anything leaves your machine. Four plugins give a made-up team its
-company, organization, site and team layers, with a weekly-report playbook that drafts locally for you to edit.
+drafts your team's busywork and asks before anything leaves your machine. Four plugins (`heinzel-acme` and its three
+layers) give a made-up team its company, organization, site and team layers, with a weekly-report playbook that drafts
+locally for you to edit.
+
+```sh
+uvx heinzel@latest
+```
 
 [**Explore ACME on the plugin page →**](https://heinzel.team/catalog/heinzel-acme-aa9ce1cf07/)
 · [Install the team stack](#install-and-look) · [Port it to your company](#port-it-to-your-company)
@@ -139,7 +151,7 @@ that fixes it.
 hz heinzel new weekly-report --template acme-payments-checkout:weekly-report \
   --asset weekly-report=<doc id> --asset engineering-tracker=<sheet id> \
   --asset tracker-project=CHK --asset code-repo=<owner>/acme-checkout
-hz heinzel wake weekly-report --dry-run     # the inputs, fetched through gh, acli and gws; no agent, no cost
+hz heinzel wake weekly-report --dry-run     # the inputs, fetched through gh, acli and gws; no model run, no cost
 hz heinzel wake weekly-report               # the draft, saved locally for you to edit and send
 ```
 
