@@ -46,9 +46,10 @@ It brings the weekly report playbook:
 - asset types `weekly-report` (the rolling report document, kept by the template), `engineering-tracker` (the
   tracker sheet), `tracker-project` (the Jira project key) and `code-repo` (the repository), with hints where a
   capability can confirm one;
-- the template contract `acme-payments-checkout:weekly-report`: a draft ready by Friday 17:00 Lisbon time from the
-  week's merged pull requests (code host), changed items (tracker), the engineering tracker and the previous report
-  (documents), in the previous report's structure and tone, saved locally for the report owner;
+- the template contract `acme-payments-checkout:weekly-report`: a draft from the week's merged pull requests (code
+  host), changed items (tracker), the engineering tracker and the previous report (documents), in the previous
+  report's structure and tone, saved locally for the report owner. It is drafted by hand today; set `schedule` in the
+  contract for Friday 17:00 once a manual run reads right;
 - the draft tags for approving in place (core ADR 0038), shown by `hz acme-payments-checkout info`.
 
 ```bash

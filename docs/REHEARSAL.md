@@ -1,8 +1,8 @@
 # The ACME dress rehearsal
 
 A rehearsal of Heinzelmännchen's first slice, the team's weekly report, on two machines and in **your own trial
-accounts**, with the made-up ACME world seeded into them. The Mac mini plays the Checkout team's engineering manager
-(Nadia in the ACME world, the report owner); the MacBook Air plays an engineer who joins the team. At the end you
+accounts**, with the made-up ACME world seeded into them. Machine A plays the Checkout team's engineering manager
+(Nadia in the ACME world, the report owner); machine B plays an engineer who joins the team. At the end you
 have a draft of Checkout's weekly report, made from real pull requests, Jira items and Google documents, and numbers
 that say how well each step went.
 
@@ -19,7 +19,7 @@ Never run any of this against a company account: `hz acme seed` creates reposito
 | Zoom with AI Companion summaries | optional: meetings | needs a paid Zoom plan; the weekly report doesn't read meetings, so skip it |
 | `uv`, `git`, `gh`, `acli`, `gws` (Node.js for it) | everything | The [standard app installer](https://heinzel.team/guides/install/) can install uv; the optional integrations need their vendor CLIs. |
 
-## Mac mini: the manager
+## Machine A: the manager
 
 ### 1. Install Heinzelmännchen and the plugins
 
@@ -37,7 +37,7 @@ hz system plugin add atlassian --confirm
 hz system plugin add google --confirm
 hz system plugin add "git+https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme#subdirectory=plugins/heinzel-acme-payments-checkout" --confirm
 hz acme layers                   # four layers; the team's stack is acme, acme-payments, acme-lisbon, acme-payments-checkout
-hz system layer show             # the same stack, from the core (a core with the layer API)
+hz system layer show             # the same stack, from the core
 ```
 
 ### 2. Log in, as yourself
@@ -121,7 +121,7 @@ hz heinzel show weekly-report              # the success test: drafting time, co
 `hz heinzel discover` runs the playbooks' hints: in a trial account they find nothing, because the hints name ACME's
 own (made-up) document ids. That is expected; note it under "What to measure".
 
-## MacBook Air: the engineer
+## Machine B: the engineer
 
 Use the standard app's versionless invite line:
 
