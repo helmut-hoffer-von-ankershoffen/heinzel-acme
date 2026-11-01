@@ -21,7 +21,7 @@ from typing import Any
 
 ANSI = re.compile(r"(?:\x1b|\^\[)\[[0-9;?]*[A-Za-z]")  # GitHub's logs spell ESC as "^["
 TIMESTAMP = re.compile(r"^\d{4}-\d\d-\d\dT[\d:.]+Z ?")
-ERROR = re.compile(r"^\s*E |FAILED|\berror\b:|Error:|##\[error\]|✗|Process completed with exit code")
+ERROR = re.compile(r"(?:^\s*E )|FAILED|\berror\b:|Error:|##\[error\]|✗|Process completed with exit code")
 CONTEXT, LIMIT = 1, 60
 WAIT = 1800  # seconds to wait for a running build
 THREADS = """query($owner: String!, $repo: String!, $number: Int!) {
