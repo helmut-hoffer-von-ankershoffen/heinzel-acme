@@ -6,5 +6,5 @@ author_name: Helmut Hoffer von Ankershoffen
 github_owner: helmut-hoffer-von-ankershoffen
 package_name: heinzel_acme
 plugin_name: acme
-plugin_summary: 'Acme, a made-up company: the root layer of the reference company.'
+plugin_summary: 'ACME, a made-up company: the root layer of the reference company.'
 project_name: heinzel-acme

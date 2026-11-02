@@ -4,7 +4,7 @@ date: 2026-10-24
 amended-by: 0003
 ---
 
-# 0002: Acme is four plugins in one workspace, declared through one bridge to the core's layer API
+# 0002: ACME is four plugins in one workspace, declared through one bridge to the core's layer API
 
 ## Context and Problem Statement
 
@@ -35,7 +35,7 @@ Chosen option: **one workspace, one bridge**.
   signature. It forwards to `Module.layer` when the installed core has it and records the declaration otherwise;
   `hz acme layers` shows the tree either way. Nothing else in the repository calls a layer API.
 - The company layer's defaults are its playbook's recommended settings (the bindings), never applied without a yes.
-- Discovery hints name Acme's own (made-up) document ids: the core's capabilities can confirm a known document but not
+- Discovery hints name ACME's own (made-up) document ids: the core's capabilities can confirm a known document but not
   search for one (its ADR 0037, "Bad"); assets without a confirming read (the tracker project, the repository) have no
   hint, and `hz acme seed` prints the `--asset` values for a rehearsal world.
 - Heinzelmännchen is pinned to a commit for tests (the head of the core's layer pull request, on top of `main`) until
@@ -46,7 +46,7 @@ Chosen option: **one workspace, one bridge**.
 
 - Good: the layout is the one a company copies; one pull request changes the whole stack; CI tests installing a team.
 - Good: switching to the core's layer API is one file and a grep (`layers.declare`).
-- Bad: on a core without `Module.layer` the kernel doesn't stack Acme's layers; `hz acme layers` still shows them.
+- Bad: on a core without `Module.layer` the kernel doesn't stack ACME's layers; `hz acme layers` still shows them.
 - Bad: a pin to a commit, not a release, until the core releases; README "Pins" tracks it.
 
 ### Confirmation
