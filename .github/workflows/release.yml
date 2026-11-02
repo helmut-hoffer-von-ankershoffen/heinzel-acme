@@ -1,7 +1,8 @@
 name: Release
 
 # Step 1 of a release: open the release pull request. Derives the next version from conventional commits (or a forced
-# bump), updates versions and CHANGELOG.md on `release/vX.Y.Z`, opens the pull request and starts CI on it.
+# bump), updates versions and CHANGELOG.md on `release/vX.Y.Z`, opens the pull request and starts its required checks
+# (CI, merge gate) on it.
 # Step 2 happens when the pull request is merged: see release-tag.yml. ADR 0008 and 0013 explain the flow.
 
 on:
@@ -53,9 +54,12 @@ jobs:
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           tag="$(bash scripts/release.sh "$BUMP" --open-pr | tail -n 1)"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
-      - name: Run CI on the release pull request
-        # Pull requests opened with the GitHub token don't trigger workflows; a dispatched run does.
+      - name: Run the required checks on the release pull request
+        # GitHub holds the pull_request runs of a pull request the workflow token opened for approval, and starts no
+        # pull_request_target run at all, so CI OK, merge-gate and coverage-floor would never report. Dispatched runs
+        # report on the branch's head. The pull request shows only the newest run of each workflow, so wait until the
+        # held runs exist before dispatching CI, or the held run would hide the dispatched one.
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.release.outputs.tag }}
-        run: gh workflow run ci.yml --ref "release/$TAG"
+        run: bash scripts/release_checks.sh "release/$TAG"

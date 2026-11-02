@@ -2,15 +2,26 @@ name: Merge gate
 
 # pull_request_target on purpose: the workflow and scripts/merge_gate.py come from the base branch, so a pull request
 # can't change what judges it. Its code is never checked out or run, no secret is used, the token only reads.
+#
+# Dispatched on main without a pull request: the project only. Dispatched on any other branch, it must name the open
+# pull request whose head that branch is, and judges it like pull_request_target would: release.yml does this, because
+# GitHub starts no pull_request_target run for a pull request the workflow token opened. The gate then comes from the
+# branch, so it first checks that the branch's gate is main's. Without a pull request on a branch it fails, and so does
+# coverage-floor, which used to be skipped (a skipped required check counts as passed).
 on:
   pull_request_target: # zizmor: ignore[dangerous-triggers]
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
+    inputs:
+      pr:
+        description: The pull request whose head is the dispatched branch (required on any branch but main)
+        type: string
+        required: false
 
 permissions: {}
 
 concurrency:
-  group: merge-gate-${{ github.event.pull_request.number || github.ref }}
+  group: merge-gate-${{ github.event.pull_request.number || inputs.pr || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -20,37 +31,55 @@ jobs:
     timeout-minutes: 330 # the waits (30 min) plus up to 4 h of runner queue, which the waits don't count
     permissions:
       contents: read
+      pull-requests: read # a dispatched run checks the pull request it was given
       checks: read # sees whether CI is still waiting for a runner
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: A dispatched run judges main, or the pull request at this branch's head with main's gate
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ inputs.pr }}
+          REF: ${{ github.ref }}
+          SHA: ${{ github.sha }}
+        run: bash scripts/merge_gate_dispatch.sh
       - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
       - name: Quality gate passes, all ratings A, pull request and project
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || (inputs.pr && github.sha) }}
         run: uv run --no-build --frozen --script scripts/merge_gate.py sonar
 
   coverage-floor:
     name: coverage-floor
-    if: github.event_name == 'pull_request_target'
+    if: github.event_name == 'pull_request_target' || github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 330 # the wait (45 min) plus up to 4 h of runner queue, which the wait doesn't count
     permissions:
       contents: read
       actions: read
+      pull-requests: read # a dispatched run checks the pull request it was given
       checks: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: A dispatched run judges main, or the pull request at this branch's head with main's gate
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ inputs.pr }}
+          REF: ${{ github.ref }}
+          SHA: ${{ github.sha }}
+        run: bash scripts/merge_gate_dispatch.sh
       - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
       - name: Coverage at this head is not where the badge turns red
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || (inputs.pr && github.sha) }}
           COVERAGE_CHECK: Coverage
         run: uv run --no-build --frozen --script scripts/merge_gate.py coverage
