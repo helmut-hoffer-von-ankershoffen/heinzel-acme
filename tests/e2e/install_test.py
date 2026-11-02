@@ -14,7 +14,11 @@ from urllib.request import urlopen
 
 import pytest
 
-pytestmark = [pytest.mark.e2e, pytest.mark.timeout(300)]
+# One install for the whole module, on one xdist worker (`make test-e2e` runs `--dist loadgroup`). Without the group,
+# every worker built its own `hz` fixture: three `uv tool install` at once, writing the same entries of one shared
+# UV_CACHE_DIR, and on a cold cache one of them lost its temporary file before the rename ("Failed to write to the
+# client cache", macOS CI on 11-02).
+pytestmark = [pytest.mark.e2e, pytest.mark.timeout(300), pytest.mark.xdist_group("uv-tool-install")]
 
 REPO = Path(__file__).resolve().parents[2]
 DEFAULT_SDK = (
