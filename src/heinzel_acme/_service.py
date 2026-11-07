@@ -130,9 +130,19 @@ class AcmeService:
                         name=name,
                         status=Status.DEGRADED,
                         detail=f"nothing bound to it; ACME recommends {binding.adapter}",
-                        fix=f"hz setup acme, or hz system config set {binding.setting} {binding.adapter}",
+                        fix=(
+                            f"hz setup acme (or hz system config set {binding.setting} {binding.adapter}), "
+                            f"then {binding.login}"
+                        ),
                     )
                 )
             else:
-                checks.append(Check(name=name, status=Status.UP, detail=f"{binding.adapter}: {binding.transport}"))
+                # Installed is not signed in: the adapter's own check says whether it can read; this names the login.
+                checks.append(
+                    Check(
+                        name=name,
+                        status=Status.UP,
+                        detail=f"{binding.adapter}: {binding.transport} (sign in once: {binding.login})",
+                    )
+                )
         return checks

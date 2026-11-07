@@ -41,6 +41,14 @@ def test_the_persons_own_binding_wins_over_the_company():
     assert "you bound github" in found.detail
 
 
+def test_an_adapter_installed_for_you_still_names_its_login():
+    unbound = checks({"code-host": ["github"]}, {})["code-host"]
+    assert unbound.fix.endswith("then gh auth login")
+    bound = checks({"code-host": ["github"]}, {"code-host": "github"})["code-host"]
+    assert bound.status is Status.UP
+    assert bound.detail == "github: GitHub through gh (sign in once: gh auth login)"
+
+
 def test_the_recommended_binding_is_up():
     assert checks({"documents": ["google"]}, {"documents": "google"})["documents"].status is Status.UP
 

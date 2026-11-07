@@ -1,3 +1,6 @@
+import tomllib
+from pathlib import Path
+
 import pytest
 from heinzel import PlaybookLet
 from heinzel.kernel import CAPABILITIES
@@ -27,3 +30,11 @@ def test_everything_goes_through_a_vendor_cli_or_mail():
     assert "acli" in transports["atlassian"]
     assert "gws" in transports["google"]
     assert "e-mails" in transports["zoom"]
+
+
+def test_the_plugins_the_bindings_read_through_are_required_or_recommended():
+    project = tomllib.loads((Path(__file__).resolve().parents[2] / "pyproject.toml").read_text(encoding="utf-8"))
+    table = project["tool"]["heinzel"]["plugin"]
+    required = {f"heinzel-{b.plugin}" for b in BINDINGS if b.capability in {"code-host", "tracker"}}
+    assert set(table["requires-plugins"]) == required
+    assert set(table["recommends-plugins"]) == {f"heinzel-{b.plugin}" for b in BINDINGS} - required
