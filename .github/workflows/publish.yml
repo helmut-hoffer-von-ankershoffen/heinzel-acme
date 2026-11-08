@@ -39,7 +39,7 @@ jobs:
           tagged="$(git rev-parse --verify "refs/tags/$TAG^{commit}")"
           test "$(git rev-parse HEAD)" = "$tagged"
           git merge-base --is-ancestor "$tagged" origin/main
-      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
       - name: Check that the tag matches the project version
         run: test "v$(uv version --short)" = "$TAG"
       - name: Check the release for confidential terms
