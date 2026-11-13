@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_96b6cb4b56267c26__render_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.17.3">coverage.py v7.17.3</a>,
-            created at 2026-11-13 13:14 +0000
+            created at 2026-11-13 19:59 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -214,12 +214,22 @@
     <p class="run run2"><span class="n"><a id="t130" href="#t130">130</a></span><span class="t">                        <span class="nam">name</span><span class="op">=</span><span class="nam">name</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t131" href="#t131">131</a></span><span class="t">                        <span class="nam">status</span><span class="op">=</span><span class="nam">Status</span><span class="op">.</span><span class="nam">DEGRADED</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t132" href="#t132">132</a></span><span class="t">                        <span class="nam">detail</span><span class="op">=</span><span class="fst">f&quot;</span><span class="fst">nothing bound to it; ACME recommends </span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">adapter</span><span class="op">}</span><span class="fst">&quot;</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run run2"><span class="n"><a id="t133" href="#t133">133</a></span><span class="t">                        <span class="nam">fix</span><span class="op">=</span><span class="fst">f&quot;</span><span class="fst">hz setup acme, or hz system config set </span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">setting</span><span class="op">}</span><span class="fst"> </span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">adapter</span><span class="op">}</span><span class="fst">&quot;</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run run2"><span class="n"><a id="t134" href="#t134">134</a></span><span class="t">                    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run run2"><span class="n"><a id="t135" href="#t135">135</a></span><span class="t">                <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t136" href="#t136">136</a></span><span class="t">            <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t137" href="#t137">137</a></span><span class="t">                <span class="nam">checks</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="nam">Check</span><span class="op">(</span><span class="nam">name</span><span class="op">=</span><span class="nam">name</span><span class="op">,</span> <span class="nam">status</span><span class="op">=</span><span class="nam">Status</span><span class="op">.</span><span class="nam">UP</span><span class="op">,</span> <span class="nam">detail</span><span class="op">=</span><span class="fst">f&quot;</span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">adapter</span><span class="op">}</span><span class="fst">: </span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">transport</span><span class="op">}</span><span class="fst">&quot;</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t138" href="#t138">138</a></span><span class="t">        <span class="key">return</span> <span class="nam">checks</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t133" href="#t133">133</a></span><span class="t">                        <span class="nam">fix</span><span class="op">=</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t134" href="#t134">134</a></span><span class="t">                            <span class="fst">f&quot;</span><span class="fst">hz setup acme (or hz system config set </span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">setting</span><span class="op">}</span><span class="fst"> </span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">adapter</span><span class="op">}</span><span class="fst">), </span><span class="fst">&quot;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t135" href="#t135">135</a></span><span class="t">                            <span class="fst">f&quot;</span><span class="fst">then </span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">login</span><span class="op">}</span><span class="fst">&quot;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t136" href="#t136">136</a></span><span class="t">                        <span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t137" href="#t137">137</a></span><span class="t">                    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t138" href="#t138">138</a></span><span class="t">                <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t139" href="#t139">139</a></span><span class="t">            <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t140" href="#t140">140</a></span><span class="t">                <span class="com"># Installed is not signed in: the adapter&#x27;s own check says whether it can read; this names the login.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t141" href="#t141">141</a></span><span class="t">                <span class="nam">checks</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t142" href="#t142">142</a></span><span class="t">                    <span class="nam">Check</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t143" href="#t143">143</a></span><span class="t">                        <span class="nam">name</span><span class="op">=</span><span class="nam">name</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t144" href="#t144">144</a></span><span class="t">                        <span class="nam">status</span><span class="op">=</span><span class="nam">Status</span><span class="op">.</span><span class="nam">UP</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t145" href="#t145">145</a></span><span class="t">                        <span class="nam">detail</span><span class="op">=</span><span class="fst">f&quot;</span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">adapter</span><span class="op">}</span><span class="fst">: </span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">transport</span><span class="op">}</span><span class="fst"> (sign in once: </span><span class="op">{</span><span class="nam">binding</span><span class="op">.</span><span class="nam">login</span><span class="op">}</span><span class="fst">)</span><span class="fst">&quot;</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t146" href="#t146">146</a></span><span class="t">                    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t147" href="#t147">147</a></span><span class="t">                <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t148" href="#t148">148</a></span><span class="t">        <span class="key">return</span> <span class="nam">checks</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -229,7 +239,7 @@
             <a class="nav" href="z_96b6cb4b56267c26__render_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.17.3">coverage.py v7.17.3</a>,
-            created at 2026-11-13 13:14 +0000
+            created at 2026-11-13 19:59 +0000
         </p>
     </div>
 </footer>
