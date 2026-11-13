@@ -27,6 +27,13 @@ Source = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme"
 Changelog = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/blob/main/CHANGELOG.md"
 Issues = "https://github.com/helmut-hoffer-von-ankershoffen/heinzel-acme/issues"
 
+# The plugins ACME's bindings read through (src/heinzel_acme/_bindings.py). Code host and tracker are required:
+# `hz system plugin add acme` installs them first, and an installation without them is repaired. Documents, calendar,
+# mail and meetings are recommended: offered, never forced. Nobody is signed in: `hz system doctor` names each login.
+[tool.heinzel.plugin]
+requires-plugins = ["heinzel-github", "heinzel-atlassian"]
+recommends-plugins = ["heinzel-google", "heinzel-zoom"]
+
 [dependency-groups]
 # What the unit, integration and e2e tests need, and no more: CI installs only this group for the test matrix.
 test = [
