@@ -1,6 +1,6 @@
 [project]
 name = "heinzel-acme"
-version = "0.2.0"
+version = "0.3.0"
 description = "ACME, a made-up company: the root layer of the reference company."
 readme = "README.md"
 authors = [{ name = "Helmut Hoffer von Ankershoffen", email = "helmuthva@gmail.com" }]
@@ -38,9 +38,9 @@ recommends-plugins = ["heinzel-google", "heinzel-zoom"]
 # What the unit, integration and e2e tests need, and no more: CI installs only this group for the test matrix.
 test = [
     # ACME's other layers are workspace members, tested together.
-    "heinzel-acme-lisbon>=0.2.0",
-    "heinzel-acme-payments>=0.2.0",
-    "heinzel-acme-payments-checkout>=0.2.0",
+    "heinzel-acme-lisbon>=0.3.0",
+    "heinzel-acme-payments>=0.3.0",
+    "heinzel-acme-payments-checkout>=0.3.0",
     # Keep the released SDK version; its attested wheel avoids executing dependency build backends.
     "heinzel @ https://github.com/helmut-hoffer-von-ankershoffen/heinzel/releases/download/v0.7.2/heinzel-0.7.2-py3-none-any.whl",
     "coverage>=7.12",
@@ -212,7 +212,7 @@ example = "fix(cli): exit with code 1 when an operation fails"
 info = "Conventional commits with the types and scopes in docs/CODING_STANDARDS.md."
 
 [tool.bumpversion]
-current_version = "0.2.0"
+current_version = "0.3.0"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 commit = false
