@@ -2,7 +2,7 @@ name: PyPI
 
 # Upload the wheels and sdists of a GitHub release to PyPI with trusted publishing (no token). Runs by manual dispatch
 # for any existing release tag, and is dispatched by Release tag after the GitHub release exists (a dispatch with the
-# workflow token is allowed; tag pushes with it are not). The PyPI trusted publishers name this file and environment pypi.
+# workflow token is allowed; tag pushes with it are not). The PyPI trusted publishers name this file and one environment per project (pypi for heinzel-acme).
 
 on:
   workflow_dispatch:
@@ -43,19 +43,36 @@ jobs:
           if-no-files-found: error
 
   publish:
-    name: Publish ${{ inputs.tag }} to PyPI
+    # PyPI allows one pending trusted publisher per repository, workflow and environment, so each project has its own.
+    name: Publish ${{ matrix.project }} ${{ inputs.tag }} to PyPI
     needs: fetch
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    environment: pypi
+    environment: ${{ matrix.env }}
     permissions:
       id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {project: heinzel-acme, file: heinzel_acme, env: pypi}
+          - {project: heinzel-acme-payments, file: heinzel_acme_payments, env: pypi-heinzel-acme-payments}
+          - {project: heinzel-acme-lisbon, file: heinzel_acme_lisbon, env: pypi-heinzel-acme-lisbon}
+          - {project: heinzel-acme-payments-checkout, file: heinzel_acme_payments_checkout, env: pypi-heinzel-acme-payments-checkout}
+          - {project: heinzel-acme-connectors, file: heinzel_acme_connectors, env: pypi-heinzel-acme-connectors}
     steps:
       # No checkout or build: this job is the only one with publishing authority.
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: pypi-distributions
-          path: dist
+          path: all
+      - name: Select this project's wheel and sdist
+        env:
+          FILE: ${{ matrix.file }}
+        run: |
+          mkdir dist
+          cp "all/${FILE}"-*.whl "all/${FILE}"-*.tar.gz dist/
+          test "$(ls dist | wc -l)" -eq 2
       - name: Publish with PyPI attestations
         uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
         with:
