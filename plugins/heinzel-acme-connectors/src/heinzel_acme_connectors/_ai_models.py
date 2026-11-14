@@ -14,6 +14,12 @@ from typing import Any
 
 from heinzel_acme_connectors._compat import ModelOffer, ModelUnavailableError
 
+
+def _level(level: str) -> dict[str, Any]:
+    """`level=...` for a Core that knows ADR 0159 levels (Core 0.9.43 on), nothing for an older one."""
+    return {"level": level} if "level" in ModelOffer.model_fields else {}
+
+
 # A company loads this list from its own source, its model gateway's model list, and keeps it in memory: `models()`
 # must answer in milliseconds, so it never asks the gateway while hz waits; it refreshes the list now and then, and
 # marks a model `available=False` when the gateway last said it doesn't answer.
@@ -23,6 +29,7 @@ MODELS = (
         title="ACME Fast",
         description="Quick answers and drafts, made up and offline.",
         context_window=128_000,
+        **_level("low"),
     ),
     ModelOffer(
         id="acme/deep",
@@ -30,10 +37,11 @@ MODELS = (
         description="Longer reasoning, made up and offline.",
         aliases=["acme/default"],
         context_window=200_000,
+        **_level("high"),
     ),
     ModelOffer(id="acme/retired", title="ACME Retired", description="Switched off; pick another.", available=False),
 )
-"""ACME's models: the default first."""
+"""ACME's models: the default first; `level` marks the tier hz's chat picks by (ADR 0159), one offer per level."""
 
 
 class AcmeModels:
@@ -59,11 +67,21 @@ class AcmeModels:
         if not offer.available:
             raise ModelUnavailableError(model_id, others=others, reason="switched off")
         # Pydantic AI comes with Heinzelmännchen; imported here so the other connectors never load it.
+        from collections.abc import AsyncIterator  # noqa: PLC0415
+
         from pydantic_ai.messages import ModelMessage, ModelResponse, TextPart  # noqa: PLC0415
         from pydantic_ai.models.function import AgentInfo, FunctionModel  # noqa: PLC0415
 
-        def answer(messages: list[ModelMessage], _info: AgentInfo) -> ModelResponse:
-            sentence = f"{offer.title} (dummy) read {len(messages)} message(s); a real gateway answers here."
-            return ModelResponse(parts=[TextPart(sentence)])
+        def sentence(messages: list[ModelMessage]) -> str:
+            return f"{offer.title} (dummy) read {len(messages)} message(s); a real gateway answers here."
 
-        return FunctionModel(answer, model_name=offer.id)
+        def answer(messages: list[ModelMessage], _info: AgentInfo) -> ModelResponse:
+            return ModelResponse(parts=[TextPart(sentence(messages))])
+
+        async def stream(messages: list[ModelMessage], _info: AgentInfo) -> AsyncIterator[str]:
+            # Heinzel turns stream through Pydantic AI: yield word by word, never the whole reply at once.
+            words = sentence(messages).split(" ")
+            for index, word in enumerate(words):
+                yield word if index == len(words) - 1 else word + " "
+
+        return FunctionModel(answer, stream_function=stream, model_name=offer.id)

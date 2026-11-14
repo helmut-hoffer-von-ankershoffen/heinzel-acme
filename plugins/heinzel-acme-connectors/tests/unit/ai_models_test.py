@@ -48,3 +48,21 @@ def test_an_offer_is_frozen_and_checks_its_id():
 def test_the_adapter_is_registered_only_on_a_core_with_ai_models():
     names = {let.name for let in module.lets}
     assert ("acme-connectors:ai-models" in names) == HAS_AI_MODELS
+
+
+@pytest.mark.skipif(not HAS_AI_MODELS, reason="needs a Core with ai-models")
+def test_levels_are_marked_once_and_the_model_streams_in_pieces():
+    import asyncio
+
+    from pydantic_ai import Agent
+
+    if "level" in ModelOffer.model_fields:  # Core 0.9.43 and later
+        assert [m.level for m in AcmeModels().models() if m.level] == ["low", "high"]
+
+    async def chunks() -> list[str]:
+        async with Agent(AcmeModels().model("acme/fast")).run_stream("Hi") as result:
+            return [c async for c in result.stream_text(delta=True, debounce_by=None)]
+
+    pieces = asyncio.run(chunks())
+    assert len(pieces) > 1
+    assert "".join(pieces) == "ACME Fast (dummy) read 1 message(s); a real gateway answers here."
