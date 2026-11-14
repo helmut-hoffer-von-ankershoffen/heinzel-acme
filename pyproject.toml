@@ -256,6 +256,11 @@ search = "\"heinzel-acme-lisbon>={current_version}\""
 replace = "\"heinzel-acme-lisbon>={new_version}\""
 
 [[tool.bumpversion.files]]
+filename = "plugins/heinzel-acme-connectors/pyproject.toml"
+search = "name = \"heinzel-acme-connectors\"\nversion = \"{current_version}\""
+replace = "name = \"heinzel-acme-connectors\"\nversion = \"{new_version}\""
+
+[[tool.bumpversion.files]]
 filename = "plugins/heinzel-acme-payments-checkout/pyproject.toml"
 search = "name = \"heinzel-acme-payments-checkout\"\nversion = \"{current_version}\""
 replace = "name = \"heinzel-acme-payments-checkout\"\nversion = \"{new_version}\""
