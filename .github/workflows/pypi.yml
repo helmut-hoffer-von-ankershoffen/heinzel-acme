@@ -34,8 +34,8 @@ jobs:
         run: |
           [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Not a release tag: $TAG" >&2; exit 1; }
           gh release download "$TAG" --dir dist --pattern '*.whl' --pattern '*.tar.gz'
-          ls -1 dist
-          test "$(ls dist | wc -l)" -eq 10  # five plugins, wheel and sdist each
+          find dist -type f | sort
+          test "$(find dist -type f | wc -l)" -eq 10  # five plugins, wheel and sdist each
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pypi-distributions
@@ -72,7 +72,7 @@ jobs:
         run: |
           mkdir dist
           cp "all/${FILE}"-*.whl "all/${FILE}"-*.tar.gz dist/
-          test "$(ls dist | wc -l)" -eq 2
+          test "$(find dist -type f | wc -l)" -eq 2
       - name: Publish with PyPI attestations
         uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
         with:
