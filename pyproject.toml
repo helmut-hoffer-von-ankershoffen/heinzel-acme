@@ -37,12 +37,13 @@ recommends-plugins = ["heinzel-google", "heinzel-zoom"]
 [dependency-groups]
 # What the unit, integration and e2e tests need, and no more: CI installs only this group for the test matrix.
 test = [
-    # ACME's other layers are workspace members, tested together.
+    # ACME's other layers and its connector plugin are workspace members, tested together.
+    "heinzel-acme-connectors>=0.3.0",
     "heinzel-acme-lisbon>=0.3.0",
     "heinzel-acme-payments>=0.3.0",
     "heinzel-acme-payments-checkout>=0.3.0",
     # Keep the released SDK version; its attested wheel avoids executing dependency build backends.
-    "heinzel @ https://github.com/helmut-hoffer-von-ankershoffen/heinzel/releases/download/v0.7.2/heinzel-0.7.2-py3-none-any.whl",
+    "heinzel @ https://github.com/helmut-hoffer-von-ankershoffen/heinzel/releases/download/v0.9.42/heinzel-0.9.42-py3-none-any.whl",
     "coverage>=7.12",
     "httpx>=0.28",
     "hypothesis>=6.140",
@@ -86,6 +87,7 @@ members = ["plugins/*"]
 
 [tool.uv.sources]
 heinzel-acme = { workspace = true }
+heinzel-acme-connectors = { workspace = true }
 heinzel-acme-lisbon = { workspace = true }
 heinzel-acme-payments = { workspace = true }
 heinzel-acme-payments-checkout = { workspace = true }
@@ -154,7 +156,7 @@ strict = true
 warn_unreachable = true
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 plugins = ["pydantic.mypy"]
-mypy_path = ["src", "plugins/heinzel-acme-lisbon/src", "plugins/heinzel-acme-payments/src", "plugins/heinzel-acme-payments-checkout/src"]
+mypy_path = ["src", "plugins/heinzel-acme-connectors/src", "plugins/heinzel-acme-lisbon/src", "plugins/heinzel-acme-payments/src", "plugins/heinzel-acme-payments-checkout/src"]
 files = ["src", "plugins/*/src"]
 
 [tool.pydantic-mypy]
@@ -182,7 +184,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["heinzel_acme", "heinzel_acme_lisbon", "heinzel_acme_payments", "heinzel_acme_payments_checkout"]
+source = ["heinzel_acme", "heinzel_acme_connectors", "heinzel_acme_lisbon", "heinzel_acme_payments", "heinzel_acme_payments_checkout"]
 branch = true
 relative_files = true
 # make test runs the suite on xdist workers: subprocesses, measured through coverage's .pth hook into a data file each

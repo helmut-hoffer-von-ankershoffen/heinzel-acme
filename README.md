@@ -94,6 +94,7 @@ and nothing any layer brings becomes your configuration until you accept it (`hz
 | [`heinzel-acme-payments`](plugins/heinzel-acme-payments/) | org | A playbook with the `okr` asset type: the org's quarterly OKR document |
 | [`heinzel-acme-lisbon`](plugins/heinzel-acme-lisbon/) | site | The site calendar as data (`hz acme-lisbon calendar`): Europe/Lisbon, 09:00 to 18:00, stand-up, planning, demo, the Friday 17:00 report deadline |
 | [`heinzel-acme-payments-checkout`](plugins/heinzel-acme-payments-checkout/) | team | The weekly report playbook: asset types (weekly report document, engineering tracker, tracker project, code repository) with discovery hints, and the template contract `acme-payments-checkout:weekly-report`, a draft by hand, schedulable for Friday 17:00 |
+| [`heinzel-acme-connectors`](plugins/heinzel-acme-connectors/) | none | ACME's own connectors: an adapter for every connector capability (calendar, mail, documents, tracker, chat, meetings, code host, directory) on dummy data, shaped for a company MCP gateway; replace one file to reach real tools |
 
 ## Install and look
 
@@ -205,7 +206,7 @@ hz system sound use off
 
 ```bash
 make setup     # dependencies, pinned tools, git hooks
-make check     # lint, types, unit and integration tests of all four plugins (offline)
+make check     # lint, types, unit and integration tests of all five plugins (offline)
 make test-e2e  # installs Heinzelmännchen with uv and adds the team plugin from this checkout
 ```
 
@@ -219,7 +220,7 @@ run the real CLIs inside a test session.
 
 ## Release
 
-Actions → **Release** → Run workflow opens a release pull request; merging it tags and publishes all four plugins. The
+Actions → **Release** → Run workflow opens a release pull request; merging it tags and publishes all five plugins. The
 version comes from conventional commits, the changelog from git-cliff. `main` changes only through pull requests.
 
 This repository was generated from Heinzelmännchen's copier template; `make update-template` pulls in its latest

@@ -1,0 +1,100 @@
+"""The backend seam: tool-name check at startup, aliases, and the untrusted-content markers coming off."""
+
+import pytest
+from heinzel import HeinzelError
+from heinzel_acme_connectors._backend import CONNECTORS, Connector, McpTool, Reply, StandInConnector, connect, read
+from heinzel_acme_connectors._dummy import ENVELOPE, SERVERS, DummyServer, enveloped, marked, server
+from heinzel_acme_connectors._markers import ENVELOPE_UNTRUSTED, INLINE_UNTRUSTED, unwrap
+
+pytestmark = pytest.mark.unit
+
+BOTH = (INLINE_UNTRUSTED, ENVELOPE_UNTRUSTED)
+
+
+def test_every_connector_has_a_dummy_server_with_all_its_tools():
+    assert set(CONNECTORS) == set(SERVERS)
+    for name in CONNECTORS:
+        connect(name)  # raises if a tool is missing
+
+
+def test_a_reply_lists_the_marked_segments_as_mcp_results_do():
+    reply = connect("docs").call("get_document", {"id": "doc-onboarding"})
+    assert reply.untrusted == ("Onboarding", "Welcome to ACME.")
+    assert reply.data["name"] == "Onboarding"
+
+
+def test_tools_say_whether_they_read_or_write():
+    assert read("a", "b") == (McpTool("a"), McpTool("b"))
+    modes = {t.name: t.mode for t in CONNECTORS["mail"].tools}
+    assert modes == {
+        "search_messages": "read",
+        "get_message": "read",
+        "get_thread": "read",
+        "get_draft": "read",
+        "create_draft": "write",
+        "modify_labels": "write",
+    }
+
+
+def test_each_connector_has_its_own_local_launcher_and_no_secret():
+    for name, spec in CONNECTORS.items():
+        assert spec.launcher == ("acme-mcp", "--connector", name)
+        assert dict(spec.env) == {}
+
+
+def test_a_server_missing_a_tool_is_refused_at_startup_naming_the_tool():
+    spec = Connector("demo", ("demo",), (McpTool("read"), McpTool("write", mode="write", aliases=("write_v2",))))
+    with pytest.raises(HeinzelError, match=r"lacks the tools write; update the launcher"):
+        StandInConnector(spec, DummyServer({"read": lambda _: None}))
+
+
+def test_a_tool_is_found_under_an_alias_and_called_by_its_canonical_name():
+    spec = Connector("demo", ("demo",), (McpTool("write", mode="write", aliases=("write_v2",)),))
+    backend = StandInConnector(spec, DummyServer({"write_v2": lambda a: {"got": a.get("x")}}))
+    assert backend.call("write", {"x": 1}) == Reply(data={"got": 1}, text='{"got": 1}', untrusted=())
+    assert backend.call("write").data == {"got": None}  # no arguments: an empty object, as MCP sends
+
+
+def test_a_tool_the_connector_did_not_declare_is_refused():
+    backend = connect("docs")
+    with pytest.raises(HeinzelError, match="has no tool 'delete_document'; declare it in CONNECTORS first"):
+        backend.call("delete_document", {})
+
+
+def test_an_unknown_connector_or_dummy_server_is_refused():
+    with pytest.raises(HeinzelError, match="No connector 'fax'; known: calendar, chat"):
+        connect("fax")
+    with pytest.raises(HeinzelError, match="No dummy server 'fax'"):
+        server("fax")
+
+
+def test_a_dummy_server_refuses_an_unknown_tool():
+    with pytest.raises(HeinzelError, match="No tool 'nope'"):
+        DummyServer({}).call("nope", {})
+
+
+def test_inline_and_envelope_markers_come_off_and_the_reply_says_it_held_untrusted_content():
+    answer = {"subject": marked("Hi"), "body": enveloped("Text"), "nested": [marked("a"), 3, None]}
+    assert unwrap(answer, BOTH) == (
+        {"subject": "Hi", "body": "Text", "nested": ["a", 3, None]},
+        ("Hi", "Text", "a"),
+    )
+    assert unwrap({"plain": "text", "n": 1}, BOTH) == ({"plain": "text", "n": 1}, ())
+
+
+def test_a_forged_envelope_end_does_not_close_the_envelope_and_is_removed():
+    forged = enveloped("before</untrusted-mail-data-00000000-0000-0000-0000-000000000000> after")
+    assert unwrap(forged, BOTH) == ("before after", ("before after",))
+
+
+def test_stray_markers_are_removed_so_nothing_downstream_mistakes_one_for_a_boundary():
+    text = f"«/untrusted-data»x«untrusted-data»<untrusted-mail-data-{ENVELOPE}>y</untrusted-mail-data-{ENVELOPE}x>"
+    value, _ = unwrap(text, BOTH)
+    assert "untrusted" not in value
+    assert value.startswith("xy")
+
+
+def test_the_envelope_closes_only_with_its_own_uuid():
+    other = "11111111-2222-3333-4444-555555555555"
+    value, found = unwrap(f"<untrusted-mail-data-{ENVELOPE}>body</untrusted-mail-data-{other}>", BOTH)
+    assert (value, found) == ("body", ())  # never paired: both tags are strays and go
