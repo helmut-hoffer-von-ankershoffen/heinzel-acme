@@ -118,7 +118,8 @@ def test_the_wiki_serves_documents_when_bound_instead(connectors_kernel):
 def test_an_unsupported_write_is_refused_with_a_clear_message(connectors_kernel):
     code, answer = hz(connectors_kernel(ALL, probe=requester()), "probe", "send")
     assert code != 0
-    assert "This mail connector can't send draft: the gateway keeps drafts but never sends them" in str(answer)
+    # A Core with ADR 0159 refuses an `unsupported` method itself, before the call, without the adapter's reason.
+    assert "This mail connector can't send draft" in str(answer)
 
 
 def test_a_write_mode_the_adapter_does_not_serve_is_refused_by_the_kernel(connectors_kernel):
@@ -150,4 +151,4 @@ def test_the_chat_backend_setting_reaches_the_adapter(configured_kernel):
     )
     code, answer = hz(kernel, "poster", "say")
     assert code != 0
-    assert "This chat connector can't post: the chat command only tells and asks you" in str(answer)
+    assert "This chat connector can't post" in str(answer)

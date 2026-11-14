@@ -1,6 +1,7 @@
-"""Every adapter against its Core protocol: methods, signatures, honest modes, `unsupported`, hosts.
+"""Every connector adapter against its Core protocol: methods, signatures, honest modes, `unsupported`, hosts.
 
-The conformance kit of ADR 0159 Head B will replace the shape checks here; the behaviour tests stay.
+`ai-models` is no connector adapter: ai_models_test.py and the conformance kit (conformance_test.py) check it; the
+kit also checks these shapes on a Core that has it.
 """
 
 import inspect
@@ -9,11 +10,12 @@ import pytest
 from heinzel import HeinzelError, ProviderLet
 from heinzel.kernel import CAPABILITIES
 from heinzel_acme_connectors import NotSupportedError, module
-from heinzel_acme_connectors._compat import HAS_MULTI_DOCS
+from heinzel_acme_connectors._compat import HAS_AI_MODELS, HAS_MULTI_DOCS
 
 pytestmark = pytest.mark.unit
 
-PROVIDERS = {let.name: let for let in module.lets if isinstance(let, ProviderLet)}
+ALL = {let.name: let for let in module.lets if isinstance(let, ProviderLet)}
+PROVIDERS = {name: let for name, let in ALL.items() if let.capability != "ai-models"}
 
 
 def test_the_plugin_provides_every_connector_capability_and_documents_twice():
@@ -28,8 +30,15 @@ def test_the_plugin_provides_every_connector_capability_and_documents_twice():
         "acme-connectors:meetings",
         "acme-connectors:tracker",
     ]
-    core_served = {"agent-runner", "ai-access", "team-graph"}  # Core's own adapters; ai-models comes with ADR 0159
+    core_served = {"agent-runner", "ai-access", "team-graph", "ai-models"}  # Core's own, and the AI models apart
     assert {p.capability for p in PROVIDERS.values()} == set(CAPABILITIES) - core_served
+
+
+def test_ai_models_is_provided_exactly_on_a_core_that_has_the_capability():
+    assert ("acme-connectors:ai-models" in ALL) == HAS_AI_MODELS
+    if HAS_AI_MODELS:
+        models = ALL["acme-connectors:ai-models"]
+        assert (sorted(models.modes), models.hosts) == (["read"], ("models.acme.example",))
 
 
 def test_every_adapter_names_acmes_gateway_and_each_document_store_its_own_host():

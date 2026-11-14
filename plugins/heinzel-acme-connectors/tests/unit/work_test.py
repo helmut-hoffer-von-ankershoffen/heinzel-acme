@@ -162,9 +162,9 @@ def test_the_transcript_of_an_unrecorded_meeting_is_not_supported_and_an_unknown
 def test_a_gateway_that_answers_nothing_for_a_meeting_is_an_error():
     class Empty:
         def call(self, tool, arguments):
-            from heinzel_acme_connectors._backend import Reply
+            from heinzel_acme_connectors._compat import McpResult
 
-            return Reply(data={})
+            return McpResult(text="{}", data={})
 
     with pytest.raises(HeinzelError, match=r"take Meeting\.id from `ended`"):
         AcmeMeetings(backend=Empty()).transcript("mt-1")

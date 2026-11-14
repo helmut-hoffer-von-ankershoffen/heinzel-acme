@@ -52,7 +52,8 @@ class AcmeSignIn:
     """The gateway's sign-in, as a dummy whose state comes from `acme-connectors.sign_in_state`."""
 
     state: ClassVar[dict[str, str]] = {}
-    """The state after a `sign_in` or `sign_out` in this process; the setting until then."""
+    """The state after a `sign_in` or `sign_out` in this process; the setting until then. Dummy only: a real plugin
+    keeps no sign-in state of its own and asks its gateway launcher every time."""
 
     def __init__(self, settings: ConnectorSettings) -> None:
         """Read the starting state from the plugin's settings; the kernel passes them."""

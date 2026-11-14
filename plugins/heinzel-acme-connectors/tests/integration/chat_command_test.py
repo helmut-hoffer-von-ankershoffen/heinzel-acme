@@ -3,6 +3,7 @@
 import json
 import sys
 import threading
+import tracemalloc
 from datetime import UTC, datetime
 
 import pytest
@@ -115,7 +116,7 @@ def test_a_bad_answer_or_exit_is_a_clear_error(code, error):
 
 
 def test_a_missing_command_says_which_setting_to_fix():
-    with pytest.raises(HeinzelError, match=r"Can't run /nonexistent/acme-chat: .*Check acme-connectors\.chat_command"):
+    with pytest.raises(HeinzelError, match=r"Can't run acme-chat: .*Check acme-connectors\.chat_command"):
         chat(["/nonexistent/acme-chat"]).notify_self("hi")
 
 
@@ -124,3 +125,44 @@ def test_text_that_looks_like_an_option_stays_text(capsys):
     assert json.loads(capsys.readouterr().out)["topic"].startswith("msg-")
     told = chat().notify_self("--note=sneaky")
     assert told.thread == told.id
+
+
+def test_a_huge_answer_stops_the_command_while_reading_and_memory_stays_bounded():
+    endless = python("import sys\nwhile True:\n    sys.stdout.write('x' * 65536)")
+    tracemalloc.start()
+    try:
+        with pytest.raises(HeinzelError, match="answered more than 64 KiB and was stopped"):
+            ChatCommand(endless, timeout=10).tell("hi", None, None)
+        _, peak = tracemalloc.get_traced_memory()
+    finally:
+        tracemalloc.stop()
+    assert peak < 1_000_000, f"reading took {peak:,} bytes"
+
+
+def test_a_flood_on_stderr_keeps_only_its_end_and_still_names_the_last_line():
+    flood = python(
+        "import sys\nsys.stderr.write('noise\\n' * 4_000_000)\nsys.stderr.write('sign in again\\n')\nsys.exit(5)"
+    )
+    tracemalloc.start()
+    try:
+        with pytest.raises(HeinzelError, match=r"failed \(exit 5\): sign in again"):
+            ChatCommand(flood, timeout=10).tell("hi", None, None)
+        _, peak = tracemalloc.get_traced_memory()
+    finally:
+        tracemalloc.stop()
+    assert peak < 1_000_000, f"reading took {peak:,} bytes"
+
+
+def test_the_command_sees_only_the_basics_of_the_environment(monkeypatch):
+    monkeypatch.setenv("PROVIDER_API_KEY", "fictional-key")
+    monkeypatch.setenv("ACME_CHAT_ANSWER", '{"reply": "x"}')
+    shows = python("import json, os\nprint(json.dumps({'message': 'm', 'topic': ' '.join(sorted(os.environ))}))")
+    seen = set(chat(shows).notify_self("hi").thread.split())
+    assert "PROVIDER_API_KEY" not in seen
+    assert {"ACME_CHAT_ANSWER", "PATH"} <= seen
+
+
+def test_the_bundled_command_is_named_acme_chat_in_errors(monkeypatch):
+    monkeypatch.setenv("ACME_CHAT_ANSWER", "not json")
+    with pytest.raises(HeinzelError, match=r"^acme-chat failed \(exit 1\)"):
+        chat().ask_self("Send it?", options=["Yes"], timeout=1)

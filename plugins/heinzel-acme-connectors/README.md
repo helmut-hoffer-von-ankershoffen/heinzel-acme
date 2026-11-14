@@ -59,25 +59,29 @@ login.acme.example, and `sign_out` forgets the sign-in, both for the running pro
 `src/heinzel_acme_connectors/`:
 
 - `_backend.py` is **the one file a company replaces**. Every gateway adapter reaches data only through
-  `connect(name).call(tool, arguments)`, which returns a `Reply` (`data`, `text`, and `untrusted`, the segments the
-  gateway marked), shaped like Core's `McpResult`. Each connector in `CONNECTORS` names its local stdio launcher
-  (one per connector, holding the sign-in, so the plugin holds no secret), the tools its adapter calls (`McpTool`:
-  name, read or write, aliases), and the untrusted-content markers its answers carry. Today `connect` serves the dummy
-  data through `StandInConnector`, which checks at startup that every tool exists and takes the markers off. With
-  Core's MCP helper (ADR 0159, `heinzel.connectors.mcp`) `connect` returns `McpConnector(launcher, tools=...,
-  markers=...)` instead; the module docstring shows the code.
-- `_markers.py` is the untrusted-content path. A gateway marks text people wrote inline
-  (`«untrusted-data»…«/untrusted-data»`) or, for mail bodies, in an envelope with a fresh UUID
-  (`<untrusted-mail-data-UUID>…</untrusted-mail-data-UUID>`), so text inside can't close it. The markers come off,
-  any stray or forged marker is removed, and `_text.py` passes every string through Core's `clean_text`, as Core
-  asks of every adapter. What the text says stays data, never an instruction.
+  `connect(name).call(tool, arguments)`, which returns Core's `McpResult` (`data`, `text`, `untrusted`, the parts the
+  gateway marked, and `cut`). Each connector in `CONNECTORS` names its local stdio launcher (one per connector,
+  holding the sign-in, so the plugin holds no secret), the tools its adapter calls (`McpTool`: name, read or write,
+  aliases), the untrusted-content markers its answers carry, and its modes: docs, wiki, meetings, code host and
+  directory are read only, so a write tool is refused there. Today `connect` serves the dummy data through
+  `StandInConnector`, which checks that every tool exists and takes the markers off with Core's own rules. With
+  Core's MCP helper (`heinzel.connectors.mcp`, ADR 0159) `connect` returns
+  `McpConnector(launcher, tools=..., markers=..., modes=...)` instead; the module docstring shows the code, and
+  `McpConnector.in_process` runs an MCP server object in a company's own adapter tests.
+- Untrusted content: a gateway marks text people wrote inline (`«untrusted-data»…«/untrusted-data»`), read
+  conservatively from the first marker to the last, or in an envelope with a fresh id
+  (`<untrusted-mail-data-UUID>…</untrusted-mail-data-UUID>`, any kind of data), which text inside can't close. The
+  markers come off and any stray one is removed, and `_text.py` passes every string through Core's `clean_text`.
+  What the text says stays data, never an instruction, so the adapters need no `untrusted` list of their own.
 - `_chat_command.py` and `acme_chat.py`: the chat command backend. The adapter runs the command with an argument
-  list (never a shell), a timeout, nothing on stdin, and reads at most 64 KiB of one JSON object; a non-zero exit, a
-  timeout or bad JSON is a clear error. `acme-chat` is a made-up command (`tell`, `question`) whose answers come from
-  `ACME_CHAT_ANSWER` or the file in `ACME_CHAT_ANSWERS`, so it never blocks for real.
-- `_compat.py`: stand-ins for what Core ships after 0.9.42: `NotSupportedError` and `unsupported` (ADR 0159),
-  `ModelOffer` and `ModelUnavailableError` (ADR 0159), `SelfMessage` and `SelfAnswer` (the chat self channel, ADR
-  0160). With that Core they are Core's own.
+  list (never a shell), a timeout, nothing on stdin, and only the basics of hz's environment (`PATH`, `HOME`,
+  `LANG` and its own `ACME_CHAT_*`), not the keys hz may hold. It reads both streams as they come: at most 64 KiB of
+  stdout (more stops the command) and the last 4 KiB of stderr, so memory stays bounded however much the command
+  writes. A non-zero exit, a timeout or bad JSON is a clear error. `acme-chat` is a made-up command (`tell`,
+  `question`) whose answers come from `ACME_CHAT_ANSWER` or the file in `ACME_CHAT_ANSWERS`, so it never blocks.
+- `_compat.py` and `_standins.py`: what Core ships after 0.9.42 (ADR 0159, 0160, 0161). `_compat` uses Core's own
+  classes where the installed Core has them, and exact copies from `_standins` where it doesn't
+  (`tests/unit/standins_test.py` compares them with Core's). With the minimum at that release, both files go.
 - One module per capability (`_mail.py`, `_calendar.py`, `_documents.py`, `_tracker.py`, `_chat.py`, `_meetings.py`,
   `_code_host.py`, `_directory.py`, `_ai_models.py`) maps the gateway's JSON to Core's models; keep them and change
   the mapping where your gateway answers differently.
@@ -85,7 +89,9 @@ login.acme.example, and `sign_out` forgets the sign-in, both for the running pro
 
 Modes are honest: an adapter declares `write` only when one of its capability's write methods works, so the
 documents adapters are read only. What a connector can't do is listed in `unsupported` (per instance for chat,
-whose backend decides) and refused with `NotSupportedError` before anything reaches the gateway.
+whose backend decides). A Core with ADR 0159 refuses those methods itself, before the call, with
+`NotSupportedError` ("This mail connector can't send draft."); the reasons in the adapters' own refusals show only
+on an older Core or when the method is called directly.
 
 ## Make it your company's
 
@@ -98,11 +104,14 @@ whose backend decides) and refused with `NotSupportedError` before anything reac
 
 ## Requirements
 
-- Heinzelmännchen 0.9.41 or later; tested on 0.9.42. `ai-models`, the MCP helper, the chat self channel and
-  `unsupported` handled by the kernel need the Core release that ships ADR 0159 and ADR 0160 (to be decided); until
-  then the stand-ins in `_compat.py` keep the plugin working.
+- Heinzelmännchen 0.9.41 or later; tested on 0.9.42 and on the 0.9.43 bundle. `ai-models`, the MCP helper, the
+  chat self channel, `unsupported` handled by the kernel and two documents adapters at once need Core 0.9.43, which
+  ships ADR 0159, 0160 and 0161; on an older Core the stand-ins keep the plugin working, without `ai-models` and with
+  one documents adapter bound.
 - Python 3.12 or later.
 
 Tests (`tests/unit`, `tests/integration`) check each adapter against its Core protocol (signatures, honest modes,
-`unsupported`, hosts), its behaviour on the dummy data, the chat command's timeout, bad JSON and failing exit, and
-every capability bound through a kernel.
+`unsupported`, hosts), its behaviour on the dummy data, the chat command's timeout, bad JSON, failing exit and
+bounded reading, and every capability bound through a kernel. `tests/integration/conformance_test.py` runs Core's
+conformance kit with sample arguments for every read method, the check a company's own CI should copy; it is
+skipped on a Core without the kit.

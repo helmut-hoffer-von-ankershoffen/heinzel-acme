@@ -1,27 +1,25 @@
 """The backend seam: the one file a company replaces to talk to its MCP gateway instead of the dummy data.
 
-Every adapter in this plugin reaches its data only through a `Backend`: `call(tool, arguments)` returns a `Reply`
-with the tool's JSON answer (`data`), its text, and the segments the gateway marked as untrusted. Here `connect`
-serves each connector from an in-memory dummy server (`_dummy`) through `StandInConnector`, which does what a real
-MCP client must do: check at startup that the server has every tool the adapter calls (under its own name or an
-alias), and take the gateway's untrusted-content markers off every string in an answer.
+Every adapter in this plugin reaches its data only through a `Backend`: `call(tool, arguments)` returns an
+`McpResult`, Core's answer of an MCP tool: its JSON (`data`), its text, and the parts the gateway marked as untrusted.
+Here `connect` serves each connector from an in-memory dummy server (`_dummy`) through `StandInConnector`, which does
+what Core's `McpConnector` does: check that the server has every tool the adapter calls (under its own name or an
+alias), refuse a write tool on a read-only connector, and take the gateway's untrusted-content markers off every
+string in an answer, with Core's own rules.
 
-In the real plugin each connector is one local stdio launcher that reaches the company MCP gateway; the launcher
-holds the sign-in, the plugin holds no secret. Switching is this file only. With ADR 0159 Head B's public helper
-(`heinzel.connectors.mcp`, not released yet; names as its builder gave them), `connect` becomes:
+In the real plugin each connector is one local stdio launcher that reaches the company MCP gateway; the launcher holds
+the sign-in, the plugin holds no secret. Switching is this file only. With Core's MCP helper (ADR 0159,
+`heinzel.connectors.mcp`, in the Core release after 0.9.42), `connect` becomes:
 
-    from heinzel.connectors.mcp import McpConnector, McpTool
+    from heinzel.connectors.mcp import McpConnector
 
     def connect(name: str) -> Backend:
         spec = CONNECTORS[name]
-        tools = [McpTool(t.name, mode=t.mode, aliases=t.aliases) for t in spec.tools]
-        connector = McpConnector(spec.launcher, tools=tools, markers=spec.markers)
-        connector.start()  # raises McpToolsMissingError when the server lacks a tool
-        return connector
+        return McpConnector(spec.launcher, tools=spec.tools, markers=spec.markers, modes=spec.modes)
 
-with Core's `UntrustedMarker`, `INLINE_UNTRUSTED` and `ENVELOPE_UNTRUSTED` in `CONNECTORS`, and `StandInConnector`,
-`McpTool` here, `_markers` and `_dummy` are deleted. The adapters stay as they are: they call canonical tool names and
-read `.data`, which `McpResult` has too.
+`McpConnector` starts the launcher on the first call and raises `McpToolsMissingError` when the server lacks a tool;
+`McpConnector.in_process(server, tools=..., markers=...)` runs an MCP server object in the test process, for a
+company's own adapter tests. Then `StandInConnector` and `_dummy` are deleted, and the adapters stay as they are.
 """
 
 import json
@@ -31,19 +29,12 @@ from typing import Any, Literal, Protocol
 
 from heinzel import HeinzelError
 
-from heinzel_acme_connectors._markers import ENVELOPE_UNTRUSTED, INLINE_UNTRUSTED, UntrustedMarker, unwrap
+from heinzel_acme_connectors._compat import ENVELOPE_UNTRUSTED, INLINE_UNTRUSTED, McpResult, McpTool, UntrustedMarker
+from heinzel_acme_connectors._standins import Unmarker
 
-
-@dataclass(frozen=True)
-class McpTool:
-    """A tool an adapter calls: its canonical name, whether it reads or writes, and other names a gateway may use.
-
-    The local stand-in for Head B's `McpTool(name, mode="read", aliases=())`.
-    """
-
-    name: str
-    mode: Literal["read", "write"] = "read"
-    aliases: tuple[str, ...] = ()
+Mode = Literal["read", "write"]
+READ_ONLY: tuple[Mode, ...] = ("read",)
+READ_WRITE: tuple[Mode, ...] = ("read", "write")
 
 
 def read(*names: str) -> tuple[McpTool, ...]:
@@ -56,19 +47,10 @@ def write(*names: str) -> tuple[McpTool, ...]:
     return tuple(McpTool(name, mode="write") for name in names)
 
 
-@dataclass(frozen=True)
-class Reply:
-    """One tool's answer, markers removed: the shape of Head B's `McpResult` (`text`, `data`, `untrusted`)."""
-
-    data: Any
-    text: str = ""
-    untrusted: tuple[str, ...] = ()
-
-
 class Backend(Protocol):
     """What an adapter calls: one gateway connector."""
 
-    def call(self, tool: str, arguments: Mapping[str, Any] | None = None) -> Reply:
+    def call(self, tool: str, arguments: Mapping[str, Any] | None = None) -> McpResult:
         """Call `tool` (a canonical name) with `arguments` and return its answer."""
         ...
 
@@ -87,12 +69,16 @@ class Server(Protocol):
 
 @dataclass(frozen=True)
 class Connector:
-    """One gateway connector: how it is launched, the tools its adapter calls, and the markers its answers carry."""
+    """One gateway connector: how it is launched, its tools, its answers' markers, and the modes it serves.
+
+    A read-only connector refuses write tools: least privilege, as `McpConnector(modes=...)` does.
+    """
 
     name: str
     launcher: tuple[str, ...]
     tools: tuple[McpTool, ...]
     markers: tuple[UntrustedMarker, ...] = (INLINE_UNTRUSTED,)
+    modes: tuple[Mode, ...] = READ_WRITE
     env: Mapping[str, str] = field(default_factory=dict[str, str])
 
 
@@ -119,8 +105,8 @@ CONNECTORS: Mapping[str, Connector] = {
             _launcher("calendar"),
             (*read("list_events", "get_event", "free_busy"), *write("create_event", "update_event", "cancel_event")),
         ),
-        Connector("docs", _launcher("docs"), read("get_document", "search_documents")),
-        Connector("wiki", _launcher("wiki"), read("get_page", "search_pages")),
+        Connector("docs", _launcher("docs"), read("get_document", "search_documents"), modes=READ_ONLY),
+        Connector("wiki", _launcher("wiki"), read("get_page", "search_pages"), modes=READ_ONLY),
         Connector(
             "tracker",
             _launcher("tracker"),
@@ -130,9 +116,9 @@ CONNECTORS: Mapping[str, Connector] = {
             ),
         ),
         Connector("chat", _launcher("chat"), (*read("list_channels", "list_messages"), *write("post_message"))),
-        Connector("meetings", _launcher("meetings"), read("list_meetings", "get_transcript")),
-        Connector("code-host", _launcher("code-host"), read("list_merged_pull_requests")),
-        Connector("directory", _launcher("directory"), read("get_person", "list_reports")),
+        Connector("meetings", _launcher("meetings"), read("list_meetings", "get_transcript"), modes=READ_ONLY),
+        Connector("code-host", _launcher("code-host"), read("list_merged_pull_requests"), modes=READ_ONLY),
+        Connector("directory", _launcher("directory"), read("get_person", "list_reports"), modes=READ_ONLY),
     )
 }
 """Every connector this plugin's adapters use, by name."""
@@ -151,6 +137,7 @@ class StandInConnector:
         self._spec = spec
         self._server = server
         self._names: dict[str, str] = {}
+        self._writes = {tool.name: tool.mode == "write" for tool in spec.tools}
         missing: list[str] = []
         for tool in spec.tools:
             found = next((name for name in (tool.name, *tool.aliases) if name in offered), None)
@@ -165,18 +152,23 @@ class StandInConnector:
             )
             raise HeinzelError(msg)
 
-    def call(self, tool: str, arguments: Mapping[str, Any] | None = None) -> Reply:
-        """Call the canonical `tool` by the server's own name, and unwrap the answer's markers.
+    def call(self, tool: str, arguments: Mapping[str, Any] | None = None) -> McpResult:
+        """Call the canonical `tool` by the server's own name; its answer unmarked with Core's rules.
 
         Raises:
-            HeinzelError: If `tool` is not one of the connector's tools.
+            HeinzelError: If `tool` is not one of the connector's tools, or writes on a read-only connector.
         """
         name = self._names.get(tool)
         if name is None:
             msg = f"The {self._spec.name} connector has no tool {tool!r}; declare it in CONNECTORS first."
             raise HeinzelError(msg)
-        data, untrusted = unwrap(self._server.call(name, arguments or {}), self._spec.markers)
-        return Reply(data=data, text=json.dumps(data, ensure_ascii=False, default=str), untrusted=untrusted)
+        if self._writes[tool] and "write" not in self._spec.modes:
+            msg = f"The tool {tool!r} writes, and the {self._spec.name} connector serves only read."
+            raise HeinzelError(msg)
+        unmarker = Unmarker(self._spec.markers)
+        data = unmarker.value(self._server.call(name, arguments or {}))  # field by field, as Core does structured data
+        text = json.dumps(data, ensure_ascii=False, default=str)
+        return McpResult(text=text, data=data, untrusted=tuple(dict.fromkeys(unmarker.found)))
 
 
 def _dummy_server(name: str) -> Server:

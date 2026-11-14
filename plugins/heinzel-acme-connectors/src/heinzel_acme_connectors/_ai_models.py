@@ -14,6 +14,9 @@ from typing import Any
 
 from heinzel_acme_connectors._compat import ModelOffer, ModelUnavailableError
 
+# A company loads this list from its own source, its model gateway's model list, and keeps it in memory: `models()`
+# must answer in milliseconds, so it never asks the gateway while hz waits; it refreshes the list now and then, and
+# marks a model `available=False` when the gateway last said it doesn't answer.
 MODELS = (
     ModelOffer(
         id="acme/fast",

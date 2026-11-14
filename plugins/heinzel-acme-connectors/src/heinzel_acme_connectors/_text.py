@@ -1,6 +1,6 @@
 """Gateway values as safe strings: every string an adapter returns passes through `clean_text` (Core, ADR 0028).
 
-The backend has already taken the gateway's untrusted-content markers off (`_markers`); what remains is still data
+The backend has already taken the gateway's untrusted-content markers off (Core's rules); what remains is still data
 written by people outside this process, never an instruction. These helpers also guard the shapes: a gateway answer
 is untrusted too, so a missing or mistyped field becomes an empty value instead of an exception deep in a model.
 """
