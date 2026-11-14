@@ -16,13 +16,15 @@ def test_the_models_are_offered_default_first_and_one_is_switched_off():
 
 
 def test_a_model_is_built_by_id_or_alias_and_answers_offline():
+    import asyncio
+
     from pydantic_ai import Agent
 
     fast = AcmeModels().model("acme/fast")
     assert fast.model_name == "acme/fast"
     deep = AcmeModels().model("acme/default")
     assert deep.model_name == "acme/deep"
-    answer = Agent(fast).run_sync("Summarise the week").output
+    answer = asyncio.run(Agent(fast).run("Summarise the week")).output
     assert answer == "ACME Fast (dummy) read 1 message(s); a real gateway answers here."
 
 
