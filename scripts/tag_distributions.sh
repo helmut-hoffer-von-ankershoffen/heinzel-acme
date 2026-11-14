@@ -9,6 +9,7 @@ dry="${2:-}"
 version="${tag#v}"
 sha="$(git rev-parse HEAD)"
 status=0
+root_tagged=0
 
 field() { # field FILE KEY: first top-level `KEY = "value"` of a pyproject.toml
   sed -n "s/^$2 = \"\\(.*\\)\"\$/\\1/p" "$1" | head -n 1
@@ -17,15 +18,18 @@ field() { # field FILE KEY: first top-level `KEY = "value"` of a pyproject.toml
 for file in pyproject.toml plugins/*/pyproject.toml; do
   [[ -f "$file" ]] || continue
   [[ "$(field "$file" version)" == "$version" ]] || continue
-  name="$(field "$file" name)"
+  name="$(field "$file" name | tr 'A-Z' 'a-z' | sed -E 's/[-_.]+/-/g')" # canonical, as hz looks it up
   [[ -n "$name" ]] || { echo "No name in $file" >&2; status=1; continue; }
   dist_tag="$name/$tag"
-  remote="$(git ls-remote --tags origin "refs/tags/$dist_tag" | cut -f1)"
+  [[ "$file" == pyproject.toml ]] && root_tagged=1
+  # ls-remote patterns match trailing path components: compare the exact ref.
+  remote="$(git ls-remote --tags origin "refs/tags/$dist_tag" | awk -v r="refs/tags/$dist_tag" '$2 == r {print $1}')"
   if [[ -n "$remote" ]]; then
     # An annotated tag would list its tag object; compare the peeled commit as well.
-    peeled="$(git ls-remote --tags origin "refs/tags/$dist_tag^{}" | cut -f1)"
+    peeled="$(git ls-remote --tags origin "refs/tags/$dist_tag^{}" | awk -v r="refs/tags/$dist_tag^{}" '$2 == r {print $1}')"
     if [[ "${peeled:-$remote}" == "$sha" ]]; then
       echo "$dist_tag already on $sha."
+      [[ -z "$peeled" ]] || echo "::warning::$dist_tag is annotated; hz reads its tagger date as the release age."
     else
       echo "$dist_tag exists on another commit (${peeled:-$remote}); refusing." >&2
       status=1
@@ -38,4 +42,8 @@ for file in pyproject.toml plugins/*/pyproject.toml; do
     git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "refs/tags/$dist_tag"
   fi
 done
+if [[ "$root_tagged" != 1 ]]; then
+  echo "The root pyproject.toml does not have version $version; no root tag." >&2
+  status=1
+fi
 exit "$status"

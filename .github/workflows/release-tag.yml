@@ -45,17 +45,26 @@ jobs:
           git tag -a "$tag" -m "$tag"
           git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$tag"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
-      - name: Tag each distribution at this version
-        # Plugins are pinned from GitHub by `<distribution>/vX.Y.Z`: lightweight tags on the release commit for the
-        # root and each plugins/<dist> whose version equals the release. Additive; refuses a tag on another commit.
-        if: steps.tag.outputs.tag != ''
-        env:
+
+  dist-tags:
+    # Its own job: a failed distribution tag never skips publish, and "Re-run failed jobs" reruns only this one.
+    # Plugins are pinned from GitHub by `<distribution>/vX.Y.Z`: lightweight tags on the release commit for the root
+    # and each plugins/<dist> whose version equals the release. Additive; refuses a tag on another commit.
+    name: Tag each distribution
+    needs: tag
+    if: needs.tag.outputs.tag != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.tag.outputs.tag }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          bash scripts/tag_distributions.sh "$TAG"
+          TAG: ${{ needs.tag.outputs.tag }}
+        run: bash scripts/tag_distributions.sh "$TAG"
 
   publish:
     needs: tag
