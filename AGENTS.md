@@ -1,7 +1,8 @@
 # AGENTS.md
 
 heinzel-acme is [Heinzelmännchen](https://github.com/helmut-hoffer-von-ankershoffen/heinzel)'s reference company: four
-plugins, one per layer of a made-up company. Read [INTENT.md](INTENT.md) first.
+plugins, one per layer of a made-up company, and its own connectors beside them (ADR 0004). Read [INTENT.md](INTENT.md)
+first.
 
 ## Commands
 
@@ -43,7 +44,8 @@ src/heinzel_acme/                 the company layer `acme`: module, layer, playb
 plugins/heinzel-acme-payments/    org layer: the okr asset type
 plugins/heinzel-acme-lisbon/      site layer: the site calendar as data
 plugins/heinzel-acme-payments-checkout/  team layer: weekly report playbook and templates/weekly-report.prose.md
-tests/, plugins/*/tests/          unit/, integration/ (CLI head, all four plugins), e2e/ (uv tool install)
+plugins/heinzel-acme-connectors/  no layer: an adapter for every connector capability on dummy data; _backend.py is the seam
+tests/, plugins/*/tests/          unit/, integration/ (CLI head, all five plugins), e2e/ (uv tool install)
 docs/                             REHEARSAL.md, PORT_TO_YOUR_COMPANY.md, adr/
 ```
 

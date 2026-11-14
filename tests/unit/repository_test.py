@@ -1,5 +1,5 @@
 """The repository keeps ADR 0040's rules for a company's plugins: one plugin per layer, named after its path,
-depending on the layers above it, released together."""
+depending on the layers above it, released together; a connector plugin (ADR 0004) is no layer and needs none."""
 
 import tomllib
 from pathlib import Path
@@ -13,9 +13,22 @@ pytestmark = pytest.mark.unit
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def projects():
+def tomls():
     paths = [ROOT / "pyproject.toml", *sorted((ROOT / "plugins").glob("*/pyproject.toml"))]
-    return {p.parent: tomllib.loads(p.read_text(encoding="utf-8"))["project"] for p in paths}
+    return {p.parent: tomllib.loads(p.read_text(encoding="utf-8")) for p in paths}
+
+
+def connector(data):
+    return data.get("tool", {}).get("acme", {}).get("kind") == "connector"
+
+
+def projects():
+    """The layers: every plugin but the connector plugins."""
+    return {path: data["project"] for path, data in tomls().items() if not connector(data)}
+
+
+def connectors():
+    return {path: data["project"] for path, data in tomls().items() if connector(data)}
 
 
 def declared():
@@ -45,7 +58,18 @@ def test_every_plugin_depends_on_its_parent_and_site():
 
 
 def test_every_layer_is_released_with_the_same_version():
-    assert len({project["version"] for project in projects().values()}) == 1
+    assert len({project["version"] for project in [*projects().values(), *connectors().values()]}) == 1
+
+
+def test_a_connector_plugin_is_named_after_its_module_declares_no_layer_and_needs_none():
+    found = declared()
+    assert connectors(), "heinzel-acme-connectors is the connector plugin"
+    for project in connectors().values():
+        (module,) = project["entry-points"]["heinzel.modules"]
+        assert project["name"] == f"heinzel-{module}"
+        assert module not in found
+        names = {dependency.split(">")[0].split("=")[0].strip() for dependency in project["dependencies"]}
+        assert names == {"heinzel"}, "a connector serves every layer and depends on none"
 
 
 def test_the_layer_api_is_reached_only_through_the_bridge():

@@ -2,6 +2,7 @@
 status: accepted
 date: 2026-11-01
 amends: 0002
+amended-by: 0004
 ---
 
 # 0003: The layer API is released; acme follows the core's compatible range
