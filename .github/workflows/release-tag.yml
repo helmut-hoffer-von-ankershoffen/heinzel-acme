@@ -78,3 +78,18 @@ jobs:
       contents: write
       id-token: write
       attestations: write
+
+  pypi:
+    name: Dispatch the PyPI upload
+    needs: [tag, publish]
+    if: needs.tag.outputs.tag != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ needs.tag.outputs.tag }}
+        run: gh workflow run pypi.yml --ref main -f tag="$TAG"
