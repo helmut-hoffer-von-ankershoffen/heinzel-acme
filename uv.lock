@@ -825,7 +825,7 @@ provides-extras = ["anthropic", "openai"]
 
 [[package]]
 name = "heinzel-acme"
-version = "0.4.0"
+version = "0.5.0"
 source = { editable = "." }
 dependencies = [
     { name = "heinzel" },
@@ -922,7 +922,7 @@ test = [
 
 [[package]]
 name = "heinzel-acme-connectors"
-version = "0.4.0"
+version = "0.5.0"
 source = { editable = "plugins/heinzel-acme-connectors" }
 dependencies = [
     { name = "heinzel" },
@@ -933,7 +933,7 @@ requires-dist = [{ name = "heinzel", specifier = ">=0.9.41,<1" }]
 
 [[package]]
 name = "heinzel-acme-lisbon"
-version = "0.4.0"
+version = "0.5.0"
 source = { editable = "plugins/heinzel-acme-lisbon" }
 dependencies = [
     { name = "heinzel" },
@@ -948,7 +948,7 @@ requires-dist = [
 
 [[package]]
 name = "heinzel-acme-payments"
-version = "0.4.0"
+version = "0.5.0"
 source = { editable = "plugins/heinzel-acme-payments" }
 dependencies = [
     { name = "heinzel" },
@@ -963,7 +963,7 @@ requires-dist = [
 
 [[package]]
 name = "heinzel-acme-payments-checkout"
-version = "0.4.0"
+version = "0.5.0"
 source = { editable = "plugins/heinzel-acme-payments-checkout" }
 dependencies = [
     { name = "heinzel" },
