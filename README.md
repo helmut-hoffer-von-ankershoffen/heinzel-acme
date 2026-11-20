@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
 | plugins/heinzel-acme-connectors/src/heinzel\_acme\_connectors/\_\_init\_\_.py    |       38 |        1 |        4 |        1 |     95% |        64 |
 | plugins/heinzel-acme-connectors/src/heinzel\_acme\_connectors/\_ai\_models.py    |       30 |        3 |        6 |        0 |     86% |     83-85 |
-| plugins/heinzel-acme-connectors/src/heinzel\_acme\_connectors/\_chat\_command.py |      110 |        1 |       32 |        2 |     98% |156, 179-\>178 |
+| plugins/heinzel-acme-connectors/src/heinzel\_acme\_connectors/\_chat\_command.py |      110 |        3 |       32 |        2 |     95% |155-157, 179-\>178 |
 | plugins/heinzel-acme-connectors/src/heinzel\_acme\_connectors/\_dummy.py         |      203 |        2 |       30 |        3 |     98% |439, 560, 595-\>597 |
 | plugins/heinzel-acme-connectors/src/heinzel\_acme\_connectors/\_sign\_in.py      |       58 |        2 |       12 |        0 |     97% |   144-145 |
 | plugins/heinzel-acme-connectors/src/heinzel\_acme\_connectors/\_standins.py      |      153 |       17 |       32 |        3 |     88% |57, 100-101, 103-104, 110, 151-152, 199-207 |
@@ -15,7 +15,7 @@
 | src/heinzel\_acme/seed/\_render.py                                               |       23 |       17 |        8 |        0 |     19% |     14-30 |
 | src/heinzel\_acme/seed/\_runner.py                                               |       38 |        3 |        4 |        0 |     93% |     84-86 |
 | src/heinzel\_acme/seed/\_service.py                                              |       78 |        0 |       24 |        2 |     98% |110-\>112, 112-\>114 |
-| **TOTAL**                                                                        | **1698** |   **51** |  **298** |   **14** | **96%** |           |
+| **TOTAL**                                                                        | **1698** |   **53** |  **298** |   **14** | **96%** |           |
 
 26 files skipped due to complete coverage.
 
