@@ -42,20 +42,20 @@ def run(tmp_path: Path, held: str) -> tuple[subprocess.CompletedProcess[str], li
     return result, log.read_text(encoding="utf-8").splitlines()
 
 
-def test_ci_and_both_gates_are_dispatched_after_the_held_run(tmp_path: Path):
+def test_ci_is_dispatched_after_the_held_run_and_no_merge_gate(tmp_path: Path):
     result, calls = run(tmp_path, held="1")
     assert result.returncode == 0, result.stderr
     held = next(i for i, c in enumerate(calls) if "event=pull_request" in c)
     ci = calls.index("workflow run ci.yml --repo owner/thing --ref release/v9.9.9")
-    gate = calls.index("workflow run merge-gate.yml --repo owner/thing --ref release/v9.9.9 -f pr=30")
-    assert held < ci < gate
+    assert held < ci
+    assert not any("merge-gate" in c for c in calls)
 
 
 def test_without_a_held_run_it_still_dispatches_and_says_so(tmp_path: Path):
     result, calls = run(tmp_path, held="0")
     assert result.returncode == 0, result.stderr
     assert "dispatching anyway" in result.stdout
-    assert any(c.startswith("workflow run merge-gate.yml") for c in calls)
+    assert any(c.startswith("workflow run ci.yml") for c in calls)
 
 
 def test_the_release_workflow_runs_it_and_may_dispatch():

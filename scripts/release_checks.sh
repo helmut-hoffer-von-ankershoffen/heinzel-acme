@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Start the required checks (CI OK from CI, merge-gate and coverage-floor from Merge gate) on a release pull request
+# Start the required check (CI OK from CI, which includes the Coverage floor job) on a release pull request
 # the workflow token opened, so it can merge like any other (release.yml runs this).
 #
-# GitHub holds the pull_request runs of such a pull request for approval and starts no pull_request_target run, so
-# nothing would report. Dispatched runs report on the branch's head. The pull request shows only the newest run of each
-# workflow, so this waits until the held CI run exists before dispatching CI; otherwise the held run, created a moment
-# later, hides the dispatched one (release PR #30, 11-02). Run it again by hand after pushing to the release branch.
+# GitHub holds the pull_request runs of such a pull request for approval, so nothing would report. Dispatched runs
+# report on the branch's head. The pull request shows only the newest run of each workflow, so this waits until the
+# held CI run exists before dispatching CI; otherwise the held run, created a moment later, hides the dispatched one
+# (release PR #30, 11-02). Run it again by hand after pushing to the release branch.
 #
 # Usage: bash scripts/release_checks.sh release/vX.Y.Z   (GH_TOKEN, GITHUB_REPOSITORY; WAIT seconds, default 180)
 set -euo pipefail
@@ -31,5 +31,4 @@ until [[ "$(held)" != 0 ]]; do
 done
 
 gh workflow run ci.yml --repo "$repo" --ref "$branch"
-gh workflow run merge-gate.yml --repo "$repo" --ref "$branch" -f pr="$number"
-echo "Dispatched CI and Merge gate on $branch for #$number."
+echo "Dispatched CI on $branch for #$number."

@@ -55,9 +55,8 @@ jobs:
           tag="$(bash scripts/release.sh "$BUMP" --open-pr | tail -n 1)"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
       - name: Run the required checks on the release pull request
-        # GitHub holds the pull_request runs of a pull request the workflow token opened for approval, and starts no
-        # pull_request_target run at all, so CI OK, merge-gate and coverage-floor would never report. Dispatched runs
-        # report on the branch's head. The pull request shows only the newest run of each workflow, so wait until the
+        # GitHub holds the pull_request runs of a pull request the workflow token opened for approval, so CI OK (with
+        # its Coverage floor job) would never report. Dispatched runs report on the branch's head. The pull request shows only the newest run of each workflow, so wait until the
         # held runs exist before dispatching CI, or the held run would hide the dispatched one.
         env:
           GH_TOKEN: ${{ github.token }}
