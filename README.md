@@ -11,14 +11,13 @@
 | plugins/heinzel-acme-connectors/src/heinzel\_acme\_connectors/\_sign\_in.py      |       58 |        2 |       12 |        0 |     97% |   144-145 |
 | plugins/heinzel-acme-connectors/src/heinzel\_acme\_connectors/\_standins.py      |      153 |       17 |       32 |        3 |     88% |57, 100-101, 103-104, 110, 151-152, 199-207 |
 | plugins/heinzel-acme-connectors/src/heinzel\_acme\_connectors/acme\_chat.py      |       48 |        1 |       16 |        1 |     97% |        42 |
-| plugins/heinzel-acme-lisbon/src/heinzel\_acme\_lisbon/\_\_init\_\_.py            |       38 |        1 |        8 |        1 |     96% |        62 |
 | src/heinzel\_acme/\_service.py                                                   |       51 |        4 |       12 |        2 |     90% |28, 31-32, 104 |
 | src/heinzel\_acme/seed/\_render.py                                               |       23 |       17 |        8 |        0 |     19% |     14-30 |
 | src/heinzel\_acme/seed/\_runner.py                                               |       38 |        3 |        4 |        0 |     93% |     84-86 |
 | src/heinzel\_acme/seed/\_service.py                                              |       78 |        0 |       24 |        2 |     98% |110-\>112, 112-\>114 |
-| **TOTAL**                                                                        | **1698** |   **52** |  **298** |   **15** | **96%** |           |
+| **TOTAL**                                                                        | **1698** |   **51** |  **298** |   **14** | **96%** |           |
 
-25 files skipped due to complete coverage.
+26 files skipped due to complete coverage.
 
 
 ## Setup coverage badge
